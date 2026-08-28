@@ -113,16 +113,120 @@ html[data-tema="claro"] .mundo::before{opacity:.3}
 .carga__lema{color:var(--txt-2);font-size:12px;letter-spacing:.3em;text-transform:uppercase}
 
 /* ── acceso ────────────────────────────────────────────── */
-.acceso{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:calc(2rem + var(--arriba)) 1.5rem calc(2rem + var(--abajo))}
-.acceso__titulo{font-family:'Archivo',sans-serif;font-weight:800;font-size:2.05rem;line-height:1.04;letter-spacing:-.04em;margin:1.4rem 0 .55rem}
-.acceso__titulo em{font-style:italic;font-weight:900;color:var(--ac)}
-.acceso__texto{color:var(--txt-2);font-size:14.5px;max-width:36ch}
+.acceso{flex:1;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column}
+.acceso__hero{
+  position:relative;overflow:hidden;flex-shrink:0;
+  padding:calc(2.2rem + var(--arriba)) 1.6rem 2.4rem;
+  background:linear-gradient(155deg,#0A122A 0%,#0F1C40 55%,#0A122A 100%);
+}
+.acceso__hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(70vw 60vw at -10% 0%,color-mix(in srgb,var(--rosa) 35%,transparent),transparent 62%),
+    radial-gradient(55vw 55vw at 110% 10%,color-mix(in srgb,var(--azul-claro) 28%,transparent),transparent 60%),
+    radial-gradient(40vw 40vw at 50% 120%,color-mix(in srgb,var(--ambar) 20%,transparent),transparent 62%);
+}
+.acceso__hero .marca{position:relative;z-index:1}
+.acceso__titulo{
+  font-family:'Archivo',sans-serif;font-weight:800;font-size:2.15rem;
+  line-height:1.04;letter-spacing:-.04em;margin:1.5rem 0 .55rem;
+  position:relative;z-index:1;color:#EDF1FA
+}
+.acceso__titulo em{font-style:italic;font-weight:900;color:var(--ambar)}
+.acceso__texto{color:rgba(237,241,250,.62);font-size:14.5px;max-width:36ch;position:relative;z-index:1}
+.acceso__hero-puntos{
+  position:absolute;right:1.2rem;bottom:1.4rem;z-index:1;
+  display:flex;gap:5px;opacity:.4
+}
+.acceso__hero-puntos i{width:5px;height:5px;border-radius:50%;background:#fff}
+.acceso__hero-puntos i:nth-child(2){opacity:.6}
+.acceso__hero-puntos i:nth-child(3){opacity:.35}
 
-.pestanas{display:flex;gap:.25rem;background:var(--campo);padding:.3rem;border-radius:var(--r);margin:1.5rem 0 1.1rem}
-.pestanas button{flex:1;padding:.7rem;border-radius:14px;font-size:14px;font-weight:600;color:var(--txt-2);transition:var(--t)}
-.pestanas button[aria-selected="true"]{background:var(--sup);color:var(--txt);box-shadow:var(--sombra-sm)}
+.acceso__cuerpo{
+  flex:1;padding:0 1.5rem calc(2rem + var(--abajo));
+  background:var(--fondo);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;
+  margin-top:-1.4rem;
+  position:relative;z-index:2;
+}
+.acceso__cuerpo::before{
+  content:"";display:block;width:38px;height:4px;
+  border-radius:99px;background:var(--borde-fuerte);
+  margin:0.9rem auto 0;
+}
+
+.pestanas{
+  display:flex;position:relative;background:var(--campo);
+  padding:.28rem;border-radius:var(--r);margin:1.3rem 0 1.1rem;gap:0
+}
+.pestanas__indicador{
+  position:absolute;top:.28rem;bottom:.28rem;left:.28rem;
+  width:calc(50% - .28rem);border-radius:13px;
+  background:var(--sup);box-shadow:var(--sombra-sm);
+  transition:transform var(--t);pointer-events:none
+}
+.pestanas[data-activa="registro"] .pestanas__indicador{
+  transform:translateX(calc(100% + .28rem))
+}
+.pestanas button{
+  flex:1;padding:.68rem;border-radius:14px;
+  font-size:14px;font-weight:600;color:var(--txt-2);
+  transition:color var(--t);position:relative;z-index:1;background:none
+}
+.pestanas button[aria-selected="true"]{color:var(--txt)}
+
+/* Google button */
+.btn--google{
+  display:flex;align-items:center;justify-content:center;gap:.65rem;
+  width:100%;padding:.92rem;border-radius:var(--r);
+  font-size:15px;font-weight:600;
+  background:var(--fondo-2);color:var(--txt);
+  border:1.5px solid var(--borde-fuerte);
+  transition:var(--t);position:relative;overflow:hidden
+}
+.btn--google:hover:not(:disabled){background:var(--sup);border-color:var(--ac)}
+.btn--google:active:not(:disabled){transform:scale(.985)}
+.btn--google:disabled{opacity:.5;cursor:not-allowed}
+.btn--google svg{flex-shrink:0}
+
+.separador{
+  display:flex;align-items:center;gap:.7rem;
+  margin:.95rem 0;color:var(--txt-3);font-size:12.5px;font-weight:500
+}
+.separador::before,.separador::after{
+  content:"";flex:1;height:1px;background:var(--borde)
+}
+
+/* Campo con validación inline */
+.campo--error > label{color:var(--rojo)}
+.campo--error .entrada input{border-color:color-mix(in srgb,var(--rojo) 55%,transparent)}
+.campo--ok .entrada input{border-color:color-mix(in srgb,var(--verde) 50%,transparent)}
+.campo__val{font-size:12px;margin-top:.2rem;display:none}
+.campo--error .campo__val{display:block;color:var(--rojo)}
+.campo--ok .campo__val{display:block;color:var(--verde)}
 
 form{display:flex;flex-direction:column;gap:.85rem}
+form[hidden]{display:none!important}
+
+/* Contenedor de formularios con slide */
+.acceso__formas{
+  position:relative;overflow:hidden;
+}
+.acceso__formas form{
+  width:100%;
+  animation:slideIn .28s cubic-bezier(.22,1,.36,1);
+}
+@keyframes slideIn{
+  from{opacity:0;transform:translateX(18px)}
+  to{opacity:1;transform:none}
+}
+.acceso__formas form.sale{
+  animation:slideOut .22s cubic-bezier(.4,0,1,1) forwards;
+}
+@keyframes slideOut{
+  from{opacity:1;transform:none}
+  to{opacity:0;transform:translateX(-14px)}
+}
 .campo{display:flex;flex-direction:column;gap:.35rem}
 .campo>label{font-size:12.5px;font-weight:600;color:var(--txt-2)}
 .entrada{position:relative;display:flex;align-items:center}
@@ -374,83 +478,117 @@ form{display:flex;flex-direction:column;gap:.85rem}
   <!-- ═══════════ ACCESO ═══════════ -->
   <section class="pantalla" id="pantalla-acceso">
     <div class="acceso">
-      <div class="marca">
-        <svg class="arcos" width="38" height="38" viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="34" stroke="#1B3C7B" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-215 50 50)"/>
-          <circle cx="50" cy="50" r="34" stroke="#E4007E" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-98 50 50)"/>
-          <circle cx="50" cy="50" r="34" stroke="#FFA20B" stroke-width="15" stroke-dasharray="66 216" transform="rotate(38 50 50)"/>
-        </svg>
-        <span class="marca__txt" style="font-size:1.5rem">T30</span>
+
+      <!-- HERO -->
+      <div class="acceso__hero">
+        <div class="marca">
+          <svg class="arcos" width="38" height="38" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="34" stroke="#1B3C7B" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-215 50 50)"/>
+            <circle cx="50" cy="50" r="34" stroke="#E4007E" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-98 50 50)"/>
+            <circle cx="50" cy="50" r="34" stroke="#FFA20B" stroke-width="15" stroke-dasharray="66 216" transform="rotate(38 50 50)"/>
+          </svg>
+          <span class="marca__txt" style="font-size:1.5rem">T30</span>
+        </div>
+        <h1 class="acceso__titulo">Pide tu viaje,<br /><em>llega a tiempo.</em></h1>
+        <p class="acceso__texto">Tarifa visible, conductor verificado y seguimiento en vivo. Todo en Pachuca.</p>
+        <div class="acceso__hero-puntos" aria-hidden="true"><i></i><i></i><i></i></div>
       </div>
 
-      <h1 class="acceso__titulo">Pide tu viaje,<br /><em>llega a tiempo.</em></h1>
-      <p class="acceso__texto">Tarifa a la vista antes de subirte, conductor verificado y seguimiento en vivo del trayecto.</p>
+      <!-- FORMULARIOS -->
+      <div class="acceso__cuerpo">
 
-      <div class="pestanas" role="tablist">
-        <button role="tab" id="tab-entrar" aria-selected="true">Entrar</button>
-        <button role="tab" id="tab-registro" aria-selected="false">Crear cuenta</button>
-      </div>
+        <div class="alerta" id="alerta-acceso" role="alert" style="margin-top:1rem">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+          <span id="alerta-texto"></span>
+        </div>
 
-      <div class="alerta" id="alerta-acceso" role="alert">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-        <span id="alerta-texto"></span>
-      </div>
+        <!-- Botón Google (compartido para entrar y registrar) -->
+        <button class="btn--google" id="btn-google" style="margin-top:1.2rem" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continuar con Google
+        </button>
 
-      <form id="form-entrar" novalidate>
-        <div class="campo">
-          <label for="in-correo">Correo</label>
-          <div class="entrada entrada--icono">
-            <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg></span>
-            <input id="in-correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required />
+        <div class="separador">o</div>
+
+        <div class="pestanas" role="tablist" id="pestanas-acceso" data-activa="entrar">
+          <div class="pestanas__indicador" aria-hidden="true"></div>
+          <button role="tab" id="tab-entrar" aria-selected="true">Entrar</button>
+          <button role="tab" id="tab-registro" aria-selected="false">Crear cuenta</button>
+        </div>
+
+        <div class="acceso__formas">
+        <form id="form-entrar" novalidate>
+          <div class="campo" id="campo-in-correo">
+            <label for="in-correo">Correo</label>
+            <div class="entrada entrada--icono">
+              <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg></span>
+              <input id="in-correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required />
+            </div>
+            <span class="campo__val" id="val-in-correo"></span>
           </div>
-        </div>
-        <div class="campo">
-          <label for="in-clave">Contraseña</label>
-          <div class="entrada entrada--icono">
-            <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/></svg></span>
-            <input id="in-clave" type="password" autocomplete="current-password" placeholder="Tu contraseña" required />
-            <button type="button" class="entrada__accion" data-ojo="in-clave" aria-label="Mostrar contraseña">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
-            </button>
+          <div class="campo" id="campo-in-clave">
+            <label for="in-clave">Contraseña</label>
+            <div class="entrada entrada--icono">
+              <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/></svg></span>
+              <input id="in-clave" type="password" autocomplete="current-password" placeholder="Tu contraseña" required />
+              <button type="button" class="entrada__accion" data-ojo="in-clave" aria-label="Mostrar contraseña">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
+              </button>
+            </div>
           </div>
-        </div>
-        <button class="btn" type="submit" id="btn-entrar">Entrar</button>
-        <button class="btn--texto" type="button" id="btn-recuperar" style="margin:0 auto">¿Olvidaste tu contraseña?</button>
-      </form>
+          <button class="btn" type="submit" id="btn-entrar" style="margin-top:.3rem">Entrar</button>
+          <button class="btn--texto" type="button" id="btn-recuperar" style="margin:.1rem auto 0">¿Olvidaste tu contraseña?</button>
+        </form>
 
-      <form id="form-registro" hidden novalidate>
-        <div class="campo">
-          <label for="re-nombre">Nombre completo</label>
-          <div class="entrada"><input id="re-nombre" type="text" autocomplete="name" placeholder="Ana Ramírez" required /></div>
-        </div>
-        <div class="duo">
+        <form id="form-registro" hidden novalidate>
           <div class="campo">
-            <label for="re-tel">Teléfono</label>
-            <div class="entrada"><input id="re-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="771 123 4567" required /></div>
+            <label for="re-nombre">Nombre completo</label>
+            <div class="entrada entrada--icono">
+              <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+              <input id="re-nombre" type="text" autocomplete="name" placeholder="Ana Ramírez" required />
+            </div>
+          </div>
+          <div class="duo">
+            <div class="campo">
+              <label for="re-tel">Teléfono</label>
+              <div class="entrada">
+                <input id="re-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="771 123 4567" required />
+              </div>
+            </div>
+            <div class="campo">
+              <label for="re-ciudad">Ciudad</label>
+              <div class="entrada"><input id="re-ciudad" type="text" value="Pachuca de Soto" required /></div>
+            </div>
           </div>
           <div class="campo">
-            <label for="re-ciudad">Ciudad</label>
-            <div class="entrada"><input id="re-ciudad" type="text" value="Pachuca de Soto" required /></div>
+            <label for="re-correo">Correo</label>
+            <div class="entrada entrada--icono">
+              <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg></span>
+              <input id="re-correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required />
+            </div>
           </div>
-        </div>
-        <div class="campo">
-          <label for="re-correo">Correo</label>
-          <div class="entrada"><input id="re-correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required /></div>
-        </div>
-        <div class="campo">
-          <label for="re-clave">Contraseña</label>
-          <div class="entrada">
-            <input id="re-clave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" required />
-            <button type="button" class="entrada__accion" data-ojo="re-clave" aria-label="Mostrar contraseña">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
-            </button>
+          <div class="campo">
+            <label for="re-clave">Contraseña</label>
+            <div class="entrada">
+              <input id="re-clave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" required />
+              <button type="button" class="entrada__accion" data-ojo="re-clave" aria-label="Mostrar contraseña">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
+              </button>
+            </div>
+            <div class="fuerza" id="fuerza" data-n="0"><i></i><i></i><i></i><i></i></div>
+            <span class="pista" id="pista-clave">Usa al menos 6 caracteres.</span>
           </div>
-          <div class="fuerza" id="fuerza" data-n="0"><i></i><i></i><i></i><i></i></div>
-          <span class="pista" id="pista-clave">Usa al menos 6 caracteres.</span>
-        </div>
-        <button class="btn" type="submit" id="btn-registro">Crear cuenta</button>
-        <p class="pista" style="text-align:center">Al continuar aceptas los Términos y el Aviso de privacidad de T30.</p>
-      </form>
+          <button class="btn" type="submit" id="btn-registro" style="margin-top:.3rem">Crear cuenta</button>
+          <p class="pista" style="text-align:center;margin-top:.5rem">Al continuar aceptas los <a href="#" style="color:var(--ac-2)">Términos</a> y el <a href="#" style="color:var(--ac-2)">Aviso de privacidad</a> de T30.</p>
+        </form>
+        </div><!-- /acceso__formas -->
+
+      </div><!-- /acceso__cuerpo -->
     </div>
   </section>
 
@@ -611,7 +749,8 @@ form{display:flex;flex-direction:column;gap:.85rem}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
-  onAuthStateChanged, updateProfile, sendPasswordResetEmail, deleteUser
+  onAuthStateChanged, updateProfile, sendPasswordResetEmail, deleteUser,
+  GoogleAuthProvider, signInWithPopup
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, collection, addDoc,
@@ -787,14 +926,48 @@ $("#sw-avisos").onclick = function () {
 const alertar = t => { $("#alerta-texto").textContent = t || ""; $("#alerta-acceso").classList.toggle("viva", !!t); };
 
 const cambiarPestana = entrar => {
-  $("#tab-entrar").setAttribute("aria-selected", String(entrar));
+  const activo  = entrar ? $("#form-entrar")  : $("#form-registro");
+  const saliente = entrar ? $("#form-registro") : $("#form-entrar");
+
+  // Animar salida del formulario actual
+  if (!saliente.hidden) {
+    saliente.classList.add("sale");
+    setTimeout(() => { saliente.classList.remove("sale"); saliente.hidden = true; }, 210);
+  } else {
+    saliente.hidden = true;
+  }
+
+  // Mostrar el nuevo con animación de entrada
+  activo.hidden = false;
+  activo.style.animation = "none";
+  requestAnimationFrame(() => { activo.style.animation = ""; });
+
+  $("#tab-entrar").setAttribute("aria-selected",  String(entrar));
   $("#tab-registro").setAttribute("aria-selected", String(!entrar));
-  $("#form-entrar").hidden = !entrar;
-  $("#form-registro").hidden = entrar;
+  $("#pestanas-acceso").dataset.activa = entrar ? "entrar" : "registro";
   alertar("");
 };
-$("#tab-entrar").onclick = () => cambiarPestana(true);
+$("#tab-entrar").onclick  = () => cambiarPestana(true);
 $("#tab-registro").onclick = () => cambiarPestana(false);
+
+// Google Sign-In (Firebase Auth + Google — gratuito)
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
+
+$("#btn-google").onclick = async () => {
+  alertar("");
+  ocupar($("#btn-google"), true, "Conectando con Google");
+  try {
+    const cred = await signInWithPopup(auth, googleProvider);
+    // onAuthStateChanged se encarga de crear el perfil si no existe
+    avisar("Bienvenido, " + (cred.user.displayName?.split(" ")[0] || "viajero") + " 👋", "bien");
+  } catch (e) {
+    if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") {
+      alertar(leer(e));
+    }
+    ocupar($("#btn-google"), false);
+  }
+};
 
 $$("[data-ojo]").forEach(b => b.onclick = () => {
   const i = $("#" + b.dataset.ojo);
@@ -890,10 +1063,18 @@ onAuthStateChanged(auth, async usuario => {
     if (snap.exists()) {
       S.perfil = snap.data();
     } else {
+      // Usuario nuevo — puede venir de Google (tiene foto y displayName) o de correo
+      const fotoGoogle = usuario.photoURL || null;
       S.perfil = {
-        uid: usuario.uid, nombre: usuario.displayName || "Pasajero T30", correo: usuario.email,
-        telefono: "", ciudad: "Pachuca de Soto", foto: null, lugares: { casa: null, trabajo: null },
-        pago: "efectivo", tema: "oscuro", acento: "rosa", avisos: true, viajes: 0, gastado: 0, estrellas: 5
+        uid: usuario.uid,
+        nombre: usuario.displayName || "Pasajero T30",
+        correo: usuario.email,
+        telefono: usuario.phoneNumber || "",
+        ciudad: "Pachuca de Soto",
+        foto: fotoGoogle,
+        lugares: { casa: null, trabajo: null },
+        pago: "efectivo", tema: "oscuro", acento: "rosa", avisos: true,
+        viajes: 0, gastado: 0, estrellas: 5
       };
       await setDoc(ref, { ...S.perfil, creadoEn: serverTimestamp() });
     }
@@ -1019,7 +1200,7 @@ $$(".nav button").forEach(b => b.onclick = () => {
 });
 
 /* ══════════════════════════════════════════════════════════════
-   9 · MAPA
+   9 · MAPA — Leaflet + CartoCDN (100% gratuito, sin API key)
    ══════════════════════════════════════════════════════════════ */
 let mapa, capa, marcaOrigen, marcaDestino, marcaYo, marcaAuto, linea;
 
@@ -1095,15 +1276,35 @@ function ubicarme(gritar = true) {
 $("#btn-ubicarme").onclick = () => ubicarme(true);
 
 /* ══════════════════════════════════════════════════════════════
-   10 · DIRECCIONES (Nominatim) Y RUTA (OSRM)
+/* ══════════════════════════════════════════════════════════════
+   10 · GEOCODING (Photon + Nominatim) · RUTAS (OSRM)
+   Todo 100% gratuito, sin API key, sin tarjeta de crédito.
    ══════════════════════════════════════════════════════════════ */
+
+const BBOX = { lonMin: -99.05, latMin: 19.82, lonMax: -98.42, latMax: 20.32 };
+
 async function geocodificar(texto) {
-  const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&countrycodes=mx&accept-language=es" +
-    "&viewbox=-99.05,20.32,-98.42,19.82&q=" + encodeURIComponent(texto);
+  // Photon (Komoot) — gratis, basado en OSM, sin key
   try {
-    const r = await fetch(url, { headers: { Accept: "application/json" } });
-    const datos = await r.json();
-    return (datos || []).map(d => ({
+    const r = await fetch(
+      "https://photon.komoot.io/api/?lang=es&limit=6&lat=" + PACHUCA.lat + "&lon=" + PACHUCA.lng + "&zoom=14&q=" + encodeURIComponent(texto),
+      { signal: AbortSignal.timeout(5000) }
+    );
+    const feats = (await r.json())?.features || [];
+    if (feats.length) return feats.map(f => {
+      const p = f.properties || {};
+      const partes = [p.name, p.street && (p.street + (p.housenumber ? " " + p.housenumber : "")), p.city || p.state].filter(Boolean);
+      return { texto: partes[0] || "Lugar", detalle: partes.slice(1, 3).join(", "), lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+    });
+  } catch {}
+  // Nominatim — fallback gratuito
+  try {
+    const r = await fetch(
+      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&countrycodes=mx&accept-language=es&viewbox=" +
+      BBOX.lonMin + "," + BBOX.latMax + "," + BBOX.lonMax + "," + BBOX.latMin + "&q=" + encodeURIComponent(texto),
+      { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(7000) }
+    );
+    return (await r.json() || []).map(d => ({
       texto: d.name || String(d.display_name).split(",")[0],
       detalle: String(d.display_name).split(",").slice(1, 4).join(",").trim(),
       lat: +d.lat, lng: +d.lon
@@ -1113,8 +1314,14 @@ async function geocodificar(texto) {
 
 async function reverso(p) {
   try {
-    const r = await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=es&lat=" + p.lat + "&lon=" + p.lng);
-    const d = await r.json();
+    const d = await (await fetch(
+      "https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=es&lat=" + p.lat + "&lon=" + p.lng,
+      { signal: AbortSignal.timeout(6000) }
+    )).json();
+    const addr = d.address || {};
+    const calle = addr.road || addr.pedestrian || addr.path || "";
+    const colonia = addr.neighbourhood || addr.suburb || addr.quarter || "";
+    if (calle) return calle + (colonia ? ", " + colonia : "");
     return d.name || String(d.display_name || "").split(",").slice(0, 2).join(", ");
   } catch { return null; }
 }
@@ -1128,13 +1335,15 @@ const haversine = (a, b) => {
 
 async function calcularRuta() {
   if (!S.origen || !S.destino) { S.ruta = null; dibujarLinea(null); return; }
-  const url = "https://router.project-osrm.org/route/v1/driving/" +
-    S.origen.lng + "," + S.origen.lat + ";" + S.destino.lng + "," + S.destino.lat +
-    "?overview=full&geometries=geojson";
+  // OSRM — gratuito, sin key
   try {
-    const d = await (await fetch(url)).json();
+    const d = await (await fetch(
+      "https://router.project-osrm.org/route/v1/driving/" +
+      S.origen.lng + "," + S.origen.lat + ";" + S.destino.lng + "," + S.destino.lat +
+      "?overview=full&geometries=geojson"
+    )).json();
     const r = d.routes?.[0];
-    if (!r) throw new Error("sin ruta");
+    if (!r) throw new Error();
     S.ruta = { km: r.distance / 1000, min: Math.max(4, Math.round(r.duration / 60)), linea: r.geometry.coordinates.map(c => [c[1], c[0]]) };
   } catch {
     const km = haversine(S.origen, S.destino) * 1.35;
