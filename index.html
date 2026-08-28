@@ -285,6 +285,10 @@ form[hidden]{display:none!important}
 .leaflet-container{background:var(--sup-2);font:inherit}
 .leaflet-control-attribution{background:var(--velo)!important;color:var(--txt-3)!important;font-size:9.5px!important;backdrop-filter:blur(8px)}
 .leaflet-control-attribution a{color:var(--txt-2)!important}
+/* Modo oscuro: invertir + rotar tono en las teselas, sin tocar marcadores */
+html[data-tema="oscuro"] .leaflet-tile-pane{
+  filter:invert(1) hue-rotate(180deg) brightness(.86) contrast(.9) saturate(.8)
+}
 .pin__punto{width:15px;height:15px;border-radius:50%;background:var(--azul-claro);border:3px solid var(--fondo);box-shadow:0 0 0 1px var(--azul-claro)}
 .pin__meta{width:15px;height:15px;border-radius:4px;background:var(--ambar);border:3px solid var(--fondo);box-shadow:0 0 0 1px var(--ambar)}
 .pin__yo{position:relative;width:16px;height:16px;border-radius:50%;background:var(--ac);border:3px solid var(--fondo)}
@@ -1204,26 +1208,22 @@ $$(".nav button").forEach(b => b.onclick = () => {
    ══════════════════════════════════════════════════════════════ */
 let mapa, capa, marcaOrigen, marcaDestino, marcaYo, marcaAuto, linea;
 
-const TESELAS = {
-  oscuro: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-  claro:  "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-};
+const TESELA_OSM = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 function iniciarMapa() {
   if (mapa) { setTimeout(() => mapa.invalidateSize(), 150); return; }
   mapa = L.map("mapa", { zoomControl: false }).setView([PACHUCA.lat, PACHUCA.lng], 14);
   mapa.attributionControl.setPrefix("");
-  cambiarTeselas(document.documentElement.dataset.tema);
+  capa = L.tileLayer(TESELA_OSM, {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(mapa);
   setTimeout(() => mapa.invalidateSize(), 220);
 }
 
-function cambiarTeselas(tema) {
-  if (!mapa) return;
-  if (capa) mapa.removeLayer(capa);
-  capa = L.tileLayer(TESELAS[tema] || TESELAS.oscuro, {
-    maxZoom: 19, subdomains: "abcd", attribution: "&copy; OpenStreetMap &copy; CARTO"
-  }).addTo(mapa);
-}
+// El modo oscuro/claro lo hace el filtro CSS en .leaflet-tile-pane
+// No hay nada que cambiar en JS — el data-tema del <html> lo controla todo
+function cambiarTeselas() { /* manejado por CSS */ }
 
 const icono = (clase, t = 20) => L.divIcon({ className: "", html: '<div class="' + clase + '"></div>', iconSize: [t, t], iconAnchor: [t / 2, t / 2] });
 
