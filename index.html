@@ -638,6 +638,21 @@ button{cursor:pointer}
 }
 .serv__tag--on{background:var(--verde);color:#03210f}
 
+.serv-prox{
+  display:flex;align-items:center;gap:.7rem;margin-top:.55rem;
+  padding:.75rem .9rem;border-radius:14px;
+  background:color-mix(in srgb,var(--ambar) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--ambar) 24%,transparent)
+}
+.serv-prox__i{font-size:1.05rem;flex-shrink:0}
+.serv-prox__t{flex:1;min-width:0}
+.serv-prox__t b{display:block;font-size:12.5px;font-weight:700;color:var(--ambar)}
+.serv-prox__t small{
+  display:block;font-size:11.5px;color:var(--txt-2);margin-top:.08rem;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.serv-prox__p{font-size:13px;font-weight:800;flex-shrink:0}
+
 /* ── estados de cupón ──────────────────────────────────── */
 .cupon--aifa{background:linear-gradient(140deg,#001428 0%,#0a3a6b 100%)}
 .cupon--verde{background:linear-gradient(140deg,#02180c 0%,#0a5c30 100%)}
@@ -663,6 +678,327 @@ button{cursor:pointer}
   flex:0 0 100%;text-align:center;padding:1.8rem 1rem;
   border:1.5px dashed var(--borde-fuerte);border-radius:16px;color:var(--txt-3);font-size:13px
 }
+
+/* ══ ASISTENTE VIAJE REDONDO ═══════════════════════════ */
+.rd-cab{display:flex;align-items:center;gap:.85rem;margin-bottom:1rem}
+.rd-atras{
+  width:38px;height:38px;border-radius:12px;flex-shrink:0;
+  display:grid;place-items:center;background:var(--campo);
+  color:var(--txt);transition:var(--t)
+}
+.rd-atras:hover{background:var(--sup-2)}
+.rd-atras:active{transform:scale(.92)}
+.rd-titulo{font-family:'Archivo',sans-serif;font-size:1.35rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.rd-sub{font-size:12.5px;color:var(--txt-3);margin-top:.15rem;font-weight:500}
+.rd-progreso{display:flex;gap:4px;margin-bottom:1.5rem}
+.rd-p{flex:1;height:3px;border-radius:2px;background:var(--borde);transition:background .35s}
+.rd-p--on{background:var(--ac)}
+.rd-p--ok{background:color-mix(in srgb,var(--ac) 45%,transparent)}
+.rd-cuerpo{display:flex;flex-direction:column;animation:emerge .32s cubic-bezier(.22,1,.36,1)}
+.rd-lead{font-size:1.05rem;font-weight:700;margin-bottom:.3rem;letter-spacing:-.015em}
+.rd-nota{font-size:13px;color:var(--txt-2);margin-bottom:1rem;line-height:1.45}
+.rd-cuerpo .btn{margin-top:1.4rem}
+
+/* chips */
+.rd-chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.85rem 0}
+.rd-chip{
+  padding:.42rem .75rem;border-radius:10px;font-size:12.5px;font-weight:600;
+  background:var(--campo);color:var(--txt-2);
+  border:1.5px solid transparent;transition:var(--t)
+}
+.rd-chip:hover{border-color:var(--borde-fuerte);color:var(--txt)}
+.rd-chip:active{transform:scale(.95)}
+.rd-chip--fijo{cursor:default;background:var(--sup-2)}
+.rd-chip--fijo:hover{border-color:transparent}
+
+/* info de ruta */
+.rd-calc{display:flex;align-items:center;gap:.5rem;font-size:13px;color:var(--txt-3);padding:.9rem 0}
+.rd-calc i{
+  width:13px;height:13px;border-radius:50%;flex-shrink:0;
+  border:2px solid var(--borde-fuerte);border-top-color:var(--ac);
+  animation:gira .7s linear infinite
+}
+@keyframes gira{to{transform:rotate(360deg)}}
+.rd-info{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;
+  background:var(--campo);border-radius:14px;padding:.9rem .5rem;margin-top:.4rem
+}
+.rd-info div{text-align:center}
+.rd-info b{display:block;font-size:1.15rem;font-weight:800;color:var(--txt)}
+.rd-info span{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3);margin-top:.1rem}
+
+/* grid de opciones (motivos) */
+.rd-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.rd-op{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.85rem .8rem;border-radius:14px;text-align:left;
+  background:var(--sup);border:1.5px solid var(--borde);transition:var(--t)
+}
+.rd-op:hover{border-color:var(--borde-fuerte)}
+.rd-op:active{transform:scale(.97)}
+.rd-op--on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,var(--sup))}
+.rd-op__ico{font-size:1.3rem;flex-shrink:0;line-height:1}
+.rd-op__txt{font-size:13px;font-weight:600;line-height:1.25}
+
+/* margen de tiempo */
+.rd-margen{
+  display:flex;align-items:center;gap:.55rem;margin-top:1.1rem;
+  padding:.8rem .95rem;border-radius:13px;font-size:13px;
+  background:color-mix(in srgb,var(--azul-claro) 11%,transparent);
+  color:var(--azul-claro);border:1px solid color-mix(in srgb,var(--azul-claro) 22%,transparent)
+}
+.rd-margen b{color:var(--txt);font-weight:800}
+.rd-rapidas{margin-top:1rem}
+.rd-rapidas__t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-3);font-weight:700}
+
+/* modalidad */
+.rd-mod{
+  display:flex;align-items:flex-start;gap:.75rem;width:100%;text-align:left;
+  padding:.95rem 1rem;border-radius:15px;margin-bottom:.55rem;
+  background:var(--sup);border:1.5px solid var(--borde);transition:var(--t)
+}
+.rd-mod:hover{border-color:var(--borde-fuerte)}
+.rd-mod--on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,var(--sup))}
+.rd-mod__check{
+  width:19px;height:19px;border-radius:50%;flex-shrink:0;margin-top:1px;
+  border:2px solid var(--borde-fuerte);transition:var(--t);position:relative
+}
+.rd-mod--on .rd-mod__check{border-color:var(--ac);background:var(--ac)}
+.rd-mod--on .rd-mod__check::after{
+  content:"";position:absolute;inset:0;margin:auto;
+  width:6px;height:6px;border-radius:50%;background:#fff
+}
+.rd-mod b{display:block;font-size:14px;font-weight:700;margin-bottom:.18rem}
+.rd-mod small{display:block;font-size:12.5px;color:var(--txt-2);line-height:1.4}
+.rd-tag{
+  font-style:normal;font-size:10px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;background:var(--verde);color:#03210f;
+  padding:.12rem .4rem;border-radius:5px;margin-left:.35rem;vertical-align:middle
+}
+
+/* filas con contador */
+.rd-fila{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.9rem 0;border-bottom:1px solid var(--borde)
+}
+.rd-fila:last-of-type{border-bottom:none}
+.rd-fila__txt b{display:block;font-size:14px;font-weight:600}
+.rd-fila__txt small{display:block;font-size:12px;color:var(--txt-3);margin-top:.1rem}
+.rd-cont{display:flex;align-items:center;gap:.15rem;background:var(--campo);border-radius:11px;padding:.2rem}
+.rd-cont button{
+  width:30px;height:30px;border-radius:9px;font-size:1.1rem;font-weight:600;
+  color:var(--txt);display:grid;place-items:center;transition:var(--t)
+}
+.rd-cont button:hover:not(:disabled){background:var(--sup-2)}
+.rd-cont button:disabled{opacity:.28;cursor:not-allowed}
+.rd-cont b{min-width:26px;text-align:center;font-size:14px;font-weight:700}
+
+/* propuesta */
+.rd-prop{
+  border-radius:20px;overflow:hidden;position:relative;
+  background:linear-gradient(140deg,#0d1424,#18233d);
+  border:1px solid rgba(255,255,255,.08)
+}
+.rd-prop__cab{
+  padding:1.15rem 1.2rem;display:flex;flex-direction:column;gap:.7rem;
+  background:radial-gradient(110% 100% at 100% 0%,color-mix(in srgb,var(--ac) 26%,transparent),transparent 62%)
+}
+.rd-prop__badge{
+  align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;background:rgba(255,255,255,.14);color:#fff;
+  padding:.25rem .6rem;border-radius:7px
+}
+.rd-prop__total{display:flex;align-items:baseline;justify-content:space-between}
+.rd-prop__total span{font-size:12.5px;color:rgba(255,255,255,.55);font-weight:500}
+.rd-prop__total b{font-family:'Archivo',sans-serif;font-size:1.9rem;font-weight:800;color:#fff;letter-spacing:-.04em}
+.rd-prop__ruta{padding:.3rem 1.2rem 1.2rem}
+.rd-prop__pt{display:flex;gap:.75rem;align-items:flex-start}
+.rd-prop__pt i{
+  width:11px;height:11px;border-radius:50%;flex-shrink:0;margin-top:4px;
+  border:2.5px solid #18233d
+}
+.rd-prop__pt i.pt--o{background:var(--azul-claro);box-shadow:0 0 0 1.5px var(--azul-claro)}
+.rd-prop__pt i.pt--d{background:var(--ambar);box-shadow:0 0 0 1.5px var(--ambar);border-radius:3px}
+.rd-prop__pt b{display:block;font-size:13.5px;font-weight:700;color:#fff;line-height:1.3}
+.rd-prop__pt small{display:block;font-size:11.5px;color:rgba(255,255,255,.5);margin-top:.1rem}
+.rd-prop__eje{width:2px;height:20px;background:rgba(255,255,255,.16);margin-left:4.5px}
+.rd-prop__eje--pausa{
+  height:30px;position:relative;
+  background:repeating-linear-gradient(to bottom,rgba(255,255,255,.22) 0 3px,transparent 3px 7px)
+}
+.rd-prop__eje--pausa span{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  white-space:nowrap;font-size:10.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ambar);
+  background:color-mix(in srgb,var(--ambar) 15%,#18233d);
+  padding:.18rem .5rem;border-radius:6px
+}
+
+/* avisos */
+.rd-avisos{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem}
+.rd-aviso{
+  display:flex;gap:.5rem;align-items:flex-start;
+  padding:.7rem .85rem;border-radius:12px;font-size:12.5px;line-height:1.45
+}
+.rd-aviso--info{background:color-mix(in srgb,var(--azul-claro) 11%,transparent);color:var(--azul-claro)}
+.rd-aviso--mal{background:color-mix(in srgb,var(--rojo) 12%,transparent);color:var(--rojo)}
+
+/* desglose */
+.rd-desglose{background:var(--sup);border:1.5px solid var(--borde);border-radius:16px;padding:.3rem 1rem}
+.rd-linea{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.75rem 0;border-bottom:1px solid var(--borde)
+}
+.rd-linea:last-child{border-bottom:none}
+.rd-linea b{display:block;font-size:13.5px;font-weight:600}
+.rd-linea small{display:block;font-size:11.5px;color:var(--txt-3);margin-top:.1rem;line-height:1.35}
+.rd-linea .mono{font-size:14px;font-weight:700;flex-shrink:0}
+.rd-linea--v b,.rd-linea--v .mono{color:var(--verde)}
+.rd-linea--tot{border-top:1.5px solid var(--borde-fuerte);margin-top:.15rem}
+.rd-linea--tot b,.rd-linea--tot .mono{font-size:1.05rem;font-weight:800}
+
+.rd-extra{
+  display:grid;grid-template-columns:1fr;gap:.1rem;margin-top:.8rem;
+  background:var(--campo);border-radius:14px;padding:.85rem 1rem
+}
+.rd-extra__i{display:flex;justify-content:space-between;align-items:center;padding:.28rem 0;font-size:13px}
+.rd-extra__i span{color:var(--txt-2)}
+.rd-extra__i b{font-size:14px;font-weight:700}
+.rd-resumen-det{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem}
+
+/* perks en la tarjeta de nivel */
+.nivel__perks{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.85rem}
+.nivel__perk{
+  font-size:11px;font-weight:600;color:rgba(255,255,255,.82);
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);
+  padding:.24rem .5rem;border-radius:7px;white-space:nowrap
+}
+
+/* diálogo de niveles */
+.niv-lista{display:flex;flex-direction:column;gap:.6rem;margin:1rem 0}
+.niv-card{
+  border-radius:15px;padding:.85rem .95rem;
+  background:var(--campo);border:1.5px solid transparent;transition:var(--t)
+}
+.niv-card--on{
+  border-color:var(--c);
+  background:color-mix(in srgb,var(--c) 11%,transparent)
+}
+.niv-card__cab{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.niv-card__punto{
+  width:10px;height:10px;border-radius:50%;flex-shrink:0;background:var(--c);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)
+}
+.niv-card__cab b{font-size:14px;font-weight:800}
+.niv-card__tag{
+  font-style:normal;font-size:9.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;background:var(--c);color:#15100a;
+  padding:.14rem .42rem;border-radius:5px
+}
+.niv-card__tag--ok{background:color-mix(in srgb,var(--verde) 22%,transparent);color:var(--verde)}
+.niv-card__min{margin-left:auto;font-size:11.5px;color:var(--txt-3);font-weight:700}
+.niv-card__perks{display:flex;flex-direction:column;gap:.3rem}
+.niv-perk{
+  display:flex;align-items:center;gap:.45rem;
+  font-size:12.5px;color:var(--txt-2);line-height:1.4
+}
+.niv-perk span{font-size:.95rem;flex-shrink:0;width:18px;text-align:center}
+.niv-canje{
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem;
+  padding:.85rem 1rem;border-radius:14px;
+  background:color-mix(in srgb,var(--ambar) 11%,transparent);
+  border:1px solid color-mix(in srgb,var(--ambar) 24%,transparent)
+}
+.niv-canje b{display:block;font-size:1rem;font-weight:800}
+.niv-canje small{display:block;font-size:11px;color:var(--txt-3);margin-top:.05rem}
+
+/* ══ PAQUETES TURÍSTICOS ═══════════════════════════════ */
+.paq-cat{
+  flex-shrink:0;padding:.45rem .8rem;border-radius:11px;
+  font-size:12.5px;font-weight:600;white-space:nowrap;
+  background:var(--campo);color:var(--txt-2);
+  border:1.5px solid transparent;transition:var(--t)
+}
+.paq-cat em{
+  font-style:normal;font-size:10.5px;font-weight:800;opacity:.55;margin-left:.15rem
+}
+.paq-cat:hover{border-color:var(--borde-fuerte)}
+.paq-cat--on{background:var(--ac);color:#fff;border-color:transparent}
+.paq-cat--on em{opacity:.75}
+
+.paquete{
+  flex:0 0 218px;border-radius:var(--r-xl);overflow:hidden;text-align:left;
+  background:var(--sup);border:1.5px solid var(--borde);
+  display:flex;flex-direction:column;
+  transition:transform .18s,border-color .18s;box-shadow:var(--sombra-sm)
+}
+.paquete:hover{border-color:var(--borde-fuerte)}
+.paquete:active{transform:scale(.97)}
+.paquete__thumb{
+  height:100px;display:flex;align-items:center;justify-content:center;
+  font-size:2.9rem;position:relative;overflow:hidden;flex-shrink:0
+}
+.paquete__thumb-bg{position:absolute;inset:0}
+.paquete__emoji{position:relative;z-index:1;filter:drop-shadow(0 3px 10px rgba(0,0,0,.45))}
+.paquete__flag{
+  position:absolute;top:.55rem;left:.55rem;z-index:2;
+  font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  background:rgba(0,0,0,.4);color:#fff;padding:.18rem .45rem;border-radius:6px;
+  backdrop-filter:blur(6px)
+}
+.paquete__cuerpo{padding:.8rem .85rem;display:flex;flex-direction:column;flex:1}
+.paquete__nombre{display:block;font-size:14px;font-weight:800;margin-bottom:.25rem;line-height:1.2}
+.paquete__res{
+  display:block;font-size:11.5px;color:var(--txt-2);line-height:1.4;margin-bottom:.55rem;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
+}
+.paquete__paradas{display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:.6rem}
+.paquete__parada{
+  background:var(--campo);border-radius:5px;padding:.14rem .38rem;
+  font-size:10.5px;color:var(--txt-2);white-space:nowrap
+}
+.paquete__pie{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:auto;gap:.4rem
+}
+.paquete__precio{font-size:.95rem;font-weight:800;color:var(--ac)}
+.paquete__dur{font-size:10.5px;color:var(--txt-3);text-align:right;line-height:1.25}
+
+/* detalle del paquete */
+.paq-hero{
+  height:120px;margin:-1.4rem -1.4rem 0;border-radius:var(--r-lg) var(--r-lg) 0 0;
+  display:grid;place-items:center;position:relative;overflow:hidden
+}
+.paq-hero__emoji{font-size:3.4rem;filter:drop-shadow(0 4px 14px rgba(0,0,0,.5))}
+.paq-hero__cat{
+  position:absolute;top:.8rem;left:.9rem;
+  font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  background:rgba(0,0,0,.35);color:#fff;padding:.22rem .55rem;border-radius:7px;
+  backdrop-filter:blur(8px)
+}
+.paq-ruta{display:flex;flex-direction:column;gap:0}
+.paq-parada{
+  display:flex;align-items:center;gap:.7rem;padding:.55rem 0;
+  font-size:13.5px;position:relative
+}
+.paq-parada:not(:last-child)::after{
+  content:"";position:absolute;left:11px;top:32px;bottom:-4px;
+  width:1.5px;background:var(--borde)
+}
+.paq-parada__n{
+  width:23px;height:23px;border-radius:50%;flex-shrink:0;
+  display:grid;place-items:center;font-size:11px;font-weight:800;
+  background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac);
+  position:relative;z-index:1
+}
+.paq-incluye{display:flex;flex-direction:column;gap:.45rem}
+.paq-inc{display:flex;align-items:center;gap:.5rem;font-size:13px;color:var(--txt-2)}
+.paq-precio{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:1.2rem;padding:.9rem 1rem;border-radius:14px;background:var(--campo)
+}
+.paq-precio span{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3)}
+.paq-precio b{display:block;font-size:1.2rem;font-weight:800;margin-top:.1rem}
 
 /* ── viajes compartidos ────────────────────────────────── */
 .viaje-c{
@@ -1077,109 +1413,16 @@ button{cursor:pointer}
         <div class="home-sec">
           <div class="home-sec__cab">
             <span class="home-sec__h">Paquetes turísticos</span>
-            <button class="home-sec__ver">Ver todos</button>
+            <span class="home-sec__ver" id="paq-cuenta"></span>
           </div>
-          <div class="h-scroll">
-
-            <div class="paquete">
-              <div class="paquete__thumb">
-                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#1a3a1a,#2d6b2d)"></div>
-                <span class="paquete__emoji">⛏️</span>
-              </div>
-              <div class="paquete__cuerpo">
-                <div class="paquete__nombre">Real del Monte</div>
-                <div class="paquete__paradas">
-                  <span class="paquete__parada">Minas</span>
-                  <span class="paquete__parada">Panteón Inglés</span>
-                  <span class="paquete__parada">Centro</span>
-                </div>
-                <div class="paquete__pie">
-                  <span class="paquete__precio">$450</span>
-                  <span class="paquete__dur">⏱ 4 h · desde Pachuca</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="paquete">
-              <div class="paquete__thumb">
-                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#2a1a00,#7a5000)"></div>
-                <span class="paquete__emoji">🏛️</span>
-              </div>
-              <div class="paquete__cuerpo">
-                <div class="paquete__nombre">Teotihuacan</div>
-                <div class="paquete__paradas">
-                  <span class="paquete__parada">Pirámides</span>
-                  <span class="paquete__parada">Zona Arq.</span>
-                  <span class="paquete__parada">Mercado</span>
-                </div>
-                <div class="paquete__pie">
-                  <span class="paquete__precio">$520</span>
-                  <span class="paquete__dur">⏱ 5 h · desde AIFA</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="paquete">
-              <div class="paquete__thumb">
-                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#0a1a3a,#0a3a6a)"></div>
-                <span class="paquete__emoji">🌊</span>
-              </div>
-              <div class="paquete__cuerpo">
-                <div class="paquete__nombre">Huasca Mágico</div>
-                <div class="paquete__paradas">
-                  <span class="paquete__parada">Haciendas</span>
-                  <span class="paquete__parada">Basalto</span>
-                  <span class="paquete__parada">Cascadas</span>
-                </div>
-                <div class="paquete__pie">
-                  <span class="paquete__precio">$650</span>
-                  <span class="paquete__dur">⏱ 6 h · desde Pachuca</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="paquete">
-              <div class="paquete__thumb">
-                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#1a0a30,#4a1a80)"></div>
-                <span class="paquete__emoji">🏺</span>
-              </div>
-              <div class="paquete__cuerpo">
-                <div class="paquete__nombre">Tula de Allende</div>
-                <div class="paquete__paradas">
-                  <span class="paquete__parada">Atlantes</span>
-                  <span class="paquete__parada">Zona Arq.</span>
-                  <span class="paquete__parada">Centro</span>
-                </div>
-                <div class="paquete__pie">
-                  <span class="paquete__precio">$580</span>
-                  <span class="paquete__dur">⏱ 5 h · desde AIFA</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="paquete">
-              <div class="paquete__thumb">
-                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#003a1a,#006b3a)"></div>
-                <span class="paquete__emoji">🌲</span>
-              </div>
-              <div class="paquete__cuerpo">
-                <div class="paquete__nombre">Mineral del Chico</div>
-                <div class="paquete__paradas">
-                  <span class="paquete__parada">Parque Nac.</span>
-                  <span class="paquete__parada">Cascadas</span>
-                  <span class="paquete__parada">Pueblo</span>
-                </div>
-                <div class="paquete__pie">
-                  <span class="paquete__precio">$420</span>
-                  <span class="paquete__dur">⏱ 4 h · desde Pachuca</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <div class="h-scroll" id="paq-cats"></div>
+          <div class="h-scroll" id="paq-lista" style="margin-top:.6rem"></div>
         </div>
 
       </div><!-- /vista-inicio -->
+
+      <!-- ═══ VIAJE REDONDO (asistente) ═══ -->
+      <div class="vista vista--rollo" id="vista-redondo" hidden></div>
 
       <div class="vista" id="vista-viaje" hidden>
         <div id="mapa"></div>
@@ -1388,7 +1631,6 @@ const S = {
   viajeId: null, viaje: null, historial: [],
   campoActivo: "destino",
   cupon: null,        // cupón aplicado al viaje en curso de planeación
-  redondo: null,      // { fecha, hora } si el usuario activó viaje redondo
   cancelar: [], relojes: []
 };
 
@@ -1405,10 +1647,10 @@ const CLASES = {
 const DIAS_NUEVO = 30;          // días para dejar de ser usuario nuevo
 const PUNTOS_POR_VIAJE = 40;
 const NIVELES = [
-  { id: "bronce",  nombre: "Bronce",  min: 0,    color: "#B0724A", mult: 1.0,  bono: "Acumula puntos en cada viaje" },
-  { id: "plata",   nombre: "Plata",   min: 400,  color: "#9BA6BC", mult: 1.15, bono: "15% más puntos por viaje" },
-  { id: "oro",     nombre: "Oro",     min: 1200, color: "#E0B341", mult: 1.3,  bono: "30% más puntos · Prioridad de unidad" },
-  { id: "platino", nombre: "Platino", min: 2800, color: "#7FD4E8", mult: 1.5,  bono: "50% más puntos · Confort al precio de Express" }
+  { id: "bronce",  nombre: "Bronce",  min: 0,    color: "#B0724A", mult: 1.0,  esperaBonus: 0,  bono: "Acumula puntos en cada viaje" },
+  { id: "plata",   nombre: "Plata",   min: 400,  color: "#9BA6BC", mult: 1.15, esperaBonus: 10, bono: "15% más puntos · 10 min de espera gratis" },
+  { id: "oro",     nombre: "Oro",     min: 1200, color: "#E0B341", mult: 1.3,  esperaBonus: 20, bono: "30% más puntos · Prioridad de unidad" },
+  { id: "platino", nombre: "Platino", min: 2800, color: "#7FD4E8", mult: 1.5,  esperaBonus: 30, bono: "50% más puntos · Confort al precio de Express" }
 ];
 const CANJE_PUNTOS = 500;       // puntos necesarios para $100 de saldo
 const CANJE_VALOR   = 100;
@@ -1467,11 +1709,226 @@ const CUPONES = [
 ];
 const cuponPorId = id => CUPONES.find(c => c.id === id);
 
-// Config del servicio Viaje Redondo (NO es cupón — es un servicio)
+/* ─── VIAJE REDONDO · motor de cotización ─────────────────
+   Un redondo no es "ida + vuelta". El costo real depende de
+   si la unidad espera en sitio o regresa a base y vuelve.
+   ───────────────────────────────────────────────────────── */
 const REDONDO = {
-  descuento: 0.15,     // 15% off en el tramo de regreso
-  esperaMaxHoras: 48,  // ventana máxima para programar el regreso
-  minHoras: 1
+  // Modalidades según el margen de tiempo
+  ESPERA_MAX_H: 5,        // hasta 5 h conviene que la unidad espere
+  ESPERA_GRATIS_MIN: 20,  // cortesía de espera
+  ESPERA_HORA: 85,        // $/hora de espera en sitio
+  DESC_ESPERA: 0.10,      // 10% off en el conjunto si la unidad espera
+  DESC_REGRESO: 0.15,     // 15% off al tramo de regreso si es otro día
+  DESC_MULTIDIA: 0.20,    // 20% si son 2+ días (mejor planeación de flota)
+  RECARGO_NOCTURNO: 0.15, // 22:00–05:00
+  RECARGO_MADRUGADA: 0.20,// 04:00–06:00 salida a aeropuerto
+  EQUIPAJE_EXTRA: 40,     // por maleta arriba de 2 por pasajero
+  MASCOTA: 60,
+  SILLA_BEBE: 50,
+  VUELO_MARGEN_MIN: 150,  // minutos de anticipación recomendados al AIFA
+  ANTICIPO: 0.30          // 30% para bloquear la unidad
+};
+
+const MOTIVOS = [
+  { id: "vuelo",    nombre: "Tomar un vuelo",     icono: "✈️", pide: ["vuelo"] },
+  { id: "recoger",  nombre: "Recoger a alguien",  icono: "🤝", pide: ["vuelo"] },
+  { id: "trabajo",  nombre: "Trabajo o negocio",  icono: "💼", pide: [] },
+  { id: "medico",   nombre: "Cita médica",        icono: "🏥", pide: [] },
+  { id: "familia",  nombre: "Visita familiar",    icono: "🏡", pide: [] },
+  { id: "turismo",  nombre: "Paseo o turismo",    icono: "📸", pide: [] },
+  { id: "tramite",  nombre: "Trámite",            icono: "📋", pide: [] },
+  { id: "otro",     nombre: "Otro",               icono: "•",  pide: [] }
+];
+
+/* ─── PAQUETES TURÍSTICOS ─────────────────────────────── */
+const PAQUETES = [
+  {
+    id: "real-monte", nombre: "Real del Monte", emoji: "⛏️", cat: "pueblo",
+    tema: "linear-gradient(135deg,#12331a,#2d6b3a)",
+    desde: "Pachuca", horas: 4, precio: 450, pax: 4,
+    resumen: "El Pueblo Mágico minero de los pastes y el Panteón Inglés.",
+    paradas: ["Mina de Acosta", "Panteón Inglés", "Centro histórico", "Mirador"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Espera en cada parada"],
+    destacado: true
+  },
+  {
+    id: "teotihuacan", nombre: "Teotihuacán", emoji: "🏛️", cat: "arqueo",
+    tema: "linear-gradient(135deg,#2a1a00,#7a5000)",
+    desde: "AIFA", horas: 5, precio: 520, pax: 4,
+    resumen: "Las pirámides del Sol y la Luna, a 20 minutos del aeropuerto.",
+    paradas: ["Pirámide del Sol", "Pirámide de la Luna", "Calzada de los Muertos", "Taller de obsidiana"],
+    incluye: ["Transporte redondo", "Espera 3 h en zona", "Paradas fotográficas"],
+    destacado: true
+  },
+  {
+    id: "huasca", nombre: "Huasca de Ocampo", emoji: "🌊", cat: "pueblo",
+    tema: "linear-gradient(135deg,#0a1a3a,#0a4a7a)",
+    desde: "Pachuca", horas: 6, precio: 650, pax: 4,
+    resumen: "Prismas Basálticos, haciendas y bosque. El primer Pueblo Mágico.",
+    paradas: ["Prismas Basálticos", "Hacienda Santa María Regla", "Presa San Antonio", "Centro de Huasca"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Espera en cada parada"],
+    destacado: true
+  },
+  {
+    id: "tula", nombre: "Tula de Allende", emoji: "🗿", cat: "arqueo",
+    tema: "linear-gradient(135deg,#1a0a30,#4a1a80)",
+    desde: "AIFA", horas: 5, precio: 580, pax: 4,
+    resumen: "Los Atlantes toltecas, guardianes de piedra de 4.6 metros.",
+    paradas: ["Zona arqueológica", "Atlantes", "Catedral de Tula", "Mercado local"],
+    incluye: ["Transporte redondo", "Espera en zona", "Paradas fotográficas"]
+  },
+  {
+    id: "chico", nombre: "Mineral del Chico", emoji: "🌲", cat: "natura",
+    tema: "linear-gradient(135deg,#03301a,#0a6b3a)",
+    desde: "Pachuca", horas: 4, precio: 420, pax: 4,
+    resumen: "Parque Nacional entre nubes, peñas y bosque de oyamel.",
+    paradas: ["Peña del Cuervo", "Mirador Peña Ventanas", "Centro del pueblo", "Bosque"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Espera en miradores"]
+  },
+  {
+    id: "tolantongo", nombre: "Grutas Tolantongo", emoji: "♨️", cat: "natura",
+    tema: "linear-gradient(135deg,#00303a,#0a7a8a)",
+    desde: "Pachuca", horas: 12, precio: 1650, pax: 4,
+    resumen: "Aguas termales turquesa, grutas y pozas colgantes en el cañón.",
+    paradas: ["Pozas colgantes", "Gruta y túnel", "Río termal", "Puente colgante"],
+    incluye: ["Transporte redondo", "Salida 5 am", "Espera todo el día"],
+    aviso: "Día completo · se recomienda salir de madrugada"
+  },
+  {
+    id: "prismas-express", nombre: "Prismas Express", emoji: "🪨", cat: "natura",
+    tema: "linear-gradient(135deg,#1a1a3a,#3a3a7a)",
+    desde: "Pachuca", horas: 3, precio: 380, pax: 4,
+    resumen: "Solo los Prismas Basálticos, ida y vuelta rápida.",
+    paradas: ["Prismas Basálticos", "Puente colgante"],
+    incluye: ["Transporte redondo", "Espera 1.5 h"]
+  },
+  {
+    id: "pachuca-city", nombre: "Pachuca Esencial", emoji: "🕰️", cat: "ciudad",
+    tema: "linear-gradient(135deg,#3a1a00,#8a4a00)",
+    desde: "Pachuca", horas: 3, precio: 350, pax: 4,
+    resumen: "Reloj Monumental, Macromural y el mirador del Cristo Rey.",
+    paradas: ["Reloj Monumental", "Macromural Pachuca", "Cristo Rey", "Plaza Independencia"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Espera en cada punto"]
+  },
+  {
+    id: "tepotzotlan", nombre: "Tepotzotlán", emoji: "⛪", cat: "pueblo",
+    tema: "linear-gradient(135deg,#2a0a1a,#7a1a4a)",
+    desde: "AIFA", horas: 5, precio: 560, pax: 4,
+    resumen: "Museo Nacional del Virreinato y su templo barroco churrigueresco.",
+    paradas: ["Museo del Virreinato", "Templo de San Francisco Javier", "Plaza Hidalgo", "Arcos del Sitio"],
+    incluye: ["Transporte redondo", "Espera en museo", "Paradas fotográficas"]
+  },
+  {
+    id: "mineral-reforma", nombre: "Ruta de las Haciendas", emoji: "🏛️", cat: "cultura",
+    tema: "linear-gradient(135deg,#2a2000,#6b5a00)",
+    desde: "Pachuca", horas: 6, precio: 720, pax: 4,
+    resumen: "Haciendas de beneficio del siglo XVI en la comarca minera.",
+    paradas: ["Hacienda Sta. María Regla", "Hacienda San Miguel Regla", "Hacienda La Purísima", "Molino"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Espera en cada hacienda"]
+  },
+  {
+    id: "actopan", nombre: "Actopan Colonial", emoji: "🏰", cat: "cultura",
+    tema: "linear-gradient(135deg,#1a2a00,#4a6b00)",
+    desde: "Pachuca", horas: 4, precio: 480, pax: 4,
+    resumen: "El convento agustino del siglo XVI y su capilla abierta.",
+    paradas: ["Ex convento de San Nicolás", "Capilla abierta", "Mercado de barbacoa", "Centro"],
+    incluye: ["Transporte redondo", "Espera en convento"]
+  },
+  {
+    id: "tulancingo", nombre: "Tulancingo y Huapalcalco", emoji: "🎨", cat: "arqueo",
+    tema: "linear-gradient(135deg,#00202a,#005a7a)",
+    desde: "Pachuca", horas: 5, precio: 560, pax: 4,
+    resumen: "Zona arqueológica, catedral y el museo de Cuauhtémoc.",
+    paradas: ["Huapalcalco", "Catedral", "Museo Datsun", "Centro"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Espera en zona"]
+  },
+  {
+    id: "san-miguel-regla", nombre: "Bosque del Hiloche", emoji: "🥾", cat: "natura",
+    tema: "linear-gradient(135deg,#0a2a10,#1a6b2a)",
+    desde: "Pachuca", horas: 5, precio: 590, pax: 4,
+    resumen: "Senderismo entre bosque de niebla y cascadas escondidas.",
+    paradas: ["Entrada al bosque", "Cascada", "Mirador", "Área de comida"],
+    incluye: ["Transporte redondo", "Espera 3 h", "Conductor-guía"]
+  },
+  {
+    id: "aifa-city", nombre: "AIFA · Layover CDMX", emoji: "🛫", cat: "ciudad",
+    tema: "linear-gradient(135deg,#001428,#0a3a6b)",
+    desde: "AIFA", horas: 6, precio: 890, pax: 4,
+    resumen: "¿Escala larga? Centro Histórico y regreso a tiempo para tu vuelo.",
+    paradas: ["Zócalo", "Bellas Artes", "Basílica de Guadalupe", "Regreso al AIFA"],
+    incluye: ["Transporte redondo", "Control de tiempo de vuelo", "Espera en cada punto"],
+    aviso: "Reservar con mínimo 7 h de escala"
+  },
+  {
+    id: "pastes-ruta", nombre: "Ruta del Paste", emoji: "🥟", cat: "gastro",
+    tema: "linear-gradient(135deg,#3a1500,#8a3a00)",
+    desde: "Pachuca", horas: 4, precio: 460, pax: 4,
+    resumen: "De Pachuca a Real del Monte probando el paste en sus casas fundadoras.",
+    paradas: ["Pastes Kikos", "Real del Monte", "Museo del Paste", "Mirador"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Paradas gastronómicas"]
+  },
+  {
+    id: "barbacoa", nombre: "Ruta de la Barbacoa", emoji: "🐑", cat: "gastro",
+    tema: "linear-gradient(135deg,#2a0500,#7a2000)",
+    desde: "Pachuca", horas: 5, precio: 520, pax: 4,
+    resumen: "Actopan y Santiago de Anaya, capitales de la barbacoa de hoyo.",
+    paradas: ["Actopan mercado", "Santiago de Anaya", "Pulquería tradicional", "Centro"],
+    incluye: ["Transporte redondo", "Conductor-guía", "Espera en cada parada"]
+  },
+  {
+    id: "arcos-sitio", nombre: "Arcos del Sitio", emoji: "🌉", cat: "cultura",
+    tema: "linear-gradient(135deg,#1a2000,#4a5a00)",
+    desde: "AIFA", horas: 5, precio: 640, pax: 4,
+    resumen: "El acueducto colonial más alto de América, entre barrancas.",
+    paradas: ["Arcos del Sitio", "Parque ecoturístico", "Tepotzotlán", "Mirador"],
+    incluye: ["Transporte redondo", "Espera en parque"]
+  },
+  {
+    id: "epazoyucan", nombre: "Epazoyucan y Zempoala", emoji: "🏞️", cat: "cultura",
+    tema: "linear-gradient(135deg,#001a2a,#004a6b)",
+    desde: "Pachuca", horas: 4, precio: 440, pax: 4,
+    resumen: "Murales agustinos del XVI y los arcos del acueducto del Padre Tembleque.",
+    paradas: ["Ex convento de Epazoyucan", "Acueducto Tembleque", "Laguna de Zempoala", "Centro"],
+    incluye: ["Transporte redondo", "Conductor-guía"]
+  }
+];
+
+const CATEGORIAS = [
+  { id: "todos",  nombre: "Todos",        icono: "✦" },
+  { id: "pueblo", nombre: "Pueblos Mágicos", icono: "🏘️" },
+  { id: "natura", nombre: "Naturaleza",   icono: "🌲" },
+  { id: "arqueo", nombre: "Arqueología",  icono: "🏛️" },
+  { id: "cultura",nombre: "Cultura",      icono: "🎭" },
+  { id: "gastro", nombre: "Gastronomía",  icono: "🍽️" },
+  { id: "ciudad", nombre: "Ciudad",       icono: "🏙️" }
+];
+
+/* ─── BENEFICIOS POR NIVEL ────────────────────────────── */
+const BENEFICIOS = {
+  bronce:  [
+    { icono: "⭐", txt: "40 puntos por viaje" },
+    { icono: "🎟️", txt: "Acceso a cupones de temporada" }
+  ],
+  plata:   [
+    { icono: "⭐", txt: "46 puntos por viaje (+15%)" },
+    { icono: "⏱️", txt: "10 min de espera sin costo" },
+    { icono: "🎟️", txt: "Cupones exclusivos de nivel" }
+  ],
+  oro:     [
+    { icono: "⭐", txt: "52 puntos por viaje (+30%)" },
+    { icono: "⏱️", txt: "20 min de espera sin costo" },
+    { icono: "🚕", txt: "Prioridad de asignación de unidad" },
+    { icono: "🧳", txt: "Maleta extra sin cargo" }
+  ],
+  platino: [
+    { icono: "⭐", txt: "60 puntos por viaje (+50%)" },
+    { icono: "⏱️", txt: "30 min de espera sin costo" },
+    { icono: "🚕", txt: "Prioridad máxima de unidad" },
+    { icono: "💺", txt: "Confort al precio de Express" },
+    { icono: "📞", txt: "Línea directa de atención" },
+    { icono: "🎁", txt: "Viaje de cortesía en tu cumpleaños" }
+  ]
 };
 
 const CHOFERES = [
@@ -1904,6 +2361,125 @@ function pintarInicio() {
   pintarNivel();
   pintarServicios();
   pintarCupones();
+  pintarPaquetes();
+}
+
+/* ─── Paquetes turísticos ──────────────────────────────── */
+let catActiva = "todos";
+
+function pintarPaquetes() {
+  const cats = $("#paq-cats"), lista = $("#paq-lista");
+  if (!cats || !lista) return;
+
+  cats.innerHTML = CATEGORIAS.map(c => {
+    const n = c.id === "todos" ? PAQUETES.length : PAQUETES.filter(p => p.cat === c.id).length;
+    if (!n) return "";
+    return '<button class="paq-cat' + (catActiva === c.id ? " paq-cat--on" : "") + '" data-cat="' + c.id + '">' +
+      c.icono + ' ' + esc(c.nombre) + ' <em>' + n + '</em></button>';
+  }).join("");
+
+  const visibles = catActiva === "todos" ? PAQUETES : PAQUETES.filter(p => p.cat === catActiva);
+  const cuenta = $("#paq-cuenta");
+  if (cuenta) cuenta.textContent = visibles.length + " destino" + (visibles.length === 1 ? "" : "s");
+
+  lista.innerHTML = visibles.map(p =>
+    '<button class="paquete" data-paq="' + p.id + '">' +
+      '<span class="paquete__thumb">' +
+        '<span class="paquete__thumb-bg" style="background:' + p.tema + '"></span>' +
+        (p.destacado ? '<span class="paquete__flag">★ Popular</span>' : "") +
+        '<span class="paquete__emoji">' + p.emoji + '</span>' +
+      '</span>' +
+      '<span class="paquete__cuerpo">' +
+        '<span class="paquete__nombre">' + esc(p.nombre) + '</span>' +
+        '<span class="paquete__res">' + esc(p.resumen) + '</span>' +
+        '<span class="paquete__paradas">' +
+          p.paradas.slice(0, 2).map(x => '<span class="paquete__parada">' + esc(x) + '</span>').join("") +
+          (p.paradas.length > 2 ? '<span class="paquete__parada">+' + (p.paradas.length - 2) + '</span>' : "") +
+        '</span>' +
+        '<span class="paquete__pie">' +
+          '<span class="paquete__precio">' + dinero(p.precio) + '</span>' +
+          '<span class="paquete__dur">⏱ ' + p.horas + ' h · ' + esc(p.desde) + '</span>' +
+        '</span>' +
+      '</span>' +
+    '</button>').join("");
+
+  $$("[data-cat]", cats).forEach(b => b.onclick = () => { catActiva = b.dataset.cat; pintarPaquetes(); });
+  $$("[data-paq]", lista).forEach(b => b.onclick = () => verPaquete(b.dataset.paq));
+}
+
+function verPaquete(id) {
+  const p = PAQUETES.find(x => x.id === id);
+  if (!p) return;
+  const porPax = Math.round(p.precio / p.pax);
+
+  const cerrar = abrirTelon(
+    '<div class="paq-hero" style="background:' + p.tema + '">' +
+      '<span class="paq-hero__emoji">' + p.emoji + '</span>' +
+      '<span class="paq-hero__cat">' + esc((CATEGORIAS.find(c => c.id === p.cat) || {}).nombre || "") + '</span>' +
+    '</div>' +
+    '<h3 style="margin-top:.9rem">' + esc(p.nombre) + '</h3>' +
+    '<p>' + esc(p.resumen) + '</p>' +
+    (p.aviso ? '<div class="rd-aviso rd-aviso--info" style="margin-top:.7rem">' +
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>' +
+      '<span>' + esc(p.aviso) + '</span></div>' : "") +
+
+    '<div class="rd-info" style="margin-top:1rem">' +
+      '<div><b class="mono">' + p.horas + '</b><span>horas</span></div>' +
+      '<div><b class="mono">' + p.paradas.length + '</b><span>paradas</span></div>' +
+      '<div><b class="mono">' + p.pax + '</b><span>pasajeros</span></div>' +
+    '</div>' +
+
+    '<p class="rotulo" style="margin:1.2rem 0 .5rem">Itinerario</p>' +
+    '<div class="paq-ruta">' + p.paradas.map((x, i) =>
+      '<div class="paq-parada">' +
+        '<span class="paq-parada__n">' + (i + 1) + '</span>' +
+        '<span>' + esc(x) + '</span>' +
+      '</div>').join("") + '</div>' +
+
+    '<p class="rotulo" style="margin:1.2rem 0 .5rem">Incluye</p>' +
+    '<div class="paq-incluye">' + p.incluye.map(x =>
+      '<div class="paq-inc">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="2.6" stroke-linecap="round"><path d="M5 12.5 10 17l9-10"/></svg>' +
+        esc(x) + '</div>').join("") + '</div>' +
+
+    '<div class="paq-precio">' +
+      '<div><span>Precio por unidad</span><b>' + dinero(p.precio) + '</b></div>' +
+      '<div style="text-align:right"><span>Por persona</span><b>' + dinero(porPax) + '</b></div>' +
+    '</div>' +
+
+    '<div class="dialogo__botones" style="margin-top:1rem">' +
+      '<button class="btn btn--suave" data-x>Cerrar</button>' +
+      '<button class="btn btn--ambar" data-reservar>Reservar</button>' +
+    '</div>'
+  );
+
+  $("[data-x]").onclick = () => cerrar(null);
+  $("[data-reservar]").onclick = async () => {
+    cerrar(null);
+    const ok = await preguntar({
+      titulo: "Reservar " + p.nombre,
+      texto: "Servicio de " + p.horas + " h con " + p.paradas.length + " paradas, saliendo de " + p.desde + ". Total " + dinero(p.precio) + " por unidad (hasta " + p.pax + " personas).",
+      ok: "Reservar"
+    });
+    if (!ok) return;
+    try {
+      await addDoc(collection(db, "viajes"), {
+        uid: S.usuario.uid,
+        tipo: "paquete",
+        paqueteId: p.id, paqueteNombre: p.nombre,
+        pasajero: { nombre: S.perfil.nombre, telefono: S.perfil.telefono || "" },
+        origen: { texto: p.desde }, destino: { texto: p.nombre },
+        paradas: p.paradas, incluye: p.incluye,
+        horas: p.horas, pax: p.pax,
+        precio: p.precio, anticipo: Math.round(p.precio * REDONDO.ANTICIPO),
+        clase: "confort", claseNombre: "T30 Confort",
+        estado: "programado",
+        conductor: null, calificacion: null,
+        creadoEn: serverTimestamp()
+      });
+      avisar("Paquete reservado. Te contactamos para fijar la fecha.", "bien");
+    } catch (e) { avisar(leer(e), "mal"); }
+  };
 }
 
 /* ─── Tarjeta de membresía ─────────────────────────────── */
@@ -1924,7 +2500,7 @@ function pintarNivel() {
     '<div class="nivel" style="--nivel-c:' + n.color + ';--nivel-tint:' + n.color + '2e">' +
       '<div class="nivel__top">' +
         '<div>' +
-          '<div class="nivel__quien">Miembro T30</div>' +
+          '<div class="nivel__quien">Miembro T30 · ' + (diasDesdeAlta() < 1 ? "hoy" : "desde hace " + diasDesdeAlta() + " d") + '</div>' +
           '<div class="nivel__nombre">' + esc(S.perfil?.nombre?.split(" ")[0] || "Pasajero") + '</div>' +
         '</div>' +
         '<div class="nivel__chip">★ ' + n.nombre + '</div>' +
@@ -1934,37 +2510,56 @@ function pintarNivel() {
       '</div>' +
       '<div class="nivel__barra"><div class="nivel__fill" id="nivel-fill" style="width:0%"></div></div>' +
       '<div class="nivel__pie">' +
-        '<span>' + n.bono + '</span>' +
-        '<span>' + (sig ? (sig.min - pts) + " pts → " + sig.nombre : "Nivel máximo") + '</span>' +
+        '<span>' + (S.perfil?.viajes || 0) + ' viaje' + ((S.perfil?.viajes || 0) === 1 ? "" : "s") + ' · ×' + n.mult + ' puntos</span>' +
+        '<span>' + (sig ? (sig.min - pts) + " pts → " + sig.nombre : "Nivel máximo ✦") + '</span>' +
+      '</div>' +
+      '<div class="nivel__perks">' +
+        (BENEFICIOS[n.id] || []).slice(0, 3).map(b =>
+          '<span class="nivel__perk">' + b.icono + ' ' + esc(b.txt) + '</span>').join("") +
       '</div>' +
       '<div class="nivel__acciones">' +
         '<button class="nivel__btn' + (puedeCanjear ? " nivel__btn--on" : "") + '" id="btn-canjear"' + (puedeCanjear ? "" : " disabled") + '>' +
-          (puedeCanjear ? "Canjear " + CANJE_PUNTOS + " pts → " + dinero(CANJE_VALOR) : "Faltan " + (CANJE_PUNTOS - pts) + " pts para canjear") +
+          (puedeCanjear ? "Canjear " + CANJE_PUNTOS + " pts → " + dinero(CANJE_VALOR) : "Faltan " + (CANJE_PUNTOS - pts) + " pts") +
         '</button>' +
+        '<button class="nivel__btn" id="btn-perks" style="flex:0 0 auto;padding:.6rem .9rem">Ver todo</button>' +
       '</div>' +
     '</div>';
 
   setTimeout(() => { const f = $("#nivel-fill"); if (f) f.style.width = pct + "%"; }, 250);
   $("#btn-canjear").onclick = canjearPuntos;
+  $("#btn-perks").onclick = () => $("#ver-beneficios").click();
 }
 
 /* ─── Servicios (Viaje Redondo) ────────────────────────── */
 function pintarServicios() {
   const cont = $("#servicios-lista");
   if (!cont) return;
-  const on = !!S.redondo;
+  // Redondos ya reservados (para mostrar el próximo)
+  const proximos = S.historial
+    .filter(v => v.tipo === "redondo" && v.estado === "programado")
+    .sort((a, b) => Date.parse(a.ida || 0) - Date.parse(b.ida || 0));
+  const prox = proximos[0];
+
   cont.innerHTML =
-    '<button class="serv' + (on ? " serv--on" : "") + '" id="serv-redondo">' +
+    '<button class="serv" id="serv-redondo">' +
       '<span class="serv__ico">🔄</span>' +
       '<span class="serv__txt">' +
         '<b>Viaje redondo</b>' +
-        '<small>' + (on
-          ? "Regreso programado: " + esc(S.redondo.etiqueta)
-          : "Llega hoy, te recogemos cuando digas · " + Math.round(REDONDO.descuento * 100) + "% off en el regreso") +
-        '</small>' +
+        '<small>Ida y vuelta con espera o regreso programado · desde 10% off</small>' +
       '</span>' +
-      '<span class="serv__tag' + (on ? " serv__tag--on" : "") + '">' + (on ? "Activo" : "Nuevo") + '</span>' +
-    '</button>';
+      '<span class="serv__tag">Cotizar</span>' +
+    '</button>' +
+    (prox
+      ? '<div class="serv-prox">' +
+          '<span class="serv-prox__i">📅</span>' +
+          '<span class="serv-prox__t"><b>Próximo redondo</b>' +
+          '<small>' + esc(prox.destino?.texto || "") + ' · ' +
+            (prox.ida ? new Date(prox.ida).toLocaleDateString("es-MX", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "") +
+          '</small></span>' +
+          '<span class="mono serv-prox__p">' + dinero(prox.precio) + '</span>' +
+        '</div>'
+      : "");
+
   $("#serv-redondo").onclick = configurarRedondo;
 }
 
@@ -2007,135 +2602,615 @@ function pintarCupones() {
   $$("[data-cupon]", cont).forEach(b => b.onclick = () => aplicarCupon(b.dataset.cupon));
 }
 
-/* ─── Configurar Viaje Redondo (servicio real) ─────────── */
-async function configurarRedondo() {
-  if (S.redondo) {
-    const quitar = await preguntar({
-      titulo: "Quitar viaje redondo",
-      texto: "Se cancelará el regreso programado para " + S.redondo.etiqueta + ".",
-      ok: "Quitar", riesgo: true
-    });
-    if (quitar) { S.redondo = null; pintarServicios(); if (S.fase === 0) pintarHoja(); avisar("Viaje redondo desactivado."); }
-    return;
-  }
+/* ══════════════════════════════════════════════════════════════
+   9c · VIAJE REDONDO — motor de cotización
+   ══════════════════════════════════════════════════════════════ */
 
-  const ahora = new Date();
-  const opciones = [];
-  // Genera franjas útiles: hoy más tarde, mañana mañana/tarde, pasado
-  const franjas = [
-    { h: 6,  txt: "6:00 am" }, { h: 9,  txt: "9:00 am" },
-    { h: 12, txt: "12:00 pm" }, { h: 15, txt: "3:00 pm" },
-    { h: 18, txt: "6:00 pm" }, { h: 21, txt: "9:00 pm" }
-  ];
-  for (let d = 0; d <= 2 && opciones.length < 8; d++) {
-    for (const f of franjas) {
-      const cuando = new Date(ahora); cuando.setDate(ahora.getDate() + d);
-      cuando.setHours(f.h, 0, 0, 0);
-      const horas = (cuando - ahora) / 3600000;
-      if (horas < REDONDO.minHoras || horas > REDONDO.esperaMaxHoras) continue;
-      const dia = d === 0 ? "Hoy" : d === 1 ? "Mañana" : cuando.toLocaleDateString("es-MX", { weekday: "long" });
-      opciones.push({ etiqueta: dia + " " + f.txt, iso: cuando.toISOString(), ts: cuando.getTime() });
-      if (opciones.length >= 8) break;
-    }
-  }
+// Borrador de la solicitud (se llena paso a paso)
+const nuevoBorrador = () => ({
+  paso: 0,
+  origen: null, destino: null, ruta: null,
+  motivo: null, vuelo: "",
+  ida: null,            // Date de salida
+  modalidad: null,      // "espera" | "regreso" | "multidia"
+  regreso: null,        // Date de regreso
+  pax: 2, maletas: 2,
+  mascota: false, sillaBebe: false,
+  notas: "",
+  clase: "express"
+});
+let B = nuevoBorrador();
 
-  if (!opciones.length) return avisar("No hay franjas disponibles ahora mismo.", "mal");
+// ─── Horas entre ida y regreso ───────────────────────────
+const horasEspera = () => (B.ida && B.regreso) ? (B.regreso - B.ida) / 3600000 : 0;
+const diasEstancia = () => {
+  if (!B.ida || !B.regreso) return 0;
+  const a = new Date(B.ida); a.setHours(0,0,0,0);
+  const b = new Date(B.regreso); b.setHours(0,0,0,0);
+  return Math.round((b - a) / 86400000);
+};
 
-  const cerrar = abrirTelon(
-    '<h3>Viaje redondo</h3>' +
-    '<p>Programa tu regreso y ahorra ' + Math.round(REDONDO.descuento * 100) + '% en ese tramo. Te asignamos el mismo conductor cuando sea posible.</p>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:1rem 0">' +
-      opciones.map((o, i) =>
-        '<button class="btn btn--linea" data-fr="' + i + '" style="padding:.7rem .4rem;font-size:13px">' + esc(o.etiqueta) + '</button>'
-      ).join("") +
-    '</div>' +
-    '<div class="dialogo__botones"><button class="btn btn--suave" data-x>Cancelar</button></div>'
-  );
-  $$("[data-fr]").forEach(b => b.onclick = () => {
-    S.redondo = opciones[+b.dataset.fr];
-    cerrar(null);
-    pintarServicios();
-    if (S.fase === 0) pintarHoja();
-    avisar("Viaje redondo activo · regreso " + S.redondo.etiqueta, "bien");
-  });
-  $("[data-x]").onclick = () => cerrar(null);
+// Modalidad recomendada según el margen
+function modalidadSugerida() {
+  const h = horasEspera();
+  if (h <= 0) return null;
+  if (h <= REDONDO.ESPERA_MAX_H) return "espera";
+  // Multidía solo si hay estancia real, no por cruzar la medianoche
+  if (diasEstancia() >= 1 && h >= 14) return "multidia";
+  return "regreso";
 }
 
-// Beneficios de niveles
+const NOMBRE_MODALIDAD = {
+  espera:   { t: "La unidad te espera",  d: "El conductor permanece en el sitio y te regresa. Ideal para trámites, citas o paseos cortos." },
+  regreso:  { t: "Regreso programado",   d: "La unidad se retira y otra vuelve por ti a la hora acordada, el mismo día." },
+  multidia: { t: "Estancia de varios días", d: "Te dejamos y te recogemos en la fecha que elijas. La mejor tarifa por planeación." }
+};
+
+// ─── Cotización completa ─────────────────────────────────
+function cotizar() {
+  if (!B.ruta) return null;
+  const c = CLASES[B.clase];
+  const base = Math.max(c.piso, Math.round(c.base + B.ruta.km * c.km + B.ruta.min * c.min));
+
+  const mod = B.modalidad || modalidadSugerida() || "regreso";
+  const h = horasEspera();
+  const lineas = [];
+
+  lineas.push({ etiqueta: "Viaje de ida", detalle: B.ruta.km.toFixed(1) + " km", monto: base });
+
+  let esperaCosto = 0, regresoCosto = 0, descuento = 0;
+
+  if (mod === "espera") {
+    // Espera en sitio: cortesía por nivel + tarifa por hora
+    const cortesiaMin = REDONDO.ESPERA_GRATIS_MIN + (nivelActual().esperaBonus || 0);
+    const cobrable = Math.max(0, h * 60 - cortesiaMin) / 60;
+    esperaCosto = Math.round(cobrable * REDONDO.ESPERA_HORA);
+    regresoCosto = base;
+    lineas.push({ etiqueta: "Espera en sitio", detalle: h.toFixed(1) + " h · " + cortesiaMin + " min de cortesía", monto: esperaCosto });
+    lineas.push({ etiqueta: "Viaje de regreso", detalle: "Mismo conductor", monto: regresoCosto });
+    descuento = Math.round((base + regresoCosto) * REDONDO.DESC_ESPERA);
+    lineas.push({ etiqueta: "Descuento redondo", detalle: Math.round(REDONDO.DESC_ESPERA * 100) + "% por servicio continuo", monto: -descuento, verde: true });
+  } else {
+    const tasa = mod === "multidia" ? REDONDO.DESC_MULTIDIA : REDONDO.DESC_REGRESO;
+    regresoCosto = Math.round(base * (1 - tasa));
+    const etiqueta = mod === "multidia"
+      ? "Regreso · " + diasEstancia() + (diasEstancia() === 1 ? " día después" : " días después")
+      : "Regreso el mismo día";
+    lineas.push({ etiqueta, detalle: "−" + Math.round(tasa * 100) + "% de descuento", monto: regresoCosto });
+  }
+
+  // Recargos por horario
+  let recargo = 0;
+  const hIda = B.ida?.getHours();
+  const hReg = B.regreso?.getHours();
+  const madrugada = t => t !== undefined && t >= 4 && t < 6;
+  const nocturno  = t => t !== undefined && (t >= 22 || t < 4);
+  if (madrugada(hIda)) {
+    recargo += Math.round(base * REDONDO.RECARGO_MADRUGADA);
+    lineas.push({ etiqueta: "Salida de madrugada", detalle: "Unidad preparada antes de las 6 am", monto: Math.round(base * REDONDO.RECARGO_MADRUGADA) });
+  } else if (nocturno(hIda) || nocturno(hReg)) {
+    recargo += Math.round(base * REDONDO.RECARGO_NOCTURNO);
+    lineas.push({ etiqueta: "Recargo nocturno", detalle: "Servicio entre 10 pm y 5 am", monto: Math.round(base * REDONDO.RECARGO_NOCTURNO) });
+  }
+
+  // Extras
+  let extras = 0;
+  const maletasIncl = B.pax * 2 + (nivelActual().id === "oro" || nivelActual().id === "platino" ? 1 : 0);
+  if (B.maletas > maletasIncl) {
+    const ex = (B.maletas - maletasIncl) * REDONDO.EQUIPAJE_EXTRA;
+    extras += ex;
+    lineas.push({ etiqueta: "Equipaje adicional", detalle: (B.maletas - maletasIncl) + " maleta(s) sobre " + maletasIncl + " incluidas", monto: ex });
+  }
+  if (B.mascota)   { extras += REDONDO.MASCOTA;    lineas.push({ etiqueta: "Traslado de mascota", detalle: "Transportadora requerida", monto: REDONDO.MASCOTA }); }
+  if (B.sillaBebe) { extras += REDONDO.SILLA_BEBE; lineas.push({ etiqueta: "Silla para bebé", detalle: "Instalada por el conductor", monto: REDONDO.SILLA_BEBE }); }
+
+  // Clase XL obligatoria si no caben
+  const necesitaXL = B.pax > 4;
+
+  const subtotal = base + esperaCosto + regresoCosto - descuento + recargo + extras;
+
+  // Cupón aplicable
+  let cupDesc = 0, cupUsado = null;
+  if (S.cupon) {
+    const ev = evaluarCupon(S.cupon);
+    if (ev.estado === "listo") { cupDesc = descuentoDe(S.cupon, subtotal); cupUsado = S.cupon; }
+  }
+  const saldo = Math.min(S.perfil?.saldo || 0, Math.max(0, subtotal - cupDesc));
+  const total = Math.max(0, subtotal - cupDesc - saldo);
+
+  return {
+    modalidad: mod, lineas, base, subtotal, cupDesc, cupUsado, saldo, total,
+    anticipo: Math.round(total * REDONDO.ANTICIPO),
+    necesitaXL, horas: h, dias: diasEstancia(),
+    puntos: Math.round(PUNTOS_POR_VIAJE * 2 * nivelActual().mult)
+  };
+}
+
+// ─── Avisos inteligentes sobre la solicitud ──────────────
+function avisosCotizacion(q) {
+  const a = [];
+  if (!q) return a;
+  if (q.necesitaXL && B.clase !== "xl")
+    a.push({ t: "mal", txt: "Con " + B.pax + " pasajeros necesitas T30 XL. Cámbialo abajo." });
+
+  const esAIFA = /aifa|felipe ángeles|felipe angeles/i.test(B.destino?.texto || "");
+  if (esAIFA && B.motivo === "vuelo" && B.ida) {
+    a.push({ t: "info", txt: "Te dejamos en el AIFA a las " + hhmm(B.ida) + ". Documenta al menos " + (REDONDO.VUELO_MARGEN_MIN / 60) + " h antes de tu vuelo." });
+  }
+  if (q.modalidad === "espera" && q.horas > 3)
+    a.push({ t: "info", txt: "Con " + q.horas.toFixed(1) + " h de espera, un regreso programado puede salir más barato. Compara ambas opciones." });
+  if (q.modalidad === "regreso" && q.horas < 2)
+    a.push({ t: "info", txt: "Con menos de 2 h de margen conviene que la unidad espere: evitas riesgo de disponibilidad." });
+  if (q.dias > 7)
+    a.push({ t: "info", txt: "Estancia larga: confirmaremos tu regreso 24 h antes por WhatsApp." });
+  return a;
+}
+
+const hhmm = d => d ? d.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) : "";
+const fechaLarga = d => d ? d.toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" }) : "";
+const fechaCorta = d => d ? d.toLocaleDateString("es-MX", { day: "numeric", month: "short" }) : "";
+/* ══════════════════════════════════════════════════════════════
+   9d · ASISTENTE DE VIAJE REDONDO — 5 pasos
+   ══════════════════════════════════════════════════════════════ */
+const PASOS_RD = ["Ruta", "Motivo", "Fechas", "Detalles", "Propuesta"];
+
+function irAVista(id) {
+  $$(".nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.vista === id)));
+  $$(".vista").forEach(v => { v.hidden = v.id !== id; });
+  const cont = $("#" + id);
+  if (cont) cont.scrollTop = 0;
+}
+
+function pintarRedondo() {
+  const c = $("#vista-redondo");
+  if (!c) return;
+  c.innerHTML =
+    '<div class="rd-cab">' +
+      '<button class="rd-atras" id="rd-atras" aria-label="Regresar">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 5 8 12l7 7"/></svg>' +
+      '</button>' +
+      '<div><h2 class="rd-titulo">Viaje redondo</h2>' +
+      '<p class="rd-sub">Paso ' + (B.paso + 1) + ' de ' + PASOS_RD.length + ' · ' + PASOS_RD[B.paso] + '</p></div>' +
+    '</div>' +
+    '<div class="rd-progreso">' + PASOS_RD.map((p, i) =>
+      '<div class="rd-p' + (i < B.paso ? " rd-p--ok" : i === B.paso ? " rd-p--on" : "") + '"></div>').join("") +
+    '</div>' +
+    '<div class="rd-cuerpo" id="rd-cuerpo"></div>';
+
+  $("#rd-atras").onclick = () => {
+    if (B.paso === 0) { irAVista("vista-inicio"); pintarInicio(); }
+    else { B.paso--; pintarRedondo(); }
+  };
+
+  const cuerpo = $("#rd-cuerpo");
+  [pasoRuta, pasoMotivo, pasoFechas, pasoDetalles, pasoPropuesta][B.paso](cuerpo);
+}
+
+const avanzar = () => { B.paso++; pintarRedondo(); };
+
+/* ─── Paso 1 · Ruta ────────────────────────────────────── */
+function pasoRuta(c) {
+  c.innerHTML =
+    '<p class="rd-lead">¿De dónde sales y a dónde vas?</p>' +
+    '<div class="ruta" style="margin-bottom:.5rem">' +
+      '<div class="ruta__riel"><span></span><i></i><span></span></div>' +
+      '<div class="ruta__campos">' +
+        '<input id="rd-origen" placeholder="Punto de salida" value="' + esc(B.origen?.texto || "") + '" autocomplete="off" />' +
+        '<input id="rd-destino" placeholder="Destino" value="' + esc(B.destino?.texto || "") + '" autocomplete="off" />' +
+      '</div>' +
+    '</div>' +
+    '<div id="rd-sug"></div>' +
+    '<div class="rd-chips" id="rd-favoritos"></div>' +
+    '<div id="rd-resumen-ruta"></div>' +
+    '<button class="btn" id="rd-sig" disabled>Continuar</button>';
+
+  const favs = [];
+  const lug = S.perfil?.lugares || {};
+  if (lug.casa)    favs.push({ txt: "🏠 Casa", d: lug.casa });
+  if (lug.trabajo) favs.push({ txt: "💼 Trabajo", d: lug.trabajo });
+  favs.push({ txt: "✈️ AIFA", d: { texto: "AIFA · Aeropuerto Felipe Ángeles", detalle: "Zumpango, Edomex", lat: AIFA.lat, lng: AIFA.lng } });
+  $("#rd-favoritos").innerHTML = favs.map((f, i) =>
+    '<button class="rd-chip" data-fav="' + i + '">' + esc(f.txt) + '</button>').join("");
+  $$("[data-fav]", c).forEach(b => b.onclick = async () => {
+    const f = favs[+b.dataset.fav];
+    const campo = B.origen ? "destino" : "origen";
+    B[campo] = f.d;
+    $("#rd-" + campo).value = f.d.texto;
+    await refrescarRutaRD();
+  });
+
+  const buscar = frenar(async (cual, v) => {
+    if (v.trim().length < 3) return pintarSugRD([]);
+    pintarSugRD(null);
+    pintarSugRD(await geocodificar(v), cual);
+  }, 420);
+
+  ["origen", "destino"].forEach(cual => {
+    const i = $("#rd-" + cual);
+    i.oninput = ev => buscar(cual, ev.target.value);
+  });
+
+  refrescarRutaRD();
+}
+
+function pintarSugRD(lista, cual) {
+  const cont = $("#rd-sug");
+  if (!cont) return;
+  if (lista === null) {
+    cont.innerHTML = '<div class="sugerencias">' + [1, 2, 3].map(() =>
+      '<div class="sugerencia"><div class="hueso" style="width:34px;height:34px;border-radius:11px"></div>' +
+      '<div style="flex:1"><div class="hueso" style="height:11px;width:62%;margin-bottom:6px"></div>' +
+      '<div class="hueso" style="height:9px;width:86%"></div></div></div>').join("") + '</div>';
+    return;
+  }
+  if (!lista.length) { cont.innerHTML = ""; return; }
+  cont.innerHTML = '<div class="sugerencias">' + lista.map((r, i) =>
+    '<button class="sugerencia" data-rs="' + i + '">' +
+      '<span class="sugerencia__ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>' +
+      '<span class="sugerencia__txt"><b>' + esc(r.texto) + '</b><small>' + esc(r.detalle) + '</small></span></button>').join("") + '</div>';
+  $$("[data-rs]", cont).forEach(b => b.onclick = async () => {
+    B[cual] = lista[+b.dataset.rs];
+    $("#rd-" + cual).value = B[cual].texto;
+    cont.innerHTML = "";
+    await refrescarRutaRD();
+  });
+}
+
+async function refrescarRutaRD() {
+  const box = $("#rd-resumen-ruta");
+  const btn = $("#rd-sig");
+  if (!B.origen || !B.destino) { if (box) box.innerHTML = ""; if (btn) btn.disabled = true; return; }
+  if (box) box.innerHTML = '<div class="rd-calc"><i></i> Calculando ruta…</div>';
+
+  const gO = S.origen, gD = S.destino, gR = S.ruta;
+  S.origen = B.origen; S.destino = B.destino; S.ruta = null;
+  await calcularRuta();
+  B.ruta = S.ruta;
+  S.origen = gO; S.destino = gD; S.ruta = gR;
+
+  if (box && B.ruta) {
+    box.innerHTML =
+      '<div class="rd-info">' +
+        '<div><b class="mono">' + B.ruta.km.toFixed(1) + '</b><span>km</span></div>' +
+        '<div><b class="mono">' + B.ruta.min + '</b><span>min por tramo</span></div>' +
+        '<div><b class="mono">' + (B.ruta.min * 2) + '</b><span>min en total</span></div>' +
+      '</div>';
+  }
+  if (btn) { btn.disabled = !B.ruta; btn.onclick = avanzar; }
+}
+
+/* ─── Paso 2 · Motivo ──────────────────────────────────── */
+function pasoMotivo(c) {
+  c.innerHTML =
+    '<p class="rd-lead">¿Cuál es el motivo del viaje?</p>' +
+    '<p class="rd-nota">Nos ayuda a calcular los márgenes de tiempo correctos.</p>' +
+    '<div class="rd-grid">' + MOTIVOS.map(m =>
+      '<button class="rd-op' + (B.motivo === m.id ? " rd-op--on" : "") + '" data-motivo="' + m.id + '">' +
+        '<span class="rd-op__ico">' + m.icono + '</span>' +
+        '<span class="rd-op__txt">' + esc(m.nombre) + '</span>' +
+      '</button>').join("") + '</div>' +
+    '<div id="rd-vuelo"></div>' +
+    '<button class="btn" id="rd-sig"' + (B.motivo ? "" : " disabled") + '>Continuar</button>';
+
+  $$("[data-motivo]", c).forEach(b => b.onclick = () => { B.motivo = b.dataset.motivo; pasoMotivo(c); });
+
+  const m = MOTIVOS.find(x => x.id === B.motivo);
+  if (m && m.pide.includes("vuelo")) {
+    $("#rd-vuelo").innerHTML =
+      '<div class="campo" style="margin-top:1rem">' +
+        '<label for="rd-nvuelo">Número de vuelo <span style="color:var(--txt-3);font-weight:400">(opcional)</span></label>' +
+        '<div class="entrada"><input id="rd-nvuelo" type="text" placeholder="Ej. Y4 1234" value="' + esc(B.vuelo) + '" /></div>' +
+        '<span class="pista">Con el número de vuelo ajustamos la hora si hay retraso.</span>' +
+      '</div>';
+    $("#rd-nvuelo").oninput = e => { B.vuelo = e.target.value; };
+  } else { $("#rd-vuelo").innerHTML = ""; }
+
+  const btn = $("#rd-sig", c);
+  if (btn) btn.onclick = avanzar;
+}
+
+/* ─── Paso 3 · Fechas y modalidad ──────────────────────── */
+const paraInput = d => {
+  const p = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+  return p.toISOString().slice(0, 16);
+};
+
+function pasoFechas(c) {
+  const minIda = new Date(Date.now() + 45 * 60000);
+
+  c.innerHTML =
+    '<p class="rd-lead">¿Cuándo sales y cuándo regresas?</p>' +
+    '<div class="campo">' +
+      '<label for="rd-fida">Salida</label>' +
+      '<div class="entrada"><input id="rd-fida" type="datetime-local" min="' + paraInput(minIda) + '" value="' + (B.ida ? paraInput(B.ida) : "") + '" /></div>' +
+    '</div>' +
+    '<div class="campo">' +
+      '<label for="rd-freg">Regreso</label>' +
+      '<div class="entrada"><input id="rd-freg" type="datetime-local" value="' + (B.regreso ? paraInput(B.regreso) : "") + '" /></div>' +
+    '</div>' +
+    '<div class="rd-rapidas" id="rd-rapidas"></div>' +
+    '<div id="rd-modalidad"></div>' +
+    '<button class="btn" id="rd-sig" disabled>Continuar</button>';
+
+  const rapidas = [
+    { t: "+2 h", h: 2 }, { t: "+4 h", h: 4 }, { t: "+8 h", h: 8 },
+    { t: "Hoy 8 pm", fija: 20 }, { t: "Mañana", h: 24 },
+    { t: "En 3 días", h: 72 }, { t: "En 1 semana", h: 168 }
+  ];
+  $("#rd-rapidas").innerHTML =
+    '<span class="rd-rapidas__t">Regreso rápido</span><div class="rd-chips">' +
+    rapidas.map((r, i) => '<button class="rd-chip" data-rap="' + i + '">' + r.t + '</button>').join("") + '</div>';
+
+  $$("[data-rap]", c).forEach(b => b.onclick = () => {
+    if (!B.ida) return avisar("Elige primero la hora de salida.", "mal");
+    const r = rapidas[+b.dataset.rap];
+    const d = new Date(B.ida);
+    if (r.fija !== undefined) { d.setHours(r.fija, 0, 0, 0); if (d <= B.ida) d.setDate(d.getDate() + 1); }
+    else d.setTime(d.getTime() + r.h * 3600000);
+    B.regreso = d; B.modalidad = null;
+    pasoFechas(c);
+  });
+
+  $("#rd-fida").onchange = e => {
+    B.ida = e.target.value ? new Date(e.target.value) : null;
+    if (B.regreso && B.ida && B.regreso <= B.ida) B.regreso = null;
+    B.modalidad = null;
+    pasoFechas(c);
+  };
+  $("#rd-freg").onchange = e => {
+    const d = e.target.value ? new Date(e.target.value) : null;
+    if (d && B.ida && d <= B.ida) { avisar("El regreso debe ser posterior a la salida.", "mal"); return; }
+    B.regreso = d; B.modalidad = null;
+    pasoFechas(c);
+  };
+
+  const box = $("#rd-modalidad");
+  if (B.ida && B.regreso) {
+    const sug = modalidadSugerida();
+    if (!B.modalidad) B.modalidad = sug;
+    const h = horasEspera(), dd = diasEstancia();
+    const opciones = h <= REDONDO.ESPERA_MAX_H ? ["espera", "regreso"] : dd >= 1 ? ["multidia"] : ["regreso", "espera"];
+
+    box.innerHTML =
+      '<div class="rd-margen">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg>' +
+        '<span>Margen de <b>' + (dd >= 1 ? dd + (dd === 1 ? " día" : " días") : h.toFixed(1) + " h") + '</b> entre ida y regreso</span>' +
+      '</div>' +
+      '<p class="rotulo" style="margin:1.1rem 0 .5rem">Modalidad</p>' +
+      opciones.map(id => {
+        const n = NOMBRE_MODALIDAD[id];
+        return '<button class="rd-mod' + (B.modalidad === id ? " rd-mod--on" : "") + '" data-mod="' + id + '">' +
+          '<span class="rd-mod__check"></span>' +
+          '<span><b>' + n.t + (id === sug ? ' <em class="rd-tag">Recomendado</em>' : "") + '</b>' +
+          '<small>' + n.d + '</small></span></button>';
+      }).join("");
+
+    $$("[data-mod]", c).forEach(b => b.onclick = () => { B.modalidad = b.dataset.mod; pasoFechas(c); });
+  } else {
+    box.innerHTML = '<p class="rd-nota" style="margin-top:1rem">Elige ambas fechas para ver las modalidades disponibles.</p>';
+  }
+
+  const btn = $("#rd-sig", c);
+  btn.disabled = !(B.ida && B.regreso && B.modalidad);
+  btn.onclick = avanzar;
+}
+
+/* ─── Paso 4 · Detalles ────────────────────────────────── */
+const contador = (campo, val, min, max) =>
+  '<span class="rd-cont">' +
+    '<button data-menos="' + campo + '"' + (val <= min ? " disabled" : "") + ' aria-label="Menos">−</button>' +
+    '<b class="mono">' + val + '</b>' +
+    '<button data-mas="' + campo + '"' + (val >= max ? " disabled" : "") + ' aria-label="Más">+</button>' +
+  '</span>';
+
+function pasoDetalles(c) {
+  c.innerHTML =
+    '<p class="rd-lead">Detalles del servicio</p>' +
+    '<div class="rd-fila">' +
+      '<span class="rd-fila__txt"><b>Pasajeros</b><small>Incluido el titular</small></span>' +
+      contador("pax", B.pax, 1, 6) +
+    '</div>' +
+    '<div class="rd-fila">' +
+      '<span class="rd-fila__txt"><b>Maletas</b><small>' + (B.pax * 2) + ' incluidas sin costo</small></span>' +
+      contador("maletas", B.maletas, 0, 12) +
+    '</div>' +
+    '<div class="rd-fila">' +
+      '<span class="rd-fila__txt"><b>Viaja con mascota</b><small>Requiere transportadora · ' + dinero(REDONDO.MASCOTA) + '</small></span>' +
+      '<button class="palanca' + (B.mascota ? " viva" : "") + '" id="sw-mascota" role="switch" aria-checked="' + B.mascota + '"></button>' +
+    '</div>' +
+    '<div class="rd-fila">' +
+      '<span class="rd-fila__txt"><b>Silla para bebé</b><small>La instala el conductor · ' + dinero(REDONDO.SILLA_BEBE) + '</small></span>' +
+      '<button class="palanca' + (B.sillaBebe ? " viva" : "") + '" id="sw-silla" role="switch" aria-checked="' + B.sillaBebe + '"></button>' +
+    '</div>' +
+    '<p class="rotulo" style="margin:1.3rem 0 .5rem">Tipo de unidad</p>' +
+    '<div class="clases">' + Object.entries(CLASES).map(([id, cl]) => {
+      const bloq = B.pax > cl.plazas;
+      return '<button class="clase" data-rdclase="' + id + '" aria-pressed="' + (id === B.clase) + '"' + (bloq ? ' disabled style="opacity:.4"' : "") + '>' +
+        '<span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--' + cl.color + ')" stroke-width="1.9" stroke-linecap="round"><path d="M3 17v-4.2l2-4.6A2 2 0 0 1 6.8 7h10.4a2 2 0 0 1 1.8 1.2l2 4.6V17z"/><path d="M3 13h18"/></svg></span>' +
+        '<span class="clase__txt"><b>' + cl.nombre + '</b><small>' + (bloq ? "No caben " + B.pax + " pasajeros" : cl.pie + " · " + cl.plazas + " plazas") + '</small></span>' +
+        '</button>';
+    }).join("") + '</div>' +
+    '<div class="campo" style="margin-top:1.2rem">' +
+      '<label for="rd-notas">Indicaciones para el conductor <span style="color:var(--txt-3);font-weight:400">(opcional)</span></label>' +
+      '<div class="entrada"><input id="rd-notas" type="text" placeholder="Portón azul, favor de llamar al llegar…" value="' + esc(B.notas) + '" /></div>' +
+    '</div>' +
+    '<button class="btn" id="rd-sig">Ver mi propuesta</button>';
+
+  $$("[data-mas],[data-menos]", c).forEach(b => b.onclick = () => {
+    const campo = b.dataset.mas || b.dataset.menos;
+    const paso = b.dataset.mas ? 1 : -1;
+    const lim = campo === "pax" ? [1, 6] : [0, 12];
+    B[campo] = Math.max(lim[0], Math.min(lim[1], B[campo] + paso));
+    if (campo === "pax") {
+      if (B.maletas < B.pax) B.maletas = B.pax;
+      if (B.pax > CLASES[B.clase].plazas) B.clase = "xl";
+    }
+    pasoDetalles(c);
+  });
+  $("#sw-mascota").onclick = () => { B.mascota = !B.mascota; pasoDetalles(c); };
+  $("#sw-silla").onclick   = () => { B.sillaBebe = !B.sillaBebe; pasoDetalles(c); };
+  $$("[data-rdclase]", c).forEach(b => { if (!b.disabled) b.onclick = () => { B.clase = b.dataset.rdclase; pasoDetalles(c); }; });
+  $("#rd-notas").oninput = e => { B.notas = e.target.value; };
+  $("#rd-sig", c).onclick = avanzar;
+}
+
+/* ─── Paso 5 · Propuesta ───────────────────────────────── */
+function pasoPropuesta(c) {
+  const q = cotizar();
+  if (!q) { c.innerHTML = '<p class="rd-nota">Faltan datos para cotizar.</p>'; return; }
+  const avisos = avisosCotizacion(q);
+  const m = MOTIVOS.find(x => x.id === B.motivo);
+  const llegada = new Date(B.ida.getTime() + B.ruta.min * 60000);
+
+  c.innerHTML =
+    '<div class="rd-prop">' +
+      '<div class="rd-prop__cab">' +
+        '<span class="rd-prop__badge">' + NOMBRE_MODALIDAD[q.modalidad].t + '</span>' +
+        '<div class="rd-prop__total"><span>Total estimado</span><b>' + dinero(q.total) + '</b></div>' +
+      '</div>' +
+      '<div class="rd-prop__ruta">' +
+        '<div class="rd-prop__pt"><i class="pt--o"></i><div><b>' + esc(B.origen.texto) + '</b><small>' + fechaLarga(B.ida) + ' · ' + hhmm(B.ida) + '</small></div></div>' +
+        '<div class="rd-prop__eje"></div>' +
+        '<div class="rd-prop__pt"><i class="pt--d"></i><div><b>' + esc(B.destino.texto) + '</b><small>Llegada aprox. ' + hhmm(llegada) + '</small></div></div>' +
+        '<div class="rd-prop__eje rd-prop__eje--pausa"><span>' + (q.dias >= 1 ? q.dias + (q.dias === 1 ? " día" : " días") : q.horas.toFixed(1) + " h") + '</span></div>' +
+        '<div class="rd-prop__pt"><i class="pt--o"></i><div><b>Regreso a ' + esc(B.origen.texto) + '</b><small>' + fechaLarga(B.regreso) + ' · ' + hhmm(B.regreso) + '</small></div></div>' +
+      '</div>' +
+    '</div>' +
+
+    (avisos.length ? '<div class="rd-avisos">' + avisos.map(a =>
+      '<div class="rd-aviso rd-aviso--' + a.t + '">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>' +
+        '<span>' + esc(a.txt) + '</span></div>').join("") + '</div>' : "") +
+
+    '<p class="rotulo" style="margin:1.4rem 0 .5rem">Desglose</p>' +
+    '<div class="rd-desglose">' +
+      q.lineas.map(l =>
+        '<div class="rd-linea' + (l.verde ? " rd-linea--v" : "") + '">' +
+          '<span><b>' + esc(l.etiqueta) + '</b><small>' + esc(l.detalle) + '</small></span>' +
+          '<span class="mono">' + (l.monto < 0 ? "−" : "") + dinero(Math.abs(l.monto)) + '</span>' +
+        '</div>').join("") +
+      (q.cupDesc ? '<div class="rd-linea rd-linea--v"><span><b>' + esc(q.cupUsado.titulo) + '</b><small>Cupón aplicado</small></span><span class="mono">−' + dinero(q.cupDesc) + '</span></div>' : "") +
+      (q.saldo ? '<div class="rd-linea rd-linea--v"><span><b>Saldo T30</b><small>De tus puntos canjeados</small></span><span class="mono">−' + dinero(q.saldo) + '</span></div>' : "") +
+      '<div class="rd-linea rd-linea--tot"><span><b>Total</b></span><span class="mono">' + dinero(q.total) + '</span></div>' +
+    '</div>' +
+
+    '<div class="rd-extra">' +
+      '<div class="rd-extra__i"><span>Anticipo para reservar</span><b class="mono">' + dinero(q.anticipo) + '</b></div>' +
+      '<div class="rd-extra__i"><span>Resto al finalizar</span><b class="mono">' + dinero(q.total - q.anticipo) + '</b></div>' +
+      '<div class="rd-extra__i"><span>Puntos que ganarás</span><b class="mono" style="color:var(--ambar)">+' + q.puntos + '</b></div>' +
+    '</div>' +
+
+    '<div class="rd-resumen-det">' +
+      '<span class="rd-chip rd-chip--fijo">' + ((m && m.icono) || "•") + ' ' + esc((m && m.nombre) || "") + '</span>' +
+      '<span class="rd-chip rd-chip--fijo">👥 ' + B.pax + ' pax</span>' +
+      '<span class="rd-chip rd-chip--fijo">🧳 ' + B.maletas + '</span>' +
+      (B.mascota ? '<span class="rd-chip rd-chip--fijo">🐾 Mascota</span>' : "") +
+      (B.sillaBebe ? '<span class="rd-chip rd-chip--fijo">👶 Silla</span>' : "") +
+      (B.vuelo ? '<span class="rd-chip rd-chip--fijo">✈️ ' + esc(B.vuelo) + '</span>' : "") +
+      '<span class="rd-chip rd-chip--fijo">🚕 ' + CLASES[B.clase].nombre + '</span>' +
+    '</div>' +
+
+    '<button class="btn btn--ambar" id="rd-confirmar" style="margin-top:1.2rem">Reservar por ' + dinero(q.anticipo) + '</button>' +
+    '<button class="btn--texto" id="rd-editar" style="margin:.3rem auto 0">Modificar solicitud</button>';
+
+  $("#rd-editar").onclick = () => { B.paso = 0; pintarRedondo(); };
+  $("#rd-confirmar").onclick = () => confirmarRedondo(q);
+}
+
+/* ─── Confirmar y guardar en Firestore ─────────────────── */
+async function confirmarRedondo(q) {
+  const ok = await preguntar({
+    titulo: "Confirmar viaje redondo",
+    texto: "Reservas con " + dinero(q.anticipo) + " de anticipo. Total del servicio: " + dinero(q.total) + ". Te contactamos para coordinar los detalles.",
+    ok: "Reservar"
+  });
+  if (!ok) return;
+
+  ocupar($("#rd-confirmar"), true, "Reservando");
+  try {
+    await addDoc(collection(db, "viajes"), {
+      uid: S.usuario.uid,
+      tipo: "redondo",
+      pasajero: { nombre: S.perfil.nombre, telefono: S.perfil.telefono || "" },
+      origen: B.origen, destino: B.destino,
+      km: +B.ruta.km.toFixed(2), min: B.ruta.min,
+      motivo: B.motivo, vuelo: B.vuelo || null,
+      ida: B.ida.toISOString(), regreso: B.regreso.toISOString(),
+      programadoPara: B.ida.toISOString(),
+      modalidad: q.modalidad,
+      horasMargen: +q.horas.toFixed(2), diasEstancia: q.dias,
+      pax: B.pax, maletas: B.maletas, mascota: B.mascota, sillaBebe: B.sillaBebe,
+      notas: B.notas || null,
+      clase: B.clase, claseNombre: CLASES[B.clase].nombre,
+      desglose: q.lineas, subtotal: q.subtotal,
+      cupon: q.cupUsado ? { id: q.cupUsado.id, titulo: q.cupUsado.titulo, monto: q.cupDesc } : null,
+      saldoUsado: q.saldo,
+      precio: q.total, anticipo: q.anticipo,
+      estado: "programado",
+      conductor: null, calificacion: null,
+      creadoEn: serverTimestamp()
+    });
+
+    if (q.cupUsado) await consumirCupon(q.cupUsado.id);
+    if (q.saldo > 0) {
+      S.perfil.saldo = (S.perfil.saldo || 0) - q.saldo;
+      updateDoc(doc(db, "usuarios", S.usuario.uid), { saldo: increment(-q.saldo) }).catch(() => {});
+    }
+    S.cupon = null;
+    B = nuevoBorrador();
+    avisar("Viaje redondo reservado. Lo ves en Actividad.", "bien");
+    irAVista("vista-inicio");
+    pintarInicio();
+  } catch (e) {
+    avisar(leer(e), "mal");
+    ocupar($("#rd-confirmar"), false);
+  }
+}
+
+// Abre el asistente de Viaje Redondo (pantalla dedicada)
+function configurarRedondo() {
+  B = nuevoBorrador();
+  // Precarga lo que ya sepamos del contexto
+  if (S.origen)  B.origen  = S.origen;
+  if (S.destino) B.destino = S.destino;
+  irAVista("vista-redondo");
+  pintarRedondo();
+}
+
+// Beneficios de niveles — vista completa
 $("#ver-beneficios").onclick = () => {
-  const actual = nivelActual().id;
+  const act = nivelActual(), pts = puntosActuales();
   const cerrarBen = abrirTelon(
-    '<h3>Niveles T30</h3>' +
-    '<p>Ganas ' + PUNTOS_POR_VIAJE + ' puntos base por viaje. Tu nivel multiplica esa cantidad.</p>' +
-    '<div style="display:flex;flex-direction:column;gap:.55rem;margin:1rem 0">' +
-      NIVELES.map(n =>
-        '<div style="display:flex;align-items:center;gap:.75rem;padding:.7rem .8rem;border-radius:12px;background:' +
-          (n.id === actual ? "color-mix(in srgb," + n.color + " 14%,transparent)" : "var(--campo)") +
-          ';border:1.5px solid ' + (n.id === actual ? n.color : "transparent") + '">' +
-          '<span style="width:10px;height:10px;border-radius:50%;background:' + n.color + ';flex-shrink:0"></span>' +
-          '<span style="flex:1;min-width:0">' +
-            '<b style="display:block;font-size:13.5px">' + n.nombre + (n.id === actual ? " · tu nivel" : "") + '</b>' +
-            '<small style="display:block;font-size:11.5px;color:var(--txt-2)">' + n.bono + '</small>' +
-          '</span>' +
-          '<span class="mono" style="font-size:12px;color:var(--txt-3);flex-shrink:0">' + n.min + '+</span>' +
-        '</div>'
-      ).join("") +
+    '<h3>Programa de lealtad T30</h3>' +
+    '<p>Ganas ' + PUNTOS_POR_VIAJE + ' puntos base por viaje. Tu nivel multiplica esa cantidad y desbloquea beneficios.</p>' +
+    '<div class="niv-lista">' +
+      NIVELES.map(n => {
+        const esActual = n.id === act.id;
+        const logrado = pts >= n.min;
+        return '<div class="niv-card' + (esActual ? " niv-card--on" : "") + '" style="--c:' + n.color + '">' +
+          '<div class="niv-card__cab">' +
+            '<span class="niv-card__punto"></span>' +
+            '<b>' + n.nombre + '</b>' +
+            (esActual ? '<em class="niv-card__tag">Tu nivel</em>'
+                      : logrado ? '<em class="niv-card__tag niv-card__tag--ok">Alcanzado</em>' : "") +
+            '<span class="niv-card__min mono">' + n.min.toLocaleString("es-MX") + '+</span>' +
+          '</div>' +
+          '<div class="niv-card__perks">' +
+            (BENEFICIOS[n.id] || []).map(b =>
+              '<div class="niv-perk"><span>' + b.icono + '</span>' + esc(b.txt) + '</div>').join("") +
+          '</div>' +
+        '</div>';
+      }).join("") +
+    '</div>' +
+    '<div class="niv-canje">' +
+      '<div><b>' + CANJE_PUNTOS + ' puntos</b><small>se canjean por</small></div>' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--txt-3)" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>' +
+      '<div style="text-align:right"><b>' + dinero(CANJE_VALOR) + '</b><small>de saldo</small></div>' +
     '</div>' +
     '<div class="dialogo__botones"><button class="btn" data-x style="width:100%">Entendido</button></div>'
   );
   $("[data-x]").onclick = () => cerrarBen(null);
 };
-
-function iniciarCarrusel() {
-  const pista = $("#car-pista");
-  const dots  = $$("#car-dots .car__dot");
-  if (!pista || !dots.length) return;
-  const total = pista.children.length;
-  let idx = 0, timer, startX = 0, arrastrado = false;
-
-  const ir = (n) => {
-    idx = (n + total) % total;
-    pista.style.transform = "translateX(-" + (idx * 100) + "%)";
-    dots.forEach((d, i) => d.classList.toggle("car__dot--on", i === idx));
-  };
-
-  // Auto-avance cada 4.5 s
-  const resetTimer = () => {
-    clearInterval(timer);
-    timer = setInterval(() => ir(idx + 1), 4500);
-  };
-  resetTimer();
-
-  // Swipe táctil
-  pista.parentElement.addEventListener("touchstart", e => { startX = e.touches[0].clientX; arrastrado = false; }, { passive: true });
-  pista.parentElement.addEventListener("touchmove",  e => { if (Math.abs(e.touches[0].clientX - startX) > 8) arrastrado = true; }, { passive: true });
-  pista.parentElement.addEventListener("touchend",   e => {
-    if (!arrastrado) return;
-    const dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 42) { ir(idx + (dx < 0 ? 1 : -1)); resetTimer(); }
-  });
-
-  // Click en dots
-  dots.forEach((d, i) => d.onclick = () => { ir(i); resetTimer(); });
-}
-
-// Botón rápido: ir a pedir viaje
-const irAViaje = (destPredefinido) => {
-  $$(".nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.vista === "vista-viaje")));
-  $$(".vista").forEach(v => { v.hidden = v.id !== "vista-viaje"; });
-  iniciarMapa();
-  if (destPredefinido) {
-    setTimeout(() => {
-      const campoD = $("#c-destino");
-      if (campoD) { campoD.value = destPredefinido; campoD.dispatchEvent(new Event("input")); }
-    }, 400);
-  }
-  setTimeout(() => mapa?.invalidateSize(), 80);
-};
-$("#btn-quick-viaje").onclick = () => irAViaje(null);
-
-// Acceso directo AIFA — prefija el destino y abre el mapa
-$("#btn-aifa").onclick = () => irAViaje("AIFA - Aeropuerto Internacional Felipe Ángeles");
 
 /* ══════════════════════════════════════════════════════════════
    9b · MOTOR DE PROMOCIONES — validación real contra Firestore
@@ -2165,9 +3240,13 @@ function siguienteNivel() {
 
 // ─── Contexto de evaluación ────────────────────────────────
 const tocaElAIFA = () => {
-  const cerca = (pt) => pt && Math.abs(pt.lat - AIFA.lat) < 0.09 && Math.abs(pt.lng - AIFA.lng) < 0.09;
+  const cerca = (pt) => pt && pt.lat != null && Math.abs(pt.lat - AIFA.lat) < 0.09 && Math.abs(pt.lng - AIFA.lng) < 0.09;
   const dice  = (pt) => pt && /aifa|felipe ángeles|felipe angeles/i.test(pt.texto || "");
-  return cerca(S.origen) || cerca(S.destino) || dice(S.origen) || dice(S.destino);
+  // Cubre el viaje normal y el borrador del asistente de redondo
+  const puntos = [S.origen, S.destino,
+                  (typeof B !== "undefined" && B ? B.origen : null),
+                  (typeof B !== "undefined" && B ? B.destino : null)];
+  return puntos.some(p => cerca(p) || dice(p));
 };
 
 function huboViajeHoy() {
@@ -2255,6 +3334,46 @@ async function canjearPuntos() {
   pintarInicio();
 }
 
+/* ─── Carrusel de anuncios ─────────────────────────────── */
+function iniciarCarrusel() {
+  const pista = $("#car-pista");
+  const dots  = $$("#car-dots .car__dot");
+  if (!pista || !dots.length) return;
+  const total = pista.children.length;
+  let idx = 0, timer, startX = 0, arrastrado = false;
+
+  const ir = n => {
+    idx = (n + total) % total;
+    pista.style.transform = "translateX(-" + (idx * 100) + "%)";
+    dots.forEach((d, i) => d.classList.toggle("car__dot--on", i === idx));
+  };
+  const reset = () => { clearInterval(timer); timer = setInterval(() => ir(idx + 1), 4800); };
+  reset();
+
+  const marco = pista.parentElement;
+  marco.addEventListener("touchstart", e => { startX = e.touches[0].clientX; arrastrado = false; }, { passive: true });
+  marco.addEventListener("touchmove",  e => { if (Math.abs(e.touches[0].clientX - startX) > 8) arrastrado = true; }, { passive: true });
+  marco.addEventListener("touchend",   e => {
+    if (!arrastrado) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 42) { ir(idx + (dx < 0 ? 1 : -1)); reset(); }
+  });
+  dots.forEach((d, i) => d.onclick = () => { ir(i); reset(); });
+}
+
+/* ─── Ir a la pantalla de viaje ────────────────────────── */
+function irAViaje(destPredefinido) {
+  irAVista("vista-viaje");
+  iniciarMapa();
+  if (destPredefinido) {
+    setTimeout(() => {
+      const cd = $("#c-destino");
+      if (cd) { cd.value = destPredefinido; cd.dispatchEvent(new Event("input")); cd.focus(); }
+    }, 420);
+  }
+  setTimeout(() => mapa?.invalidateSize(), 90);
+}
+
 // ─── Aplicar cupón desde la tarjeta ────────────────────────
 async function aplicarCupon(id) {
   const cup = cuponPorId(id);
@@ -2265,6 +3384,10 @@ async function aplicarCupon(id) {
   avisar(cup.titulo + " aplicado a tu próximo viaje.", "bien");
   irAViaje(null);
 }
+
+/* ─── Accesos rápidos del Inicio ───────────────────────── */
+$("#btn-quick-viaje").onclick = () => irAViaje(null);
+$("#btn-aifa").onclick = () => irAViaje("AIFA · Aeropuerto Felipe Ángeles");
 
 /* ══════════════════════════════════════════════════════════════
    10 · MAPA — Leaflet + OpenStreetMap (100% gratuito, sin API key)
@@ -2567,9 +3690,8 @@ function desglose(clase, ruta) {
   const base = tarifa(clase, ruta) || 0;
   if (!base) return { base: 0, redondo: 0, descuento: 0, saldo: 0, total: 0 };
 
-  // Tramo de regreso con su descuento
-  const redondo = S.redondo ? Math.round(base * (1 - REDONDO.descuento)) : 0;
-  const subtotal = base + redondo;
+  const redondo = 0;   // el redondo se cotiza en su pantalla dedicada
+  const subtotal = base;
 
   // Cupón — se revalida en cada repintado por si cambió la ruta o la hora
   let descuento = 0;
@@ -2592,16 +3714,15 @@ function bloqueExtras(listo) {
   const d = desglose(S.clase, S.ruta);
   const hayExtras = d.redondo || d.descuento || d.saldo;
 
+  // El viaje redondo ahora vive en su propia pantalla con cotizador
   const filaRedondo =
-    '<button class="serv' + (S.redondo ? " serv--on" : "") + '" id="toggle-redondo" style="margin-top:.7rem;padding:.8rem .9rem">' +
+    '<button class="serv" id="toggle-redondo" style="margin-top:.7rem;padding:.8rem .9rem">' +
       '<span class="serv__ico" style="width:36px;height:36px;font-size:1.1rem;border-radius:11px">🔄</span>' +
       '<span class="serv__txt">' +
-        '<b style="font-size:13.5px">Viaje redondo</b>' +
-        '<small style="font-size:12px">' + (S.redondo
-          ? "Regreso " + esc(S.redondo.etiqueta) + " · −" + Math.round(REDONDO.descuento * 100) + "%"
-          : "Programa tu regreso con " + Math.round(REDONDO.descuento * 100) + "% off") + '</small>' +
+        '<b style="font-size:13.5px">¿Necesitas ida y vuelta?</b>' +
+        '<small style="font-size:12px">Cotiza un viaje redondo con espera incluida</small>' +
       '</span>' +
-      '<span class="serv__tag' + (S.redondo ? " serv__tag--on" : "") + '">' + (S.redondo ? "Activo" : "+") + '</span>' +
+      '<span class="serv__tag">Cotizar</span>' +
     '</button>';
 
   const filaCupon = S.cupon
@@ -2742,8 +3863,6 @@ async function pedirViaje() {
 
   const d = desglose(S.clase, S.ruta);
   const cuponUsado = S.cupon ? { id: S.cupon.id, titulo: S.cupon.titulo, monto: d.descuento } : null;
-  const redondoDato = S.redondo ? { etiqueta: S.redondo.etiqueta, iso: S.redondo.iso, ts: S.redondo.ts, precio: d.redondo } : null;
-
   const viaje = {
     uid: S.usuario.uid,
     pasajero: { nombre: S.perfil.nombre, telefono: S.perfil.telefono || "" },
@@ -2753,7 +3872,6 @@ async function pedirViaje() {
     precioBase: d.base,
     cupon: cuponUsado,
     saldoUsado: d.saldo,
-    redondo: redondoDato,
     precio: d.total,
     pago: S.pago, estado: "buscando",
     conductor: null, calificacion: null,
@@ -2769,24 +3887,7 @@ async function pedirViaje() {
       updateDoc(doc(db, "usuarios", S.usuario.uid), { saldo: increment(-d.saldo) }).catch(() => {});
     }
 
-    // Programar el tramo de regreso como viaje agendado
-    if (redondoDato) {
-      addDoc(collection(db, "viajes"), {
-        uid: S.usuario.uid,
-        pasajero: viaje.pasajero,
-        origen: S.destino, destino: S.origen,   // invertido
-        clase: S.clase, claseNombre: CLASES[S.clase].nombre,
-        km: viaje.km, min: viaje.min,
-        precioBase: d.base, precio: d.redondo,
-        esRegresoDe: ref.id,
-        programadoPara: redondoDato.iso,
-        pago: S.pago, estado: "programado",
-        conductor: null, calificacion: null,
-        creadoEn: serverTimestamp()
-      }).catch(e => console.warn("regreso:", e));
-    }
-
-    S.cupon = null; S.redondo = null;
+    S.cupon = null;
     pintarCupones(); pintarServicios(); pintarNivel();
 
     S.viajeId = ref.id; S.viaje = viaje; S.fase = 1;
@@ -2949,13 +4050,24 @@ function pintarActividad() {
   const bloqueAgenda = agendados.length
     ? '<p class="rotulo" style="margin:1.3rem 0 .5rem">Programados</p><div class="tarjeta">' +
       agendados.map(v => {
-        const f = v.programadoPara ? new Date(v.programadoPara) : null;
+        const f = v.programadoPara ? new Date(v.programadoPara) : (v.ida ? new Date(v.ida) : null);
+        const esPaq = v.tipo === "paquete";
+        const esRD  = v.tipo === "redondo";
+        const ico = esPaq ? "🗺️" : esRD ? "🔄" : "📅";
+        const titulo = esPaq ? v.paqueteNombre
+                     : esRD  ? (v.origen?.texto || "") + " ⇄ " + (v.destino?.texto || "")
+                             : (v.destino?.texto || "Regreso");
+        const sub = esPaq
+          ? v.horas + " h · " + (v.paradas?.length || 0) + " paradas · " + (v.origen?.texto || "")
+          : esRD
+            ? (f ? f.toLocaleDateString("es-MX", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "") +
+              (v.regreso ? " → " + new Date(v.regreso).toLocaleDateString("es-MX", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "")
+            : (f ? f.toLocaleDateString("es-MX", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "Por confirmar");
         return '<button class="renglon" data-viaje="' + v.id + '">' +
-          '<span class="ico--sm" style="background:color-mix(in srgb,var(--ambar) 16%,transparent)">' +
-            '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ambar)" stroke-width="1.9"><path d="M17 2v4M7 2v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2.5"/></svg></span>' +
-          '<span class="renglon__txt"><b>' + esc(v.destino?.texto || "Regreso") + '</b>' +
-          '<small>' + (f ? f.toLocaleDateString("es-MX", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "Por confirmar") + '</small>' +
-          '<span class="sello sello--curso">Programado</span></span>' +
+          '<span class="ico--sm" style="background:color-mix(in srgb,var(--ambar) 16%,transparent);font-size:15px">' + ico + '</span>' +
+          '<span class="renglon__txt"><b>' + esc(titulo) + '</b>' +
+          '<small>' + esc(sub) + '</small>' +
+          '<span class="sello sello--curso">' + (esPaq ? "Paquete" : esRD ? "Redondo" : "Programado") + '</span></span>' +
           '<span><b class="mono">' + dinero(v.precio) + '</b></span></button>';
       }).join("") + '</div>'
     : "";
