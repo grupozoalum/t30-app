@@ -427,14 +427,297 @@ html[data-tema="oscuro"] .leaflet-tile-pane{
 .palanca[aria-checked="true"]{background:var(--ac);border-color:transparent}
 .palanca[aria-checked="true"]::after{left:24px;background:#fff}
 
-/* ── navegación ────────────────────────────────────────── */
+/* ── carrusel ──────────────────────────────────────────── */
+.car{position:relative;border-radius:var(--r-xl);overflow:hidden;touch-action:pan-y}
+.car__pista{display:flex;transition:transform .46s cubic-bezier(.22,1,.36,1)}
+.car__slide{
+  flex:0 0 100%;min-height:178px;position:relative;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:1.3rem 1.35rem;overflow:hidden
+}
+.car__slide::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.62) 0%,rgba(0,0,0,.08) 55%,transparent 100%)}
+.car__bg{position:absolute;inset:0;z-index:0}
+.car__cont{position:relative;z-index:1}
+.car__badge{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.22rem .6rem;border-radius:999px;margin-bottom:.4rem}
+.car__titulo{font-size:1.15rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.25rem}
+.car__sub{font-size:12.5px;color:rgba(255,255,255,.75)}
+.car__dots{display:flex;justify-content:center;gap:5px;margin-top:.7rem}
+.car__dot{height:5px;border-radius:3px;background:var(--borde-fuerte);transition:all .35s cubic-bezier(.22,1,.36,1);width:5px}
+.car__dot--on{width:18px;background:var(--ac)}
+
+/* ── quick viaje ───────────────────────────────────────── */
+.quick-viaje{
+  display:flex;align-items:center;gap:.8rem;
+  width:100%;padding:1.05rem 1.2rem;margin:1.2rem 0;
+  background:var(--ac);color:#fff;border-radius:var(--r-xl);
+  font-size:15px;font-weight:700;text-align:left;
+  box-shadow:0 8px 22px -10px var(--ac)
+}
+.quick-viaje svg{flex-shrink:0;opacity:.85}
+
+/* ── secciones home ────────────────────────────────────── */
+.home-sec{margin-bottom:1.6rem}
+.home-sec__cab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.8rem}
+.home-sec__h{font-size:15px;font-weight:700}
+.home-sec__ver{font-size:13px;color:var(--ac-2);font-weight:500}
+.h-scroll{display:flex;gap:.75rem;overflow-x:auto;padding-bottom:.5rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.h-scroll::-webkit-scrollbar{display:none}
+
+/* ── cupones ───────────────────────────────────────────── */
+.cupon{
+  flex:0 0 230px;border-radius:16px;padding:1.1rem 1.15rem;
+  position:relative;overflow:hidden;cursor:pointer;
+  transition:transform .18s,box-shadow .18s
+}
+.cupon:active{transform:scale(.97)}
+.cupon--rd{background:linear-gradient(140deg,#0A1F5C 0%,#1B3C9A 100%)}
+.cupon--pts{background:linear-gradient(140deg,#1a0a2e 0%,#3b1a72 100%)}
+.cupon--promo{background:linear-gradient(140deg,#1a1000 0%,#5a3200 100%)}
+.cupon__deco{
+  position:absolute;right:-18px;top:-18px;
+  width:90px;height:90px;border-radius:50%;
+  background:rgba(255,255,255,.06)
+}
+.cupon__deco2{
+  position:absolute;right:14px;bottom:-22px;
+  width:64px;height:64px;border-radius:50%;
+  background:rgba(255,255,255,.05)
+}
+.cupon__badge{
+  display:inline-flex;align-items:center;gap:.3rem;
+  background:var(--ambar);color:#1a0800;
+  font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  border-radius:6px;padding:.22rem .55rem;margin-bottom:.65rem
+}
+.cupon__ico{font-size:1.9rem;margin-bottom:.4rem;line-height:1}
+.cupon__titulo{font-size:14px;font-weight:800;color:#fff;margin-bottom:.2rem;line-height:1.25}
+.cupon__desc{font-size:12px;color:rgba(255,255,255,.65);margin-bottom:.9rem;line-height:1.4}
+.cupon__btn{
+  display:inline-block;font-size:12px;font-weight:700;
+  background:rgba(255,255,255,.18);color:#fff;
+  border-radius:8px;padding:.38rem .8rem;
+  border:1px solid rgba(255,255,255,.25)
+}
+/* barra de fidelidad */
+.fidel{margin-top:.75rem}
+.fidel__fondo{height:6px;border-radius:3px;background:rgba(255,255,255,.18)}
+.fidel__barra{height:6px;border-radius:3px;background:var(--ambar);transition:width 1s cubic-bezier(.22,1,.36,1)}
+.fidel__lbl{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.55);margin-top:.3rem}
+
+/* ── pulido general ────────────────────────────────────── */
+*{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+/* Scroll horizontal con desvanecido en los bordes */
+.h-scroll{
+  scroll-snap-type:x proximity;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 20px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 20px),transparent 100%);
+  padding-left:2px;padding-right:14px
+}
+.h-scroll > *{scroll-snap-align:start}
+/* Entrada escalonada de las secciones del Inicio */
+.home-sec{animation:emerge .5s cubic-bezier(.22,1,.36,1) both}
+.home-sec:nth-of-type(1){animation-delay:.02s}
+.home-sec:nth-of-type(2){animation-delay:.07s}
+.home-sec:nth-of-type(3){animation-delay:.12s}
+.home-sec:nth-of-type(4){animation-delay:.17s}
+.home-sec:nth-of-type(5){animation-delay:.22s}
+@keyframes emerge{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* Encabezado de sección con acento */
+.home-sec__h{position:relative;padding-left:.7rem}
+.home-sec__h::before{
+  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:14px;border-radius:2px;background:var(--ac)
+}
+.home-sec__ver{
+  font-size:12.5px;color:var(--ac-2);font-weight:600;
+  padding:.25rem .5rem;border-radius:7px;transition:var(--t)
+}
+.home-sec__ver:hover{background:color-mix(in srgb,var(--ac) 10%,transparent)}
+/* Botón principal con brillo al presionar */
+.quick-viaje{position:relative;overflow:hidden;transition:transform .16s,box-shadow .2s}
+.quick-viaje::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(60% 100% at 50% 0%,rgba(255,255,255,.22),transparent 70%);
+  opacity:0;transition:opacity .3s
+}
+.quick-viaje:hover::after{opacity:1}
+.quick-viaje:active{transform:scale(.975);box-shadow:0 4px 14px -8px var(--ac)}
+#btn-aifa{transition:var(--t)}
+#btn-aifa:hover{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,var(--sup))}
+#btn-aifa:active{transform:scale(.96)}
+/* Carrusel: escala sutil en la lámina activa */
+.car__slide{transition:opacity .4s}
+.car__dot{cursor:pointer}
+.car__dots{padding:0 1.15rem}
+/* Tarjetas con elevación al tacto */
+.viaje-c{transition:transform .18s,border-color .18s,box-shadow .18s}
+.viaje-c:hover{border-color:var(--borde-fuerte);box-shadow:var(--sombra-sm)}
+.viaje-c__btn{transition:var(--t)}
+.viaje-c__btn:hover{filter:brightness(1.1)}
+.viaje-c__btn:active{transform:scale(.95)}
+.paquete{box-shadow:var(--sombra-sm)}
+.paquete:hover{border-color:var(--borde-fuerte)}
+.cupon{box-shadow:0 10px 26px -16px rgba(0,0,0,.7)}
+.cupon__btn{transition:var(--t)}
+.cupon__btn:hover{background:rgba(255,255,255,.28)}
+
+/* ── tarjeta de nivel (membresía) ──────────────────────── */
+.nivel{
+  position:relative;overflow:hidden;border-radius:20px;padding:1.25rem 1.3rem;
+  background:linear-gradient(135deg,#0d1424 0%,#161f36 52%,#0d1424 100%);
+  border:1px solid rgba(255,255,255,.08)
+}
+.nivel::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 90% at 100% 0%,var(--nivel-tint,rgba(224,179,65,.22)),transparent 58%);
+  pointer-events:none
+}
+.nivel::after{
+  content:"";position:absolute;top:-60%;left:-30%;width:60%;height:220%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);
+  transform:rotate(18deg);animation:brillo 6s ease-in-out infinite
+}
+@keyframes brillo{0%,100%{left:-40%}50%{left:110%}}
+.nivel__top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.nivel__quien{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:700}
+.nivel__nombre{font-family:'Archivo',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:#fff;margin-top:.15rem;line-height:1}
+.nivel__chip{
+  display:inline-flex;align-items:center;gap:.32rem;flex-shrink:0;
+  padding:.3rem .65rem;border-radius:999px;font-size:11px;font-weight:800;
+  background:var(--nivel-c,#E0B341);color:#15100a;letter-spacing:.02em
+}
+.nivel__pts{position:relative;z-index:1;display:flex;align-items:baseline;gap:.4rem;margin-top:1.05rem}
+.nivel__pts b{font-family:'Archivo',sans-serif;font-size:2rem;font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1}
+.nivel__pts span{font-size:12px;color:rgba(255,255,255,.5);font-weight:600}
+.nivel__barra{position:relative;z-index:1;height:7px;border-radius:99px;background:rgba(255,255,255,.12);margin-top:.75rem;overflow:hidden}
+.nivel__fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--nivel-c,#E0B341),#fff);transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+.nivel__pie{position:relative;z-index:1;display:flex;justify-content:space-between;font-size:11.5px;color:rgba(255,255,255,.5);margin-top:.45rem;font-weight:500}
+.nivel__acciones{position:relative;z-index:1;display:flex;gap:.5rem;margin-top:1rem}
+.nivel__btn{
+  flex:1;padding:.6rem;border-radius:11px;font-size:12.5px;font-weight:700;
+  background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.16);
+  transition:var(--t)
+}
+.nivel__btn:hover:not(:disabled){background:rgba(255,255,255,.17)}
+.nivel__btn:disabled{opacity:.38;cursor:not-allowed}
+.nivel__btn--on{background:var(--nivel-c,#E0B341);color:#15100a;border-color:transparent}
+.saldo-chip{
+  display:inline-flex;align-items:center;gap:.3rem;
+  background:color-mix(in srgb,var(--verde) 16%,transparent);
+  color:var(--verde);font-size:11.5px;font-weight:800;
+  padding:.22rem .55rem;border-radius:7px;margin-left:.4rem
+}
+
+/* ── servicio (viaje redondo) ──────────────────────────── */
+.serv{
+  display:flex;align-items:center;gap:.95rem;
+  background:var(--sup);border:1.5px solid var(--borde);
+  border-radius:var(--r-xl);padding:1rem 1.1rem;
+  width:100%;text-align:left;transition:var(--t);position:relative;overflow:hidden
+}
+.serv:hover{border-color:var(--borde-fuerte)}
+.serv:active{transform:scale(.985)}
+.serv--on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,var(--sup))}
+.serv__ico{
+  width:44px;height:44px;border-radius:14px;flex-shrink:0;
+  display:grid;place-items:center;font-size:1.35rem;
+  background:var(--campo)
+}
+.serv--on .serv__ico{background:color-mix(in srgb,var(--ac) 20%,transparent)}
+.serv__txt{flex:1;min-width:0}
+.serv__txt b{display:block;font-size:14.5px;font-weight:700;margin-bottom:.15rem}
+.serv__txt small{display:block;font-size:12.5px;color:var(--txt-2);line-height:1.35}
+.serv__tag{
+  flex-shrink:0;font-size:10.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;padding:.25rem .5rem;border-radius:6px;
+  background:var(--ambar);color:#1a0f00
+}
+.serv__tag--on{background:var(--verde);color:#03210f}
+
+/* ── estados de cupón ──────────────────────────────────── */
+.cupon--aifa{background:linear-gradient(140deg,#001428 0%,#0a3a6b 100%)}
+.cupon--verde{background:linear-gradient(140deg,#02180c 0%,#0a5c30 100%)}
+.cupon--off{opacity:.5;filter:saturate(.35)}
+.cupon--off .cupon__btn{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
+.cupon__razon{
+  font-size:11px;color:rgba(255,255,255,.5);margin-top:.5rem;
+  display:flex;align-items:flex-start;gap:.28rem;line-height:1.35
+}
+.cupon__usos{
+  position:absolute;top:.9rem;right:1rem;z-index:2;
+  font-size:10.5px;font-weight:800;color:rgba(255,255,255,.75);
+  background:rgba(0,0,0,.28);padding:.16rem .45rem;border-radius:6px
+}
+.cupon__sello{
+  position:absolute;top:50%;left:50%;z-index:3;
+  transform:translate(-50%,-50%) rotate(-14deg);
+  border:2.5px solid rgba(255,255,255,.4);color:rgba(255,255,255,.55);
+  font-size:14px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .8rem;border-radius:7px;pointer-events:none
+}
+.vacio-cup{
+  flex:0 0 100%;text-align:center;padding:1.8rem 1rem;
+  border:1.5px dashed var(--borde-fuerte);border-radius:16px;color:var(--txt-3);font-size:13px
+}
+
+/* ── viajes compartidos ────────────────────────────────── */
+.viaje-c{
+  background:var(--sup);border-radius:var(--r-xl);
+  border:1.5px solid var(--borde);padding:1rem 1.1rem;
+  margin-bottom:.75rem;display:flex;flex-direction:column;gap:.55rem
+}
+.viaje-c__ruta{display:flex;align-items:center;gap:.5rem;font-size:14px;font-weight:700}
+.viaje-c__linea{flex:1;height:1.5px;background:var(--borde-fuerte);position:relative}
+.viaje-c__linea::after{content:"›";position:absolute;right:-2px;top:-9px;font-size:14px;color:var(--txt-3)}
+.viaje-c__chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.viaje-c__chip{
+  background:var(--campo);border-radius:6px;
+  padding:.22rem .55rem;font-size:12px;color:var(--txt-2);font-weight:500
+}
+.viaje-c__pie{display:flex;justify-content:space-between;align-items:center;margin-top:.15rem}
+.viaje-c__precio{font-size:1.05rem;font-weight:800;color:var(--txt)}
+.viaje-c__asientos{font-size:12px;color:var(--verde);font-weight:600;display:flex;align-items:center;gap:.3rem}
+.viaje-c__btn{
+  font-size:13px;font-weight:700;
+  background:var(--ac);color:#fff;
+  border-radius:9px;padding:.42rem .95rem
+}
+
+/* ── paquetes turísticos ───────────────────────────────── */
+.paquete{
+  flex:0 0 210px;border-radius:var(--r-xl);overflow:hidden;
+  background:var(--sup);border:1.5px solid var(--borde);
+  cursor:pointer;transition:transform .18s
+}
+.paquete:active{transform:scale(.97)}
+.paquete__thumb{
+  height:105px;display:flex;align-items:center;
+  justify-content:center;font-size:3.2rem;
+  position:relative;overflow:hidden
+}
+.paquete__thumb-bg{position:absolute;inset:0}
+.paquete__emoji{position:relative;z-index:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.paquete__cuerpo{padding:.85rem .9rem}
+.paquete__nombre{font-size:14px;font-weight:800;margin-bottom:.3rem}
+.paquete__paradas{display:flex;flex-wrap:wrap;gap:.28rem;margin-bottom:.6rem}
+.paquete__parada{
+  background:var(--campo);border-radius:5px;
+  padding:.15rem .4rem;font-size:11px;color:var(--txt-2)
+}
+.paquete__pie{display:flex;justify-content:space-between;align-items:center}
+.paquete__precio{font-size:.95rem;font-weight:800;color:var(--ac)}
+.paquete__dur{font-size:11.5px;color:var(--txt-3)}
 .nav{
   position:absolute;left:.85rem;right:.85rem;bottom:calc(.85rem + var(--abajo));z-index:600;
-  height:var(--nav);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;
+  height:var(--nav);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;
   background:var(--velo);backdrop-filter:blur(22px);border:1px solid var(--borde);
   border-radius:24px;box-shadow:var(--sombra)
 }
-.nav button{position:relative;display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem;font-size:10.5px;font-weight:600;color:var(--txt-3);transition:var(--t)}
+.nav button{position:relative;display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem .25rem;font-size:9.5px;font-weight:600;color:var(--txt-3);transition:var(--t)}
 .nav button[aria-selected="true"]{color:var(--ac)}
 .nav svg{width:22px;height:22px}
 .nav__punto{position:absolute;top:2px;width:4px;height:4px;border-radius:50%;background:var(--ac);opacity:0;transition:var(--t)}
@@ -494,7 +777,7 @@ html[data-tema="oscuro"] .leaflet-tile-pane{
           <span class="marca__txt" style="font-size:1.5rem">T30</span>
         </div>
         <h1 class="acceso__titulo">Pide tu viaje,<br /><em>llega a tiempo.</em></h1>
-        <p class="acceso__texto">Tarifa visible, conductor verificado y seguimiento en vivo. Todo en Pachuca.</p>
+        <p class="acceso__texto">AIFA · Pachuca · Tizayuca · Tecámac y toda la zona norte. Tarifa fija, conductor verificado.</p>
         <div class="acceso__hero-puntos" aria-hidden="true"><i></i><i></i><i></i></div>
       </div>
 
@@ -566,7 +849,7 @@ html[data-tema="oscuro"] .leaflet-tile-pane{
             </div>
             <div class="campo">
               <label for="re-ciudad">Ciudad</label>
-              <div class="entrada"><input id="re-ciudad" type="text" value="Pachuca de Soto" required /></div>
+              <div class="entrada"><input id="re-ciudad" type="text" value="" placeholder="Pachuca, Tizayuca, Zumpango…" required /></div>
             </div>
           </div>
           <div class="campo">
@@ -600,7 +883,305 @@ html[data-tema="oscuro"] .leaflet-tile-pane{
   <section class="pantalla" id="pantalla-app">
     <div class="lienzo">
 
-      <div class="vista" id="vista-viaje">
+      <!-- ═══ INICIO ═══ -->
+      <div class="vista vista--rollo" id="vista-inicio">
+
+        <!-- CARRUSEL -->
+        <div class="car" id="carrusel" style="margin:-1rem -1.15rem 0;border-radius:0">
+          <div class="car__pista" id="car-pista">
+
+            <div class="car__slide">
+              <div class="car__bg" style="background:linear-gradient(140deg,#0A122A 0%,#1B3C7B 60%,#0A1A4A 100%)">
+                <svg style="position:absolute;right:-20px;top:-20px;opacity:.08" width="220" height="220" viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" stroke="#fff" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-215 50 50)"/><circle cx="50" cy="50" r="34" stroke="#fff" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-98 50 50)"/><circle cx="50" cy="50" r="34" stroke="#fff" stroke-width="15" stroke-dasharray="66 216" transform="rotate(38 50 50)"/></svg>
+              </div>
+              <div class="car__cont">
+                <div class="car__badge" style="background:var(--ac);color:#fff">✈️ Concesión AIFA</div>
+                <div class="car__titulo">Tu taxi oficial al Aeropuerto Internacional Felipe Ángeles</div>
+                <div class="car__sub">Tarifa fija · Sin sorpresas · Hidalgo · EdoMex · CDMX norte</div>
+              </div>
+            </div>
+
+            <div class="car__slide">
+              <div class="car__bg" style="background:linear-gradient(140deg,#1a0800 0%,#6b2c00 60%,#1a0800 100%)">
+                <svg style="position:absolute;left:-10px;bottom:-30px;opacity:.1" width="180" height="180" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1"><path d="M3 17v-4.2l2-4.6A2 2 0 0 1 6.8 7h10.4a2 2 0 0 1 1.8 1.2l2 4.6V17z"/><path d="M3 13h18"/></svg>
+              </div>
+              <div class="car__cont">
+                <div class="car__badge" style="background:var(--ambar);color:#1a0800">🔄 Especial</div>
+                <div class="car__titulo">Viaje redondo — te llevamos y te recogemos</div>
+                <div class="car__sub">Mismo conductor · Tarifa ida+vuelta · Sin costo extra de espera</div>
+              </div>
+            </div>
+
+            <div class="car__slide">
+              <div class="car__bg" style="background:linear-gradient(140deg,#001428 0%,#003060 60%,#001428 100%)">
+                <div style="position:absolute;inset:0;opacity:.12;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><path d=%22M20 2 L38 38 H2Z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%221%22/></svg>');background-size:40px"></div>
+              </div>
+              <div class="car__cont">
+                <div class="car__badge" style="background:#a855f7;color:#fff">👥 Compartido</div>
+                <div class="car__titulo">Comparte el viaje al AIFA — divide el costo</div>
+                <div class="car__sub">Encuentra compañeros de ruta · Más barato · Más sustentable</div>
+              </div>
+            </div>
+
+            <div class="car__slide">
+              <div class="car__bg" style="background:linear-gradient(140deg,#021a08 0%,#0a4020 60%,#021a08 100%)">
+                <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><path d=%22M30 5L55 50H5z%22 fill=%22none%22 stroke=%22rgba(255,255,255,.06)%22/></svg>');background-size:60px 60px"></div>
+              </div>
+              <div class="car__cont">
+                <div class="car__badge" style="background:#22c55e;color:#fff">🏔️ Turismo</div>
+                <div class="car__titulo">Paquetes turísticos por Hidalgo y zona AIFA</div>
+                <div class="car__sub">Real del Monte · Huasca · Tula · Teotihuacan · y más</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="car__dots" id="car-dots">
+          <div class="car__dot car__dot--on"></div>
+          <div class="car__dot"></div>
+          <div class="car__dot"></div>
+          <div class="car__dot"></div>
+        </div>
+
+        <!-- ACCESOS RÁPIDOS -->
+        <div style="display:flex;gap:.65rem;margin:1.2rem 0">
+          <button class="quick-viaje" id="btn-quick-viaje" style="flex:1;margin:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17v-4.2l2-4.6A2 2 0 0 1 6.8 7h10.4a2 2 0 0 1 1.8 1.2l2 4.6V17z"/><path d="M3 13h18M7 17h.01M17 17h.01"/></svg>
+            <span style="flex:1">Pedir viaje</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
+          <button id="btn-aifa" style="
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;
+            padding:.85rem .9rem;background:var(--sup);border:1.5px solid var(--borde);
+            border-radius:var(--r-xl);font-size:11px;font-weight:700;color:var(--txt);
+            flex-shrink:0;min-width:72px;line-height:1.1
+          ">
+            <span style="font-size:1.5rem;line-height:1">✈️</span>
+            <span>Al AIFA</span>
+          </button>
+        </div>
+
+        <!-- TARJETA DE FIDELIDAD -->
+        <div class="home-sec">
+          <div class="home-sec__cab">
+            <span class="home-sec__h">Tu membresía</span>
+            <button class="home-sec__ver" id="ver-beneficios">Beneficios</button>
+          </div>
+          <div id="tarjeta-nivel"></div>
+        </div>
+
+        <!-- VIAJE REDONDO (SERVICIO) -->
+        <div class="home-sec">
+          <div class="home-sec__cab">
+            <span class="home-sec__h">Servicios T30</span>
+          </div>
+          <div id="servicios-lista"></div>
+        </div>
+
+        <!-- CUPONES -->
+        <div class="home-sec">
+          <div class="home-sec__cab">
+            <span class="home-sec__h">Mis cupones</span>
+            <span class="home-sec__ver" id="cupones-cuenta"></span>
+          </div>
+          <div class="h-scroll" id="cupones-lista"></div>
+        </div>
+
+        <!-- VIAJES COMPARTIDOS -->
+        <div class="home-sec">
+          <div class="home-sec__cab">
+            <span class="home-sec__h">Viajes compartidos</span>
+            <button class="home-sec__ver">Publicar</button>
+          </div>
+
+          <div class="viaje-c">
+            <div class="viaje-c__ruta">
+              <span>Pachuca</span>
+              <div class="viaje-c__linea"></div>
+              <span>AIFA ✈️</span>
+            </div>
+            <div class="viaje-c__chips">
+              <span class="viaje-c__chip">📅 Mañana 4:30 am</span>
+              <span class="viaje-c__chip">🧳 Equipaje</span>
+              <span class="viaje-c__chip">🚭 No fumar</span>
+            </div>
+            <div class="viaje-c__pie">
+              <div>
+                <div class="viaje-c__precio">$180 / persona</div>
+                <div class="viaje-c__asientos"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg> 3 lugares disponibles</div>
+              </div>
+              <button class="viaje-c__btn">Reservar</button>
+            </div>
+          </div>
+
+          <div class="viaje-c">
+            <div class="viaje-c__ruta">
+              <span>Tizayuca</span>
+              <div class="viaje-c__linea"></div>
+              <span>AIFA ✈️</span>
+            </div>
+            <div class="viaje-c__chips">
+              <span class="viaje-c__chip">📅 Hoy 11:00 pm</span>
+              <span class="viaje-c__chip">🌙 Vuelo nocturno</span>
+            </div>
+            <div class="viaje-c__pie">
+              <div>
+                <div class="viaje-c__precio">$120 / persona</div>
+                <div class="viaje-c__asientos"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg> 2 lugares disponibles</div>
+              </div>
+              <button class="viaje-c__btn">Reservar</button>
+            </div>
+          </div>
+
+          <div class="viaje-c">
+            <div class="viaje-c__ruta">
+              <span>AIFA ✈️</span>
+              <div class="viaje-c__linea"></div>
+              <span>Pachuca</span>
+            </div>
+            <div class="viaje-c__chips">
+              <span class="viaje-c__chip">📅 Mañana 9:00 am</span>
+              <span class="viaje-c__chip">🐾 Mascotas OK</span>
+              <span class="viaje-c__chip">🎵 Música</span>
+            </div>
+            <div class="viaje-c__pie">
+              <div>
+                <div class="viaje-c__precio">$180 / persona</div>
+                <div class="viaje-c__asientos"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg> 4 lugares disponibles</div>
+              </div>
+              <button class="viaje-c__btn">Reservar</button>
+            </div>
+          </div>
+
+          <div class="viaje-c">
+            <div class="viaje-c__ruta">
+              <span>Tecámac</span>
+              <div class="viaje-c__linea"></div>
+              <span>Tulancingo</span>
+            </div>
+            <div class="viaje-c__chips">
+              <span class="viaje-c__chip">📅 Sáb 7:00 am</span>
+              <span class="viaje-c__chip">🧳 Equipaje OK</span>
+            </div>
+            <div class="viaje-c__pie">
+              <div>
+                <div class="viaje-c__precio">$95 / persona</div>
+                <div class="viaje-c__asientos"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg> 3 lugares disponibles</div>
+              </div>
+              <button class="viaje-c__btn">Reservar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAQUETES TURÍSTICOS -->
+        <div class="home-sec">
+          <div class="home-sec__cab">
+            <span class="home-sec__h">Paquetes turísticos</span>
+            <button class="home-sec__ver">Ver todos</button>
+          </div>
+          <div class="h-scroll">
+
+            <div class="paquete">
+              <div class="paquete__thumb">
+                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#1a3a1a,#2d6b2d)"></div>
+                <span class="paquete__emoji">⛏️</span>
+              </div>
+              <div class="paquete__cuerpo">
+                <div class="paquete__nombre">Real del Monte</div>
+                <div class="paquete__paradas">
+                  <span class="paquete__parada">Minas</span>
+                  <span class="paquete__parada">Panteón Inglés</span>
+                  <span class="paquete__parada">Centro</span>
+                </div>
+                <div class="paquete__pie">
+                  <span class="paquete__precio">$450</span>
+                  <span class="paquete__dur">⏱ 4 h · desde Pachuca</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="paquete">
+              <div class="paquete__thumb">
+                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#2a1a00,#7a5000)"></div>
+                <span class="paquete__emoji">🏛️</span>
+              </div>
+              <div class="paquete__cuerpo">
+                <div class="paquete__nombre">Teotihuacan</div>
+                <div class="paquete__paradas">
+                  <span class="paquete__parada">Pirámides</span>
+                  <span class="paquete__parada">Zona Arq.</span>
+                  <span class="paquete__parada">Mercado</span>
+                </div>
+                <div class="paquete__pie">
+                  <span class="paquete__precio">$520</span>
+                  <span class="paquete__dur">⏱ 5 h · desde AIFA</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="paquete">
+              <div class="paquete__thumb">
+                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#0a1a3a,#0a3a6a)"></div>
+                <span class="paquete__emoji">🌊</span>
+              </div>
+              <div class="paquete__cuerpo">
+                <div class="paquete__nombre">Huasca Mágico</div>
+                <div class="paquete__paradas">
+                  <span class="paquete__parada">Haciendas</span>
+                  <span class="paquete__parada">Basalto</span>
+                  <span class="paquete__parada">Cascadas</span>
+                </div>
+                <div class="paquete__pie">
+                  <span class="paquete__precio">$650</span>
+                  <span class="paquete__dur">⏱ 6 h · desde Pachuca</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="paquete">
+              <div class="paquete__thumb">
+                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#1a0a30,#4a1a80)"></div>
+                <span class="paquete__emoji">🏺</span>
+              </div>
+              <div class="paquete__cuerpo">
+                <div class="paquete__nombre">Tula de Allende</div>
+                <div class="paquete__paradas">
+                  <span class="paquete__parada">Atlantes</span>
+                  <span class="paquete__parada">Zona Arq.</span>
+                  <span class="paquete__parada">Centro</span>
+                </div>
+                <div class="paquete__pie">
+                  <span class="paquete__precio">$580</span>
+                  <span class="paquete__dur">⏱ 5 h · desde AIFA</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="paquete">
+              <div class="paquete__thumb">
+                <div class="paquete__thumb-bg" style="background:linear-gradient(135deg,#003a1a,#006b3a)"></div>
+                <span class="paquete__emoji">🌲</span>
+              </div>
+              <div class="paquete__cuerpo">
+                <div class="paquete__nombre">Mineral del Chico</div>
+                <div class="paquete__paradas">
+                  <span class="paquete__parada">Parque Nac.</span>
+                  <span class="paquete__parada">Cascadas</span>
+                  <span class="paquete__parada">Pueblo</span>
+                </div>
+                <div class="paquete__pie">
+                  <span class="paquete__precio">$420</span>
+                  <span class="paquete__dur">⏱ 4 h · desde Pachuca</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /vista-inicio -->
+
+      <div class="vista" id="vista-viaje" hidden>
         <div id="mapa"></div>
         <div class="flota" id="flota"><i></i><span>Buscando unidades…</span></div>
         <button class="brujula" id="btn-ubicarme" aria-label="Centrar en mi ubicación">
@@ -731,7 +1312,9 @@ html[data-tema="oscuro"] .leaflet-tile-pane{
     </div>
 
     <nav class="nav" role="tablist">
-      <button role="tab" data-vista="vista-viaje" aria-selected="true"><span class="nav__punto"></span>
+      <button role="tab" data-vista="vista-inicio" aria-selected="true"><span class="nav__punto"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M9 20v-6h6v6"/></svg>Inicio</button>
+      <button role="tab" data-vista="vista-viaje" aria-selected="false"><span class="nav__punto"></span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17v-4.2l2-4.6A2 2 0 0 1 6.8 7h10.4a2 2 0 0 1 1.8 1.2l2 4.6V17z"/><path d="M3 13h18M7 17h.01M17 17h.01"/></svg>Viaje</button>
       <button role="tab" data-vista="vista-actividad" aria-selected="false"><span class="nav__punto"></span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg>Actividad</button>
@@ -781,7 +1364,21 @@ const db   = getFirestore(app);
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
-const PACHUCA = { lat: 20.1011, lng: -98.7591 };
+// ─── Zona de operación T30 ───────────────────────────────
+// Hub principal: AIFA (Santa Lucía del Camino, Zumpango)
+// Cobertura: Hidalgo · EdoMex norte · CDMX norte
+const AIFA   = { lat: 19.9458, lng: -99.0785 }; // hub de concesión
+const PACHUCA = { lat: 20.1011, lng: -98.7591 }; // ciudad base
+// Centro de mapa = punto medio entre ambos
+const CENTRO = { lat: 20.022, lng: -98.912 };
+
+// Municipios relevantes de la concesión
+const ZONAS = [
+  "AIFA","Zumpango","Tizayuca","Tecámac","Nextlalpan","Jaltenco",
+  "Pachuca","Mineral de la Reforma","Epazoyucan","Zapotlán de Juárez",
+  "Tulancingo","Actopan","Tula de Allende","Real del Monte","Huasca",
+  "Mineral del Chico","Ecatepec","Apaxco","Tepeji","Teotihuacan"
+].join(", ");
 
 const S = {
   usuario: null, perfil: null,
@@ -790,6 +1387,8 @@ const S = {
   clase: "express", pago: "efectivo",
   viajeId: null, viaje: null, historial: [],
   campoActivo: "destino",
+  cupon: null,        // cupón aplicado al viaje en curso de planeación
+  redondo: null,      // { fecha, hora } si el usuario activó viaje redondo
   cancelar: [], relojes: []
 };
 
@@ -797,6 +1396,82 @@ const CLASES = {
   express: { nombre: "T30 Express", pie: "Rápido y económico",     base: 22, km: 6.8,  min: 1.6, piso: 45, plazas: 4, color: "rosa" },
   confort: { nombre: "T30 Confort", pie: "Autos nuevos y amplios", base: 32, km: 9.2,  min: 2.2, piso: 65, plazas: 4, color: "azul-claro" },
   xl:      { nombre: "T30 XL",      pie: "Hasta 6 pasajeros",      base: 45, km: 12.5, min: 2.8, piso: 90, plazas: 6, color: "ambar" }
+};
+
+/* ─── PROMOCIONES ─────────────────────────────────────────
+   Catálogo declarativo. Cada cupón define sus propias reglas
+   de elegibilidad; validar() recibe el contexto y decide.
+   ───────────────────────────────────────────────────────── */
+const DIAS_NUEVO = 30;          // días para dejar de ser usuario nuevo
+const PUNTOS_POR_VIAJE = 40;
+const NIVELES = [
+  { id: "bronce",  nombre: "Bronce",  min: 0,    color: "#B0724A", mult: 1.0,  bono: "Acumula puntos en cada viaje" },
+  { id: "plata",   nombre: "Plata",   min: 400,  color: "#9BA6BC", mult: 1.15, bono: "15% más puntos por viaje" },
+  { id: "oro",     nombre: "Oro",     min: 1200, color: "#E0B341", mult: 1.3,  bono: "30% más puntos · Prioridad de unidad" },
+  { id: "platino", nombre: "Platino", min: 2800, color: "#7FD4E8", mult: 1.5,  bono: "50% más puntos · Confort al precio de Express" }
+];
+const CANJE_PUNTOS = 500;       // puntos necesarios para $100 de saldo
+const CANJE_VALOR   = 100;
+
+const CUPONES = [
+  {
+    id: "bienvenida25",
+    titulo: "25% en tu primer viaje",
+    desc: "Bienvenido a T30 — descuento en tu viaje inicial",
+    icono: "🎉", tono: "rd", insignia: "Solo nuevos",
+    tipo: "porcentaje", valor: 25, tope: 120,
+    usos: 1,
+    validar: ctx => {
+      if (!ctx.esNuevo) return { ok: false, razon: "Exclusivo para cuentas de menos de " + DIAS_NUEVO + " días" };
+      if (ctx.viajes > 0)  return { ok: false, razon: "Ya realizaste tu primer viaje" };
+      return { ok: true };
+    }
+  },
+  {
+    id: "aifa15",
+    titulo: "15% en viajes al AIFA",
+    desc: "Aplica en cualquier viaje con origen o destino en el aeropuerto",
+    icono: "✈️", tono: "aifa", insignia: "Aeropuerto",
+    tipo: "porcentaje", valor: 15, tope: 150,
+    usos: 3,
+    validar: ctx => {
+      if (!ctx.tocaAIFA) return { ok: false, razon: "Tu ruta debe incluir el AIFA" };
+      return { ok: true };
+    }
+  },
+  {
+    id: "nocturno20",
+    titulo: "20% en viajes nocturnos",
+    desc: "Válido de 10:00 pm a 5:00 am, todos los días",
+    icono: "🌙", tono: "promo", insignia: "10pm – 5am",
+    tipo: "porcentaje", valor: 20, tope: 100,
+    usos: 5,
+    validar: ctx => {
+      const h = ctx.hora;
+      if (!(h >= 22 || h < 5)) return { ok: false, razon: "Disponible de 10 pm a 5 am" };
+      return { ok: true };
+    }
+  },
+  {
+    id: "regreso50",
+    titulo: "$50 en tu viaje de regreso",
+    desc: "Se activa al completar un viaje de ida el mismo día",
+    icono: "🔄", tono: "verde", insignia: "Mismo día",
+    tipo: "monto", valor: 50,
+    usos: 4,
+    validar: ctx => {
+      if (!ctx.viajeHoy) return { ok: false, razon: "Completa un viaje hoy para desbloquearlo" };
+      return { ok: true };
+    }
+  }
+];
+const cuponPorId = id => CUPONES.find(c => c.id === id);
+
+// Config del servicio Viaje Redondo (NO es cupón — es un servicio)
+const REDONDO = {
+  descuento: 0.15,     // 15% off en el tramo de regreso
+  esperaMaxHoras: 48,  // ventana máxima para programar el regreso
+  minHoras: 1
 };
 
 const CHOFERES = [
@@ -1013,7 +1688,7 @@ $("#form-registro").onsubmit = async ev => {
       nombre,
       correo: $("#re-correo").value.trim(),
       telefono: $("#re-tel").value.trim(),
-      ciudad: $("#re-ciudad").value.trim() || "Pachuca de Soto",
+      ciudad: $("#re-ciudad").value.trim() || "",
       foto: null,
       lugares: { casa: null, trabajo: null },
       pago: "efectivo", tema: "oscuro", acento: "rosa", avisos: true,
@@ -1066,6 +1741,16 @@ onAuthStateChanged(auth, async usuario => {
     const snap = await getDoc(ref);
     if (snap.exists()) {
       S.perfil = snap.data();
+      // Retrocompatibilidad: cuentas creadas antes del sistema de fidelidad
+      const faltantes = {};
+      if (S.perfil.puntos  === undefined) faltantes.puntos = (S.perfil.viajes || 0) * PUNTOS_POR_VIAJE;
+      if (S.perfil.saldo   === undefined) faltantes.saldo = 0;
+      if (S.perfil.cupones === undefined) faltantes.cupones = {};
+      if (S.perfil.creadoEn === undefined) faltantes.creadoEn = serverTimestamp();
+      if (Object.keys(faltantes).length) {
+        Object.assign(S.perfil, faltantes);
+        updateDoc(ref, faltantes).catch(() => {});
+      }
     } else {
       // Usuario nuevo — puede venir de Google (tiene foto y displayName) o de correo
       const fotoGoogle = usuario.photoURL || null;
@@ -1073,20 +1758,23 @@ onAuthStateChanged(auth, async usuario => {
         uid: usuario.uid,
         nombre: usuario.displayName || "Pasajero T30",
         correo: usuario.email,
-        telefono: usuario.phoneNumber || "",
-        ciudad: "Pachuca de Soto",
+        ciudad: usuario.phoneNumber || "",
         foto: fotoGoogle,
         lugares: { casa: null, trabajo: null },
         pago: "efectivo", tema: "oscuro", acento: "rosa", avisos: true,
-        viajes: 0, gastado: 0, estrellas: 5
+        viajes: 0, gastado: 0, estrellas: 5,
+        puntos: 0, saldo: 0, cupones: {}
       };
       await setDoc(ref, { ...S.perfil, creadoEn: serverTimestamp() });
+      // Releer para obtener creadoEn resuelto (necesario para "usuario nuevo")
+      const fresco = await getDoc(ref);
+      if (fresco.exists()) S.perfil = fresco.data();
     }
     S.pago = S.perfil.pago || "efectivo";
     aplicarTema(S.perfil.tema || "oscuro", S.perfil.acento || "rosa");
     pintarPerfil();
     mostrar("pantalla-app");
-    iniciarMapa();
+    cargarInicio();
     pintarHoja();
     escucharViajes();
     ubicarme(false);
@@ -1200,11 +1888,386 @@ $("#op-trabajo").onclick = () => editarLugar("trabajo", "Trabajo");
 $$(".nav button").forEach(b => b.onclick = () => {
   $$(".nav button").forEach(o => o.setAttribute("aria-selected", String(o === b)));
   $$(".vista").forEach(v => { v.hidden = v.id !== b.dataset.vista; });
-  if (b.dataset.vista === "vista-viaje") setTimeout(() => mapa?.invalidateSize(), 80);
+  if (b.dataset.vista === "vista-viaje") { iniciarMapa(); setTimeout(() => mapa?.invalidateSize(), 80); }
 });
 
 /* ══════════════════════════════════════════════════════════════
-   9 · MAPA — Leaflet + CartoCDN (100% gratuito, sin API key)
+   9 · PANTALLA INICIO — carrusel + fidelidad
+   ══════════════════════════════════════════════════════════════ */
+function cargarInicio() {
+  pintarInicio();
+  iniciarCarrusel();
+}
+
+// Repinta todos los bloques dinámicos del Inicio
+function pintarInicio() {
+  pintarNivel();
+  pintarServicios();
+  pintarCupones();
+}
+
+/* ─── Tarjeta de membresía ─────────────────────────────── */
+function pintarNivel() {
+  const cont = $("#tarjeta-nivel");
+  if (!cont) return;
+  const n = nivelActual(), sig = siguienteNivel();
+  const pts = puntosActuales();
+  const saldo = S.perfil?.saldo || 0;
+  const puedeCanjear = pts >= CANJE_PUNTOS;
+
+  // progreso hacia el siguiente nivel (o hacia el canje si ya es Platino)
+  const desde = n.min;
+  const hasta = sig ? sig.min : Math.max(n.min + CANJE_PUNTOS, pts);
+  const pct = Math.max(3, Math.min(100, Math.round((pts - desde) / (hasta - desde) * 100)));
+
+  cont.innerHTML =
+    '<div class="nivel" style="--nivel-c:' + n.color + ';--nivel-tint:' + n.color + '2e">' +
+      '<div class="nivel__top">' +
+        '<div>' +
+          '<div class="nivel__quien">Miembro T30</div>' +
+          '<div class="nivel__nombre">' + esc(S.perfil?.nombre?.split(" ")[0] || "Pasajero") + '</div>' +
+        '</div>' +
+        '<div class="nivel__chip">★ ' + n.nombre + '</div>' +
+      '</div>' +
+      '<div class="nivel__pts"><b>' + pts.toLocaleString("es-MX") + '</b><span>puntos</span>' +
+        (saldo > 0 ? '<span class="saldo-chip">💰 ' + dinero(saldo) + '</span>' : '') +
+      '</div>' +
+      '<div class="nivel__barra"><div class="nivel__fill" id="nivel-fill" style="width:0%"></div></div>' +
+      '<div class="nivel__pie">' +
+        '<span>' + n.bono + '</span>' +
+        '<span>' + (sig ? (sig.min - pts) + " pts → " + sig.nombre : "Nivel máximo") + '</span>' +
+      '</div>' +
+      '<div class="nivel__acciones">' +
+        '<button class="nivel__btn' + (puedeCanjear ? " nivel__btn--on" : "") + '" id="btn-canjear"' + (puedeCanjear ? "" : " disabled") + '>' +
+          (puedeCanjear ? "Canjear " + CANJE_PUNTOS + " pts → " + dinero(CANJE_VALOR) : "Faltan " + (CANJE_PUNTOS - pts) + " pts para canjear") +
+        '</button>' +
+      '</div>' +
+    '</div>';
+
+  setTimeout(() => { const f = $("#nivel-fill"); if (f) f.style.width = pct + "%"; }, 250);
+  $("#btn-canjear").onclick = canjearPuntos;
+}
+
+/* ─── Servicios (Viaje Redondo) ────────────────────────── */
+function pintarServicios() {
+  const cont = $("#servicios-lista");
+  if (!cont) return;
+  const on = !!S.redondo;
+  cont.innerHTML =
+    '<button class="serv' + (on ? " serv--on" : "") + '" id="serv-redondo">' +
+      '<span class="serv__ico">🔄</span>' +
+      '<span class="serv__txt">' +
+        '<b>Viaje redondo</b>' +
+        '<small>' + (on
+          ? "Regreso programado: " + esc(S.redondo.etiqueta)
+          : "Llega hoy, te recogemos cuando digas · " + Math.round(REDONDO.descuento * 100) + "% off en el regreso") +
+        '</small>' +
+      '</span>' +
+      '<span class="serv__tag' + (on ? " serv__tag--on" : "") + '">' + (on ? "Activo" : "Nuevo") + '</span>' +
+    '</button>';
+  $("#serv-redondo").onclick = configurarRedondo;
+}
+
+/* ─── Cupones dinámicos ────────────────────────────────── */
+function pintarCupones() {
+  const cont = $("#cupones-lista");
+  if (!cont) return;
+
+  const evaluados = CUPONES.map(c => ({ cup: c, ev: evaluarCupon(c) }));
+  const disponibles = evaluados.filter(e => e.ev.estado === "listo").length;
+
+  const cuenta = $("#cupones-cuenta");
+  if (cuenta) cuenta.textContent = disponibles + " disponible" + (disponibles === 1 ? "" : "s");
+
+  // Ordenar: listos primero, luego bloqueados, agotados al final
+  const orden = { listo: 0, bloqueado: 1, agotado: 2 };
+  evaluados.sort((a, b) => orden[a.ev.estado] - orden[b.ev.estado]);
+
+  cont.innerHTML = evaluados.map(({ cup, ev }) => {
+    const off = ev.estado !== "listo";
+    const restantes = cup.usos > 1 && ev.estado === "listo"
+      ? '<div class="cupon__usos">' + ev.restantes + " / " + cup.usos + '</div>' : "";
+    const sello = ev.estado === "agotado" ? '<div class="cupon__sello">Usado</div>' : "";
+    const pie = ev.estado === "listo"
+      ? '<button class="cupon__btn" data-cupon="' + cup.id + '">Aplicar al viaje</button>'
+      : '<div class="cupon__razon">' +
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;margin-top:1px"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>' +
+          esc(ev.razon) + '</div>';
+
+    return '<div class="cupon cupon--' + cup.tono + (off ? " cupon--off" : "") + '">' +
+      '<div class="cupon__deco"></div><div class="cupon__deco2"></div>' + restantes + sello +
+      '<div class="cupon__badge">' + esc(cup.insignia) + '</div>' +
+      '<div class="cupon__ico">' + cup.icono + '</div>' +
+      '<div class="cupon__titulo">' + esc(cup.titulo) + '</div>' +
+      '<div class="cupon__desc">' + esc(cup.desc) + '</div>' +
+      pie +
+    '</div>';
+  }).join("");
+
+  $$("[data-cupon]", cont).forEach(b => b.onclick = () => aplicarCupon(b.dataset.cupon));
+}
+
+/* ─── Configurar Viaje Redondo (servicio real) ─────────── */
+async function configurarRedondo() {
+  if (S.redondo) {
+    const quitar = await preguntar({
+      titulo: "Quitar viaje redondo",
+      texto: "Se cancelará el regreso programado para " + S.redondo.etiqueta + ".",
+      ok: "Quitar", riesgo: true
+    });
+    if (quitar) { S.redondo = null; pintarServicios(); if (S.fase === 0) pintarHoja(); avisar("Viaje redondo desactivado."); }
+    return;
+  }
+
+  const ahora = new Date();
+  const opciones = [];
+  // Genera franjas útiles: hoy más tarde, mañana mañana/tarde, pasado
+  const franjas = [
+    { h: 6,  txt: "6:00 am" }, { h: 9,  txt: "9:00 am" },
+    { h: 12, txt: "12:00 pm" }, { h: 15, txt: "3:00 pm" },
+    { h: 18, txt: "6:00 pm" }, { h: 21, txt: "9:00 pm" }
+  ];
+  for (let d = 0; d <= 2 && opciones.length < 8; d++) {
+    for (const f of franjas) {
+      const cuando = new Date(ahora); cuando.setDate(ahora.getDate() + d);
+      cuando.setHours(f.h, 0, 0, 0);
+      const horas = (cuando - ahora) / 3600000;
+      if (horas < REDONDO.minHoras || horas > REDONDO.esperaMaxHoras) continue;
+      const dia = d === 0 ? "Hoy" : d === 1 ? "Mañana" : cuando.toLocaleDateString("es-MX", { weekday: "long" });
+      opciones.push({ etiqueta: dia + " " + f.txt, iso: cuando.toISOString(), ts: cuando.getTime() });
+      if (opciones.length >= 8) break;
+    }
+  }
+
+  if (!opciones.length) return avisar("No hay franjas disponibles ahora mismo.", "mal");
+
+  const cerrar = abrirTelon(
+    '<h3>Viaje redondo</h3>' +
+    '<p>Programa tu regreso y ahorra ' + Math.round(REDONDO.descuento * 100) + '% en ese tramo. Te asignamos el mismo conductor cuando sea posible.</p>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:1rem 0">' +
+      opciones.map((o, i) =>
+        '<button class="btn btn--linea" data-fr="' + i + '" style="padding:.7rem .4rem;font-size:13px">' + esc(o.etiqueta) + '</button>'
+      ).join("") +
+    '</div>' +
+    '<div class="dialogo__botones"><button class="btn btn--suave" data-x>Cancelar</button></div>'
+  );
+  $$("[data-fr]").forEach(b => b.onclick = () => {
+    S.redondo = opciones[+b.dataset.fr];
+    cerrar(null);
+    pintarServicios();
+    if (S.fase === 0) pintarHoja();
+    avisar("Viaje redondo activo · regreso " + S.redondo.etiqueta, "bien");
+  });
+  $("[data-x]").onclick = () => cerrar(null);
+}
+
+// Beneficios de niveles
+$("#ver-beneficios").onclick = () => {
+  const actual = nivelActual().id;
+  const cerrarBen = abrirTelon(
+    '<h3>Niveles T30</h3>' +
+    '<p>Ganas ' + PUNTOS_POR_VIAJE + ' puntos base por viaje. Tu nivel multiplica esa cantidad.</p>' +
+    '<div style="display:flex;flex-direction:column;gap:.55rem;margin:1rem 0">' +
+      NIVELES.map(n =>
+        '<div style="display:flex;align-items:center;gap:.75rem;padding:.7rem .8rem;border-radius:12px;background:' +
+          (n.id === actual ? "color-mix(in srgb," + n.color + " 14%,transparent)" : "var(--campo)") +
+          ';border:1.5px solid ' + (n.id === actual ? n.color : "transparent") + '">' +
+          '<span style="width:10px;height:10px;border-radius:50%;background:' + n.color + ';flex-shrink:0"></span>' +
+          '<span style="flex:1;min-width:0">' +
+            '<b style="display:block;font-size:13.5px">' + n.nombre + (n.id === actual ? " · tu nivel" : "") + '</b>' +
+            '<small style="display:block;font-size:11.5px;color:var(--txt-2)">' + n.bono + '</small>' +
+          '</span>' +
+          '<span class="mono" style="font-size:12px;color:var(--txt-3);flex-shrink:0">' + n.min + '+</span>' +
+        '</div>'
+      ).join("") +
+    '</div>' +
+    '<div class="dialogo__botones"><button class="btn" data-x style="width:100%">Entendido</button></div>'
+  );
+  $("[data-x]").onclick = () => cerrarBen(null);
+};
+
+function iniciarCarrusel() {
+  const pista = $("#car-pista");
+  const dots  = $$("#car-dots .car__dot");
+  if (!pista || !dots.length) return;
+  const total = pista.children.length;
+  let idx = 0, timer, startX = 0, arrastrado = false;
+
+  const ir = (n) => {
+    idx = (n + total) % total;
+    pista.style.transform = "translateX(-" + (idx * 100) + "%)";
+    dots.forEach((d, i) => d.classList.toggle("car__dot--on", i === idx));
+  };
+
+  // Auto-avance cada 4.5 s
+  const resetTimer = () => {
+    clearInterval(timer);
+    timer = setInterval(() => ir(idx + 1), 4500);
+  };
+  resetTimer();
+
+  // Swipe táctil
+  pista.parentElement.addEventListener("touchstart", e => { startX = e.touches[0].clientX; arrastrado = false; }, { passive: true });
+  pista.parentElement.addEventListener("touchmove",  e => { if (Math.abs(e.touches[0].clientX - startX) > 8) arrastrado = true; }, { passive: true });
+  pista.parentElement.addEventListener("touchend",   e => {
+    if (!arrastrado) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 42) { ir(idx + (dx < 0 ? 1 : -1)); resetTimer(); }
+  });
+
+  // Click en dots
+  dots.forEach((d, i) => d.onclick = () => { ir(i); resetTimer(); });
+}
+
+// Botón rápido: ir a pedir viaje
+const irAViaje = (destPredefinido) => {
+  $$(".nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.vista === "vista-viaje")));
+  $$(".vista").forEach(v => { v.hidden = v.id !== "vista-viaje"; });
+  iniciarMapa();
+  if (destPredefinido) {
+    setTimeout(() => {
+      const campoD = $("#c-destino");
+      if (campoD) { campoD.value = destPredefinido; campoD.dispatchEvent(new Event("input")); }
+    }, 400);
+  }
+  setTimeout(() => mapa?.invalidateSize(), 80);
+};
+$("#btn-quick-viaje").onclick = () => irAViaje(null);
+
+// Acceso directo AIFA — prefija el destino y abre el mapa
+$("#btn-aifa").onclick = () => irAViaje("AIFA - Aeropuerto Internacional Felipe Ángeles");
+
+/* ══════════════════════════════════════════════════════════════
+   9b · MOTOR DE PROMOCIONES — validación real contra Firestore
+   ══════════════════════════════════════════════════════════════ */
+
+// ─── Antigüedad de la cuenta ───────────────────────────────
+function diasDesdeAlta() {
+  const c = S.perfil?.creadoEn;
+  if (!c) return 0;
+  const ms = c.seconds ? c.seconds * 1000 : (c instanceof Date ? c.getTime() : Date.parse(c));
+  if (!ms || isNaN(ms)) return 0;
+  return Math.floor((Date.now() - ms) / 86400000);
+}
+const esUsuarioNuevo = () => diasDesdeAlta() < DIAS_NUEVO;
+const diasRestantesNuevo = () => Math.max(0, DIAS_NUEVO - diasDesdeAlta());
+
+// ─── Nivel de fidelidad ────────────────────────────────────
+function puntosActuales() { return S.perfil?.puntos || 0; }
+function nivelActual() {
+  const p = puntosActuales();
+  return [...NIVELES].reverse().find(n => p >= n.min) || NIVELES[0];
+}
+function siguienteNivel() {
+  const p = puntosActuales();
+  return NIVELES.find(n => n.min > p) || null;
+}
+
+// ─── Contexto de evaluación ────────────────────────────────
+const tocaElAIFA = () => {
+  const cerca = (pt) => pt && Math.abs(pt.lat - AIFA.lat) < 0.09 && Math.abs(pt.lng - AIFA.lng) < 0.09;
+  const dice  = (pt) => pt && /aifa|felipe ángeles|felipe angeles/i.test(pt.texto || "");
+  return cerca(S.origen) || cerca(S.destino) || dice(S.origen) || dice(S.destino);
+};
+
+function huboViajeHoy() {
+  const hoy = new Date().toDateString();
+  return S.historial.some(v => {
+    if (v.estado !== "completado") return false;
+    const ms = v.creadoEn?.seconds ? v.creadoEn.seconds * 1000 : null;
+    return ms && new Date(ms).toDateString() === hoy;
+  });
+}
+
+function contextoPromo() {
+  return {
+    esNuevo:   esUsuarioNuevo(),
+    viajes:    S.perfil?.viajes || 0,
+    hora:      new Date().getHours(),
+    tocaAIFA:  tocaElAIFA(),
+    viajeHoy:  huboViajeHoy(),
+    nivel:     nivelActual().id
+  };
+}
+
+// ─── Estado de un cupón (usos consumidos en Firestore) ─────
+function usosDe(id) { return S.perfil?.cupones?.[id]?.usos || 0; }
+function agotado(cup) { return usosDe(cup.id) >= (cup.usos || 1); }
+
+function evaluarCupon(cup) {
+  if (agotado(cup)) {
+    return { estado: "agotado", razon: cup.usos > 1 ? "Usaste los " + cup.usos + " canjes disponibles" : "Ya usaste este cupón" };
+  }
+  const r = cup.validar(contextoPromo());
+  if (!r.ok) return { estado: "bloqueado", razon: r.razon };
+  return { estado: "listo", restantes: (cup.usos || 1) - usosDe(cup.id) };
+}
+
+// ─── Cálculo del descuento ─────────────────────────────────
+function descuentoDe(cup, precioBase) {
+  if (!cup || !precioBase) return 0;
+  if (cup.tipo === "monto") return Math.min(cup.valor, precioBase - 25);
+  const bruto = precioBase * (cup.valor / 100);
+  return Math.round(Math.min(bruto, cup.tope || bruto));
+}
+
+// ─── Consumir un cupón (transacción real) ──────────────────
+async function consumirCupon(id) {
+  if (!S.usuario) return;
+  const nuevos = { ...(S.perfil.cupones || {}) };
+  nuevos[id] = { usos: (nuevos[id]?.usos || 0) + 1, ultimoUso: Date.now() };
+  S.perfil.cupones = nuevos;
+  try {
+    await updateDoc(doc(db, "usuarios", S.usuario.uid), { ["cupones." + id + ".usos"]: increment(1), ["cupones." + id + ".ultimoUso"]: serverTimestamp() });
+  } catch (e) { console.warn("cupón:", e); }
+}
+
+// ─── Otorgar puntos al completar viaje ─────────────────────
+async function otorgarPuntos(precio) {
+  const mult = nivelActual().mult;
+  const ganados = Math.round(PUNTOS_POR_VIAJE * mult);
+  const antesNivel = nivelActual().id;
+  S.perfil.puntos = puntosActuales() + ganados;
+  try { await updateDoc(doc(db, "usuarios", S.usuario.uid), { puntos: increment(ganados) }); } catch {}
+  const ahoraNivel = nivelActual();
+  if (ahoraNivel.id !== antesNivel) {
+    espera(() => avisar("¡Subiste a nivel " + ahoraNivel.nombre + "! " + ahoraNivel.bono, "bien"), 1200);
+  }
+  return ganados;
+}
+
+// ─── Canjear puntos por saldo ──────────────────────────────
+async function canjearPuntos() {
+  const p = puntosActuales();
+  if (p < CANJE_PUNTOS) return avisar("Necesitas " + (CANJE_PUNTOS - p) + " puntos más.", "mal");
+  const ok = await preguntar({
+    titulo: "Canjear " + CANJE_PUNTOS + " puntos",
+    texto: "Se convertirán en " + dinero(CANJE_VALOR) + " de saldo aplicable a tus próximos viajes.",
+    ok: "Canjear"
+  });
+  if (!ok) return;
+  S.perfil.puntos = p - CANJE_PUNTOS;
+  S.perfil.saldo  = (S.perfil.saldo || 0) + CANJE_VALOR;
+  try {
+    await updateDoc(doc(db, "usuarios", S.usuario.uid), { puntos: increment(-CANJE_PUNTOS), saldo: increment(CANJE_VALOR) });
+    avisar("Canjeado. Tienes " + dinero(S.perfil.saldo) + " de saldo.", "bien");
+  } catch (e) { avisar(leer(e), "mal"); }
+  pintarInicio();
+}
+
+// ─── Aplicar cupón desde la tarjeta ────────────────────────
+async function aplicarCupon(id) {
+  const cup = cuponPorId(id);
+  if (!cup) return;
+  const ev = evaluarCupon(cup);
+  if (ev.estado !== "listo") return avisar(ev.razon, "mal");
+  S.cupon = cup;
+  avisar(cup.titulo + " aplicado a tu próximo viaje.", "bien");
+  irAViaje(null);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   10 · MAPA — Leaflet + OpenStreetMap (100% gratuito, sin API key)
    ══════════════════════════════════════════════════════════════ */
 let mapa, capa, marcaOrigen, marcaDestino, marcaYo, marcaAuto, linea;
 
@@ -1212,7 +2275,7 @@ const TESELA_OSM = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 function iniciarMapa() {
   if (mapa) { setTimeout(() => mapa.invalidateSize(), 150); return; }
-  mapa = L.map("mapa", { zoomControl: false }).setView([PACHUCA.lat, PACHUCA.lng], 14);
+  mapa = L.map("mapa", { zoomControl: false }).setView([CENTRO.lat, CENTRO.lng], 11);
   mapa.attributionControl.setPrefix("");
   capa = L.tileLayer(TESELA_OSM, {
     maxZoom: 19,
@@ -1277,31 +2340,38 @@ $("#btn-ubicarme").onclick = () => ubicarme(true);
 
 /* ══════════════════════════════════════════════════════════════
 /* ══════════════════════════════════════════════════════════════
-   10 · GEOCODING (Photon + Nominatim) · RUTAS (OSRM)
+   11 · GEOCODING (Photon + Nominatim) · RUTAS (OSRM)
    Todo 100% gratuito, sin API key, sin tarjeta de crédito.
    ══════════════════════════════════════════════════════════════ */
 
-const BBOX = { lonMin: -99.05, latMin: 19.82, lonMax: -98.42, latMax: 20.32 };
+// Bbox completo de la zona de concesión AIFA
+// Norte: Actopan/norte Hidalgo · Sur: Ecatepec · Este: Tulancingo · Oeste: Tula
+const BBOX = { lonMin: -99.65, latMin: 19.38, lonMax: -98.18, latMax: 20.55 };
 
 async function geocodificar(texto) {
-  // Photon (Komoot) — gratis, basado en OSM, sin key
+  // Photon — bias hacia el centro de operación (AIFA)
   try {
     const r = await fetch(
-      "https://photon.komoot.io/api/?lang=es&limit=6&lat=" + PACHUCA.lat + "&lon=" + PACHUCA.lng + "&zoom=14&q=" + encodeURIComponent(texto),
+      "https://photon.komoot.io/api/?lang=es&limit=7&lat=" + AIFA.lat + "&lon=" + AIFA.lng + "&zoom=11&q=" + encodeURIComponent(texto),
       { signal: AbortSignal.timeout(5000) }
     );
     const feats = (await r.json())?.features || [];
-    if (feats.length) return feats.map(f => {
+    // Filtrar solo resultados dentro de la zona de cobertura
+    const enZona = feats.filter(f => {
+      const [lon, lat] = f.geometry.coordinates;
+      return lat >= BBOX.latMin && lat <= BBOX.latMax && lon >= BBOX.lonMin && lon <= BBOX.lonMax;
+    });
+    if (enZona.length) return enZona.map(f => {
       const p = f.properties || {};
-      const partes = [p.name, p.street && (p.street + (p.housenumber ? " " + p.housenumber : "")), p.city || p.state].filter(Boolean);
+      const partes = [p.name, p.street && (p.street + (p.housenumber ? " " + p.housenumber : "")), p.city || p.county || p.state].filter(Boolean);
       return { texto: partes[0] || "Lugar", detalle: partes.slice(1, 3).join(", "), lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
     });
   } catch {}
-  // Nominatim — fallback gratuito
+  // Nominatim — fallback, busca en MX sin restricción de estado
   try {
     const r = await fetch(
-      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&countrycodes=mx&accept-language=es&viewbox=" +
-      BBOX.lonMin + "," + BBOX.latMax + "," + BBOX.lonMax + "," + BBOX.latMin + "&q=" + encodeURIComponent(texto),
+      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=7&countrycodes=mx&accept-language=es&viewbox=" +
+      BBOX.lonMin + "," + BBOX.latMax + "," + BBOX.lonMax + "," + BBOX.latMin + "&bounded=1&q=" + encodeURIComponent(texto),
       { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(7000) }
     );
     return (await r.json() || []).map(d => ({
@@ -1453,6 +2523,7 @@ function pintarSugerencias(lista, campo) {
     cont.innerHTML = "";
     await calcularRuta();
     pintarClases();
+    pintarCupones();
   });
 }
 
@@ -1475,12 +2546,88 @@ function pintarClases() {
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/></svg>'
         : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="7" width="18" height="10" rx="2.5"/><circle cx="12" cy="12" r="2.4"/></svg>') +
       '</span><span class="opcion__txt"><b>' + (S.pago === "tarjeta" ? "Tarjeta" : "Efectivo") + '</b><small>Cámbialo en Perfil</small></span></span></div>' +
+    bloqueExtras(listo) +
     '<button class="btn btn--ambar" id="btn-pedir"' + (listo ? "" : " disabled") + '>' +
-      (listo ? "Pedir " + CLASES[S.clase].nombre + " · " + dinero(tarifa(S.clase, S.ruta)) : "Elige tu destino") + '</button>';
+      (listo ? "Pedir " + CLASES[S.clase].nombre + " · " + dinero(desglose(S.clase, S.ruta).total) : "Elige tu destino") + '</button>';
 
   $$("[data-clase]", cont).forEach(b => b.onclick = () => { S.clase = b.dataset.clase; pintarClases(); });
   const btn = $("#btn-pedir", cont);
   if (btn) btn.onclick = pedirViaje;
+
+  // Quitar cupón aplicado
+  const qc = $("#quitar-cupon", cont);
+  if (qc) qc.onclick = () => { S.cupon = null; pintarClases(); pintarCupones(); avisar("Cupón retirado."); };
+  // Alternar viaje redondo desde la hoja
+  const tr = $("#toggle-redondo", cont);
+  if (tr) tr.onclick = configurarRedondo;
+}
+
+/* ─── Desglose de precio: base + redondo − cupón − saldo ── */
+function desglose(clase, ruta) {
+  const base = tarifa(clase, ruta) || 0;
+  if (!base) return { base: 0, redondo: 0, descuento: 0, saldo: 0, total: 0 };
+
+  // Tramo de regreso con su descuento
+  const redondo = S.redondo ? Math.round(base * (1 - REDONDO.descuento)) : 0;
+  const subtotal = base + redondo;
+
+  // Cupón — se revalida en cada repintado por si cambió la ruta o la hora
+  let descuento = 0;
+  if (S.cupon) {
+    const ev = evaluarCupon(S.cupon);
+    if (ev.estado === "listo") descuento = descuentoDe(S.cupon, subtotal);
+    else S.cupon = null;
+  }
+
+  // Saldo del monedero
+  const trasDesc = Math.max(0, subtotal - descuento);
+  const saldo = Math.min(S.perfil?.saldo || 0, trasDesc);
+
+  return { base, redondo, descuento, saldo, total: Math.max(0, trasDesc - saldo) };
+}
+
+/* ─── Panel de extras: redondo + cupón + desglose ───────── */
+function bloqueExtras(listo) {
+  if (!listo) return "";
+  const d = desglose(S.clase, S.ruta);
+  const hayExtras = d.redondo || d.descuento || d.saldo;
+
+  const filaRedondo =
+    '<button class="serv' + (S.redondo ? " serv--on" : "") + '" id="toggle-redondo" style="margin-top:.7rem;padding:.8rem .9rem">' +
+      '<span class="serv__ico" style="width:36px;height:36px;font-size:1.1rem;border-radius:11px">🔄</span>' +
+      '<span class="serv__txt">' +
+        '<b style="font-size:13.5px">Viaje redondo</b>' +
+        '<small style="font-size:12px">' + (S.redondo
+          ? "Regreso " + esc(S.redondo.etiqueta) + " · −" + Math.round(REDONDO.descuento * 100) + "%"
+          : "Programa tu regreso con " + Math.round(REDONDO.descuento * 100) + "% off") + '</small>' +
+      '</span>' +
+      '<span class="serv__tag' + (S.redondo ? " serv__tag--on" : "") + '">' + (S.redondo ? "Activo" : "+") + '</span>' +
+    '</button>';
+
+  const filaCupon = S.cupon
+    ? '<div class="fila" style="margin-top:.55rem;background:color-mix(in srgb,var(--verde) 9%,transparent);border-color:color-mix(in srgb,var(--verde) 30%,transparent)">' +
+        '<span class="fila__izq">' +
+          '<span class="fila__ico" style="background:color-mix(in srgb,var(--verde) 18%,transparent)">' + S.cupon.icono + '</span>' +
+          '<span class="opcion__txt"><b style="color:var(--verde)">' + esc(S.cupon.titulo) + '</b>' +
+          '<small>−' + dinero(d.descuento) + ' aplicado</small></span>' +
+        '</span>' +
+        '<button id="quitar-cupon" style="color:var(--txt-3);padding:.3rem" aria-label="Quitar cupón">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg>' +
+        '</button>' +
+      '</div>'
+    : "";
+
+  const desgloseHTML = hayExtras
+    ? '<div style="margin-top:.7rem;padding:.75rem .9rem;background:var(--campo);border-radius:12px;font-size:13px">' +
+        '<div style="display:flex;justify-content:space-between;color:var(--txt-2);margin-bottom:.3rem"><span>Viaje de ida</span><span class="mono">' + dinero(d.base) + '</span></div>' +
+        (d.redondo ? '<div style="display:flex;justify-content:space-between;color:var(--txt-2);margin-bottom:.3rem"><span>Regreso (−' + Math.round(REDONDO.descuento * 100) + '%)</span><span class="mono">' + dinero(d.redondo) + '</span></div>' : "") +
+        (d.descuento ? '<div style="display:flex;justify-content:space-between;color:var(--verde);margin-bottom:.3rem"><span>Cupón</span><span class="mono">−' + dinero(d.descuento) + '</span></div>' : "") +
+        (d.saldo ? '<div style="display:flex;justify-content:space-between;color:var(--verde);margin-bottom:.3rem"><span>Saldo T30</span><span class="mono">−' + dinero(d.saldo) + '</span></div>' : "") +
+        '<div style="display:flex;justify-content:space-between;font-weight:800;padding-top:.4rem;border-top:1px solid var(--borde)"><span>Total</span><span class="mono">' + dinero(d.total) + '</span></div>' +
+      '</div>'
+    : "";
+
+  return filaRedondo + filaCupon + desgloseHTML;
 }
 
 const pasos = n => '<div class="pasos">' + [1, 2, 3].map(i => '<i class="' + (i <= n ? "viva" : "") + '"></i>').join("") + '</div>';
@@ -1592,19 +2739,56 @@ document.addEventListener("click", async ev => {
 async function pedirViaje() {
   if (!S.origen || !S.destino || !S.ruta) return;
   ocupar($("#btn-pedir"), true, "Pidiendo");
+
+  const d = desglose(S.clase, S.ruta);
+  const cuponUsado = S.cupon ? { id: S.cupon.id, titulo: S.cupon.titulo, monto: d.descuento } : null;
+  const redondoDato = S.redondo ? { etiqueta: S.redondo.etiqueta, iso: S.redondo.iso, ts: S.redondo.ts, precio: d.redondo } : null;
+
   const viaje = {
     uid: S.usuario.uid,
     pasajero: { nombre: S.perfil.nombre, telefono: S.perfil.telefono || "" },
     origen: S.origen, destino: S.destino,
     clase: S.clase, claseNombre: CLASES[S.clase].nombre,
     km: +S.ruta.km.toFixed(2), min: S.ruta.min,
-    precio: tarifa(S.clase, S.ruta),
+    precioBase: d.base,
+    cupon: cuponUsado,
+    saldoUsado: d.saldo,
+    redondo: redondoDato,
+    precio: d.total,
     pago: S.pago, estado: "buscando",
     conductor: null, calificacion: null,
     creadoEn: serverTimestamp()
   };
   try {
     const ref = await addDoc(collection(db, "viajes"), viaje);
+
+    // Consumir cupón y saldo de forma real
+    if (cuponUsado) await consumirCupon(cuponUsado.id);
+    if (d.saldo > 0) {
+      S.perfil.saldo = (S.perfil.saldo || 0) - d.saldo;
+      updateDoc(doc(db, "usuarios", S.usuario.uid), { saldo: increment(-d.saldo) }).catch(() => {});
+    }
+
+    // Programar el tramo de regreso como viaje agendado
+    if (redondoDato) {
+      addDoc(collection(db, "viajes"), {
+        uid: S.usuario.uid,
+        pasajero: viaje.pasajero,
+        origen: S.destino, destino: S.origen,   // invertido
+        clase: S.clase, claseNombre: CLASES[S.clase].nombre,
+        km: viaje.km, min: viaje.min,
+        precioBase: d.base, precio: d.redondo,
+        esRegresoDe: ref.id,
+        programadoPara: redondoDato.iso,
+        pago: S.pago, estado: "programado",
+        conductor: null, calificacion: null,
+        creadoEn: serverTimestamp()
+      }).catch(e => console.warn("regreso:", e));
+    }
+
+    S.cupon = null; S.redondo = null;
+    pintarCupones(); pintarServicios(); pintarNivel();
+
     S.viajeId = ref.id; S.viaje = viaje; S.fase = 1;
     abrirHoja(); pintarHoja();
     // Sin flota conectada, se asigna una unidad simulada a los pocos segundos.
@@ -1629,7 +2813,9 @@ async function terminarViaje() {
     await updateDoc(doc(db, "usuarios", S.usuario.uid), { viajes: increment(1), gastado: increment(S.viaje?.precio || 0) }).catch(() => {});
     S.perfil.viajes = (S.perfil.viajes || 0) + 1;
     S.perfil.gastado = (S.perfil.gastado || 0) + (S.viaje?.precio || 0);
-    pintarPerfil();
+    const ganados = await otorgarPuntos(S.viaje?.precio || 0);
+    avisar("+" + ganados + " puntos T30 🎉", "bien");
+    pintarPerfil(); pintarInicio();
   } catch (e) { avisar(leer(e), "mal"); }
 }
 
@@ -1732,7 +2918,8 @@ function animarAuto(tipo) {
    ══════════════════════════════════════════════════════════════ */
 const ESTADOS = {
   buscando: ["Buscando", "curso"], asignado: ["Conductor en camino", "curso"],
-  en_curso: ["En curso", "curso"], completado: ["Completado", "ok"], cancelado: ["Cancelado", "no"]
+  en_curso: ["En curso", "curso"], completado: ["Completado", "ok"], cancelado: ["Cancelado", "no"],
+  programado: ["Programado", "curso"]
 };
 
 function pintarActividad() {
@@ -1743,22 +2930,42 @@ function pintarActividad() {
       '<b>Todavía no hay viajes</b><p>Cuando pidas tu primer T30 aparecerá aquí con su recibo.</p></div></div>';
     return;
   }
+  // Regresos programados por el servicio Viaje Redondo
+  const agendados = S.historial
+    .filter(v => v.estado === "programado")
+    .sort((a, b) => Date.parse(a.programadoPara || 0) - Date.parse(b.programadoPara || 0));
+
   const hechos = S.historial.filter(v => v.estado === "completado");
   const total = hechos.reduce((a, v) => a + (v.precio || 0), 0);
   const km = hechos.reduce((a, v) => a + (v.km || 0), 0);
 
   const grupos = {};
-  S.historial.forEach(v => {
+  S.historial.filter(v => v.estado !== "programado").forEach(v => {
     const f = v.creadoEn?.toDate ? v.creadoEn.toDate() : new Date();
     const k = f.toLocaleDateString("es-MX", { month: "long", year: "numeric" });
     (grupos[k] ||= []).push(v);
   });
+
+  const bloqueAgenda = agendados.length
+    ? '<p class="rotulo" style="margin:1.3rem 0 .5rem">Programados</p><div class="tarjeta">' +
+      agendados.map(v => {
+        const f = v.programadoPara ? new Date(v.programadoPara) : null;
+        return '<button class="renglon" data-viaje="' + v.id + '">' +
+          '<span class="ico--sm" style="background:color-mix(in srgb,var(--ambar) 16%,transparent)">' +
+            '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ambar)" stroke-width="1.9"><path d="M17 2v4M7 2v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2.5"/></svg></span>' +
+          '<span class="renglon__txt"><b>' + esc(v.destino?.texto || "Regreso") + '</b>' +
+          '<small>' + (f ? f.toLocaleDateString("es-MX", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "Por confirmar") + '</small>' +
+          '<span class="sello sello--curso">Programado</span></span>' +
+          '<span><b class="mono">' + dinero(v.precio) + '</b></span></button>';
+      }).join("") + '</div>'
+    : "";
 
   c.innerHTML =
     '<div class="resumen">' +
       '<div><b class="mono">' + hechos.length + '</b><span>Viajes</span></div>' +
       '<div><b class="mono">' + dinero(total) + '</b><span>Gastado</span></div>' +
       '<div><b class="mono">' + km.toFixed(0) + '</b><span>Km</span></div></div>' +
+    bloqueAgenda +
     Object.entries(grupos).map(([mes, lista]) =>
       '<p class="rotulo" style="margin:1.3rem 0 .5rem">' + esc(mes) + '</p><div class="tarjeta">' +
       lista.map(v => {
