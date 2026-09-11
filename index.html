@@ -954,10 +954,24 @@ button{cursor:pointer}
 .pase__aviso svg{flex:none;margin-top:1px}
 .pase--muerto .pase__qr{filter:grayscale(1);opacity:.4}
 @media print{
-  body>*{display:none!important}
-  #telon{display:block!important;position:static;background:#fff}
-  #telon .dialogo{box-shadow:none;background:#fff;color:#000;max-width:none}
-  .pase__aviso,[data-cerrar],[data-imprimir]{display:none!important}
+  /* Con display:none sobre los hijos de body se escondía .mundo entero, y el
+     pase vive dentro: salía la hoja en blanco. Con visibility el pase sigue
+     visible aunque sus ancestros no lo estén. */
+  body *{visibility:hidden!important}
+  #telon,#telon *{visibility:visible!important}
+  #telon{position:fixed!important;inset:0!important;display:block!important;
+    background:#fff!important;padding:0!important;overflow:visible!important}
+  #telon .dialogo{position:static!important;transform:none!important;max-height:none!important;
+    overflow:visible!important;box-shadow:none!important;border:0!important;
+    background:#fff!important;color:#000!important;width:100%!important;max-width:none!important;
+    border-radius:0!important;padding:12mm 10mm!important}
+  #telon .dialogo h3,#telon .dialogo p,#telon .pase__folio,
+  #telon .pase__datos *{color:#000!important}
+  .pase__qr{box-shadow:none!important;border:1px solid #000!important;width:52mm!important;padding:4mm!important}
+  .pase__aviso,[data-cerrar],[data-imprimir],.dialogo__botones{display:none!important}
+  /* Que el QR salga negro de verdad y no en gris de ahorro de tinta. */
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  @page{margin:0}
 }
 
 /* ─── Acceso al pase ────────────────────────────────────── */
@@ -1044,6 +1058,34 @@ button{cursor:pointer}
 @media (min-width:1600px){
   .vista--rollo>*{max-width:960px}
 }
+
+/* ─── Motivos de cancelación ────────────────────────────── */
+.motivos{display:flex;flex-direction:column;gap:.45rem}
+.motivo{text-align:left;padding:.8rem .95rem;border-radius:14px;background:var(--campo);
+  border:1.5px solid transparent;color:var(--txt);font-size:14px;font-weight:600;transition:var(--t)}
+.motivo:hover{border-color:var(--ac)}
+
+/* ─── Datos de vuelo y equipaje ─────────────────────────── */
+.extras-viaje{background:var(--campo);border-radius:16px;padding:.9rem 1rem;margin-top:.8rem}
+.extras-viaje__cab{display:flex;align-items:center;justify-content:space-between;gap:.6rem;
+  font-size:13.5px;font-weight:700;margin-bottom:.1rem}
+.extras-viaje__cab small{display:block;font-weight:500;color:var(--txt-2);font-size:11.5px;margin-top:.1rem}
+.extras-cuerpo{margin-top:.85rem;display:flex;flex-direction:column;gap:.7rem}
+.extras-fila{display:flex;gap:.6rem}
+.extras-campo{flex:1;min-width:0}
+.extras-campo label{display:block;font-size:11px;color:var(--txt-3);margin-bottom:.25rem}
+.extras-campo input,.extras-campo select{width:100%;background:var(--fondo-2);color:var(--txt);
+  border:1px solid var(--borde);border-radius:11px;padding:.55rem .6rem;font-size:13.5px}
+.extras-campo input:focus,.extras-campo select:focus{border-color:var(--ac);outline:none}
+.contador-num{display:flex;align-items:center;gap:.5rem}
+.contador-num button{width:30px;height:30px;flex:none;border-radius:9px;background:var(--fondo-2);
+  border:1px solid var(--borde);color:var(--txt);font-size:16px;font-weight:700;line-height:1}
+.contador-num button:disabled{opacity:.35}
+.contador-num b{font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:15px;min-width:18px;text-align:center}
+.aviso-clase{font-size:12px;color:var(--ambar);margin-top:.5rem;display:flex;gap:.4rem;align-items:flex-start}
+
+.chip-vuelo{display:inline-flex;align-items:center;gap:.35rem;background:color-mix(in srgb,var(--azul-claro) 18%,transparent);
+  color:var(--azul-claro);font-size:11.5px;font-weight:700;padding:.2rem .55rem;border-radius:99px;margin-right:.35rem}
 </style>
 </head>
 <body>
@@ -2596,7 +2638,6 @@ function pintarSugerencias(lista, campo) {
     cont.innerHTML = "";
     await calcularRuta();
     pintarClases();
-    pintarCupones();
   });
 }
 
@@ -2619,17 +2660,19 @@ function pintarClases() {
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/></svg>'
         : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="7" width="18" height="10" rx="2.5"/><circle cx="12" cy="12" r="2.4"/></svg>') +
       '</span><span class="opcion__txt"><b>' + (S.pago === "tarjeta" ? "Tarjeta" : "Efectivo") + '</b><small>Cámbialo en Perfil</small></span></span></div>' +
+    bloqueDatosViaje(listo) +
     bloqueExtras(listo) +
     '<button class="btn btn--ambar" id="btn-pedir"' + (listo ? "" : " disabled") + '>' +
       (listo ? "Pedir " + CLASES[S.clase].nombre + " · " + dinero(desglose(S.clase, S.ruta).total) : "Elige tu destino") + '</button>';
 
   $$("[data-clase]", cont).forEach(b => b.onclick = () => { S.clase = b.dataset.clase; pintarClases(); });
+  enlazarDatosViaje(cont);
   const btn = $("#btn-pedir", cont);
   if (btn) btn.onclick = pedirViaje;
 
   // Quitar cupón aplicado
   const qc = $("#quitar-cupon", cont);
-  if (qc) qc.onclick = () => { S.cupon = null; pintarClases(); pintarCupones(); avisar("Cupón retirado."); };
+  if (qc) qc.onclick = () => { S.cupon = null; pintarClases(); avisar("Cupón retirado."); };
   // Alternar viaje redondo desde la hoja
   const tr = $("#toggle-redondo", cont);
   if (tr) tr.onclick = configurarRedondo;
@@ -2644,6 +2687,90 @@ function desglose(clase, ruta) {
 }
 
 /* ─── Panel de extras: ya no hay cupones ni redondo aquí ── */
+/* ─── Datos propios de una base de aeropuerto ───────────── */
+const TERMINALES = ["Terminal 1", "Zona de carga", "Hangares / aviación general"];
+S.extras = { vuelo: "", terminal: "", pasajeros: 1, maletas: 0, abierto: false };
+
+const tocaAIFA = () =>
+  /aifa|felipe [aá]ngeles|aeropuerto/i.test((S.origen?.texto || "") + " " + (S.destino?.texto || ""));
+
+/** Plazas necesarias según personas y equipaje: 2 maletas grandes ocupan una plaza. */
+const plazasNecesarias = () =>
+  (S.extras.pasajeros || 1) + Math.floor((S.extras.maletas || 0) / 2);
+
+function claseSugerida() {
+  const n = plazasNecesarias();
+  const cabe = Object.entries(CLASES).filter(([, c]) => c.plazas >= n);
+  return cabe.length ? cabe[0][0] : "xl";
+}
+
+function bloqueDatosViaje(listo) {
+  if (!listo) return "";
+  const e = S.extras;
+  const aifa = tocaAIFA();
+  const resumen = [
+    e.pasajeros + (e.pasajeros === 1 ? " pasajero" : " pasajeros"),
+    e.maletas ? e.maletas + (e.maletas === 1 ? " maleta" : " maletas") : null,
+    e.vuelo ? "vuelo " + e.vuelo : null
+  ].filter(Boolean).join(" · ");
+
+  const necesita = plazasNecesarias();
+  const cabe = CLASES[S.clase].plazas >= necesita;
+
+  return '<div class="extras-viaje">' +
+    '<button class="extras-viaje__cab" id="btn-extras" aria-expanded="' + (e.abierto ? "true" : "false") + '">' +
+      '<span style="text-align:left">Detalles del viaje<small>' + esc(resumen) + '</small></span>' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt-3)" stroke-width="2.2" ' +
+        'style="flex:none;transform:rotate(' + (e.abierto ? "90" : "0") + 'deg);transition:transform .2s"><path d="m9 5 7 7-7 7"/></svg>' +
+    '</button>' +
+    (e.abierto ? '<div class="extras-cuerpo">' +
+      '<div class="extras-fila">' +
+        '<div class="extras-campo"><label>Pasajeros</label>' +
+          '<div class="contador-num">' +
+            '<button data-cuenta="pasajeros" data-paso="-1"' + (e.pasajeros <= 1 ? " disabled" : "") + '>−</button>' +
+            '<b>' + e.pasajeros + '</b>' +
+            '<button data-cuenta="pasajeros" data-paso="1"' + (e.pasajeros >= 6 ? " disabled" : "") + '>+</button>' +
+          '</div></div>' +
+        '<div class="extras-campo"><label>Maletas grandes</label>' +
+          '<div class="contador-num">' +
+            '<button data-cuenta="maletas" data-paso="-1"' + (e.maletas <= 0 ? " disabled" : "") + '>−</button>' +
+            '<b>' + e.maletas + '</b>' +
+            '<button data-cuenta="maletas" data-paso="1"' + (e.maletas >= 8 ? " disabled" : "") + '>+</button>' +
+          '</div></div>' +
+      '</div>' +
+      (aifa ? '<div class="extras-fila">' +
+        '<div class="extras-campo"><label>Número de vuelo</label>' +
+          '<input id="ex-vuelo" type="text" value="' + esc(e.vuelo) + '" placeholder="Y4 1234" autocomplete="off" maxlength="10" /></div>' +
+        '<div class="extras-campo"><label>Terminal</label><select id="ex-terminal">' +
+          '<option value="">Sin especificar</option>' +
+          TERMINALES.map(t => '<option value="' + esc(t) + '"' + (e.terminal === t ? " selected" : "") + '>' + esc(t) + '</option>').join("") +
+        '</select></div>' +
+      '</div>' : "") +
+    '</div>' : "") +
+    (!cabe ? '<div class="aviso-clase">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>' +
+      '<span>Con ' + necesita + ' plazas necesitas ' + esc(CLASES[claseSugerida()].nombre) + '.</span></div>' : "") +
+  '</div>';
+}
+
+function enlazarDatosViaje(cont) {
+  const b = $("#btn-extras", cont);
+  if (b) b.onclick = () => { S.extras.abierto = !S.extras.abierto; pintarClases(); };
+  $$("[data-cuenta]", cont).forEach(x => x.onclick = () => {
+    const k = x.dataset.cuenta;
+    const lim = k === "pasajeros" ? [1, 6] : [0, 8];
+    S.extras[k] = Math.min(lim[1], Math.max(lim[0], (S.extras[k] || 0) + (+x.dataset.paso)));
+    // Si ya no caben, subimos solos de clase en vez de dejar que falle en el sitio.
+    const sug = claseSugerida();
+    if (CLASES[S.clase].plazas < plazasNecesarias()) S.clase = sug;
+    pintarClases();
+  });
+  const v = $("#ex-vuelo", cont);
+  if (v) v.oninput = ev => { S.extras.vuelo = ev.target.value.toUpperCase().slice(0, 10); };
+  const t = $("#ex-terminal", cont);
+  if (t) t.onchange = ev => { S.extras.terminal = ev.target.value; };
+}
+
 function bloqueExtras(listo) {
   if (!listo) return "";
   const d = desglose(S.clase, S.ruta);
@@ -2791,6 +2918,10 @@ async function pedirViaje() {
     saldoUsado: d.saldo,
     precio: d.total,
     pago: S.pago, estado: "buscando",
+    pasajeros: S.extras.pasajeros || 1,
+    maletas: S.extras.maletas || 0,
+    vuelo: (S.extras.vuelo || "").trim() || null,
+    terminal: S.extras.terminal || null,
     conductor: null, calificacion: null,
     creadoEn: serverTimestamp()
   };
@@ -2831,15 +2962,56 @@ async function pedirViaje() {
   } catch (e) { avisar(leer(e), "mal"); ocupar($("#btn-pedir"), false); }
 }
 
+const MOTIVOS_CANCELA = [
+  "Ya no lo necesito",
+  "La espera es muy larga",
+  "Me equivoqué de dirección",
+  "Conseguí otro transporte",
+  "Otro motivo"
+];
+
 async function cancelarViaje() {
-  if (!await preguntar({ titulo: "Cancelar viaje", texto: "Se avisa al conductor y la solicitud se cierra.", ok: "Cancelar viaje", riesgo: true })) return;
-  try { await updateDoc(doc(db, "viajes", S.viajeId), { estado: "cancelado", cerradoEn: serverTimestamp() }); }
-  catch (e) { avisar(leer(e), "mal"); }
+  const motivo = await elegirMotivo();
+  if (motivo === null) return;
+  try {
+    await updateDoc(doc(db, "viajes", S.viajeId), {
+      estado: "cancelado", cerradoEn: serverTimestamp(), motivoCancela: motivo, cercano: false
+    });
+    // Sin esto la unidad se queda ocupada para siempre y la flota se seca.
+    await liberarUnidadDelViaje(S.viaje);
+  } catch (e) { avisar(leer(e), "mal"); }
 }
+
+/** Devuelve la unidad al estado disponible. El panel también lo reconcilia
+    por su cuenta, por si las reglas de Firestore no dejan escribir desde aquí. */
+async function liberarUnidadDelViaje(v) {
+  const unidadId = v?.unidadId;
+  if (!unidadId) return;
+  try {
+    await updateDoc(doc(db, "unidades", unidadId), { estado: "disponible", viajeActualId: null });
+  } catch (e) {
+    console.warn("no se pudo liberar la unidad desde la app:", e.message);
+  }
+}
+
+const elegirMotivo = () => new Promise(res => {
+  const cerrar = abrirTelon(
+    '<h3>Cancelar viaje</h3><p>Cuéntanos por qué, para mejorar el servicio.</p>' +
+    '<div class="motivos">' + MOTIVOS_CANCELA.map((m, i) =>
+      '<button class="motivo" data-motivo="' + i + '">' + esc(m) + '</button>').join("") + '</div>' +
+    '<button class="btn btn--suave" data-no style="margin-top:.9rem">Mejor no cancelar</button>',
+    v => res(v === undefined ? null : v));
+  $("[data-no]").onclick = () => cerrar(null);
+  $$("[data-motivo]").forEach(b => b.onclick = () => cerrar(MOTIVOS_CANCELA[+b.dataset.motivo]));
+});
 
 async function terminarViaje() {
   try {
-    await updateDoc(doc(db, "viajes", S.viajeId), { estado: "completado", cerradoEn: serverTimestamp() });
+    await updateDoc(doc(db, "viajes", S.viajeId), { estado: "completado", cerradoEn: serverTimestamp(), cercano: false });
+    // La unidad tiene que quedar libre en el mismo momento, no cuando el
+    // operador se acuerde: si no, deja de aparecer en "viajes activos" y ya
+    // nadie puede liberarla.
+    await liberarUnidadDelViaje(S.viaje);
     await updateDoc(doc(db, "usuarios", S.usuario.uid), { viajes: increment(1), gastado: increment(S.viaje?.precio || 0) }).catch(() => {});
     S.perfil.viajes = (S.perfil.viajes || 0) + 1;
     S.perfil.gastado = (S.perfil.gastado || 0) + (S.viaje?.precio || 0);
