@@ -935,6 +935,26 @@ button{cursor:pointer}
 
 .sin-red{position:absolute;top:0;left:0;right:0;z-index:950;background:var(--rojo);color:#fff;font-size:12.5px;font-weight:600;text-align:center;padding:calc(.4rem + var(--arriba)) .4rem .4rem;transform:translateY(-110%);transition:var(--t)}
 .sin-red.viva{transform:none}
+
+/* ─── Pase de abordaje (QR de taquilla) ─────────────────── */
+.pase{text-align:center}
+.pase__qr{background:#fff;border-radius:var(--r-sm);padding:14px;margin:0 auto;width:min(252px,66vw);
+  box-shadow:var(--sombra-sm);line-height:0}
+.pase__qr svg{width:100%;height:auto;display:block}
+.pase__folio{font-family:var(--mono,ui-monospace,SFMono-Regular,Menlo,Consolas,monospace);
+  font-size:1.55rem;font-weight:700;letter-spacing:.07em;margin:.85rem 0 .15rem}
+.pase__pie{color:var(--txt-2);font-size:13px;margin:0 0 1rem}
+.pase__datos{text-align:left;border-top:1px solid var(--borde);margin-top:.2rem;padding-top:.2rem}
+.pase__aviso{display:flex;gap:.5rem;align-items:flex-start;text-align:left;background:var(--campo);
+  border-radius:var(--r-sm);padding:.6rem .7rem;margin:.9rem 0 0;color:var(--txt-2);font-size:12.5px}
+.pase__aviso svg{flex:none;margin-top:1px}
+.pase--muerto .pase__qr{filter:grayscale(1);opacity:.4}
+@media print{
+  body>*{display:none!important}
+  #telon{display:block!important;position:static;background:#fff}
+  #telon .dialogo{box-shadow:none;background:#fff;color:#000;max-width:none}
+  .pase__aviso,[data-cerrar],[data-imprimir]{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -2430,7 +2450,13 @@ function pintarPlaneando(c) {
   const buscar = frenar(async (campo, valor) => {
     if (valor.trim().length < 3) return pintarSugerencias([]);
     pintarSugerencias(null);
-    pintarSugerencias(await geocodificar(valor), campo);
+    // Primero el catálogo de la terminal, luego el geocoder general.
+    const [catalogo, geo] = await Promise.all([
+      campo === "destino" ? destinosQueCoinciden(valor) : Promise.resolve([]),
+      geocodificar(valor)
+    ]);
+    const vistos = new Set(catalogo.map(d => d.texto.toLowerCase()));
+    pintarSugerencias(catalogo.concat(geo.filter(g => !vistos.has((g.texto || "").toLowerCase()))), campo);
   }, 420);
 
   ["origen", "destino"].forEach(cual => {
@@ -2686,8 +2712,27 @@ async function pedirViaje() {
 
     pintarNivel();
 
+    // Folio del pase: se guarda para que taquilla pueda buscarlo directo.
+    const folio = folioDe(ref.id);
+    updateDoc(doc(db, "viajes", ref.id), { folio }).catch(() => {});
+    viaje.folio = folio; viaje.id = ref.id; viaje.uid = S.usuario.uid;
+
     S.viajeId = ref.id; S.viaje = viaje; S.fase = 1;
     abrirHoja(); pintarHoja();
+
+    // Registrar el viaje en la terminal. Si el endpoint falla, el viaje
+    // ya quedó guardado: solo se avisa y se puede reintentar después.
+    if (TERMINAL.activo) {
+      crearViajeEnTerminal(viaje, ref.id)
+        .then(folioTerminal => {
+          if (folioTerminal) updateDoc(doc(db, "viajes", ref.id), { folioTerminal }).catch(() => {});
+        })
+        .catch(e => {
+          console.warn("terminal:", e.message);
+          updateDoc(doc(db, "viajes", ref.id), { terminalPendiente: true }).catch(() => {});
+          avisar("El viaje se guardó, pero la terminal no respondió. Se reintentará.", "mal");
+        });
+    }
     // La asignación de unidad la hace el operador desde el panel — no hay
     // simulación aquí. El estado se actualiza solo/a a través de Firestore
     // cuando el operador asigna una unidad.
@@ -2888,6 +2933,11 @@ function pintarActividad() {
       }).join("") + '</div>').join("");
 
   $$("[data-viaje]", c).forEach(b => b.onclick = () => recibo(S.historial.find(v => v.id === b.dataset.viaje)));
+  // Los viajes vigentes abren directo el pase: es lo que se necesita en taquilla.
+  $$("[data-viaje]", c).forEach(b => {
+    const v = S.historial.find(x => x.id === b.dataset.viaje);
+    if (v && ["buscando", "asignado", "en_curso", "programado"].includes(v.estado)) b.onclick = () => pase(v);
+  });
 }
 
 const renglonRecibo = (k, v) =>
@@ -2913,9 +2963,498 @@ function recibo(v) {
     '<div class="fila" style="border-top:0;padding-top:0;margin-top:0">' +
       '<span class="opcion__txt"><b>Total</b></span>' +
       '<span class="precio" style="font-size:1.2rem">' + dinero(v.precio) + '</span></div>' +
-    '<button class="btn btn--suave" data-cerrar style="margin-top:1rem">Cerrar</button>');
+    '<div class="dialogo__botones" style="margin-top:1rem">' +
+      '<button class="btn btn--suave" data-cerrar>Cerrar</button>' +
+      '<button class="btn" data-pase>Ver pase QR</button>' +
+    '</div>');
   $("[data-cerrar]").onclick = () => cerrar(null);
+  $("[data-pase]").onclick = () => { cerrar(null); pase(v); };
 }
+
+/* ══════════════════════════════════════════════════════════════
+   13 · PASE DE ABORDAJE — QR para identificarse en taquilla
+   ══════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   QR mínimo — modo byte, versiones 1..10, corrección L o M.
+   Sin dependencias ni CDN: la taquilla puede quedarse sin internet
+   y el pase se sigue dibujando.
+   Devuelve una matriz de booleanos (true = módulo negro).
+   ══════════════════════════════════════════════════════════════ */
+const QR = (() => {
+  // Codewords de datos y EC por versión. [ecPorBloque, [ [nBloques, datosPorBloque], ... ] ]
+  const TABLA = {
+    L: {
+      1:[7,[[1,19]]], 2:[10,[[1,34]]], 3:[15,[[1,55]]], 4:[20,[[1,80]]], 5:[26,[[1,108]]],
+      6:[18,[[2,68]]], 7:[20,[[2,78]]], 8:[24,[[2,97]]], 9:[30,[[2,116]]], 10:[18,[[2,68],[2,69]]]
+    },
+    M: {
+      1:[10,[[1,16]]], 2:[16,[[1,28]]], 3:[26,[[1,44]]], 4:[18,[[2,32]]], 5:[24,[[2,43]]],
+      6:[16,[[4,27]]], 7:[18,[[4,31]]], 8:[22,[[2,38],[2,39]]], 9:[22,[[3,36],[2,37]]],
+      10:[26,[[4,43],[1,44]]]
+    }
+  };
+  const ALINEACION = {
+    1:[], 2:[6,18], 3:[6,22], 4:[6,26], 5:[6,30],
+    6:[6,34], 7:[6,22,38], 8:[6,24,42], 9:[6,26,46], 10:[6,28,50]
+  };
+
+  // ─── Campo de Galois GF(256) ───
+  const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
+  (() => {
+    let x = 1;
+    for (let i = 0; i < 255; i++) { EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 0x100) x ^= 0x11D; }
+    for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+  })();
+  const mul = (a, b) => (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]];
+
+  function polinomioGenerador(grado) {
+    let p = [1];
+    for (let i = 0; i < grado; i++) {
+      const n = new Array(p.length + 1).fill(0);
+      for (let j = 0; j < p.length; j++) {
+        n[j] ^= p[j];
+        n[j + 1] ^= mul(p[j], EXP[i]);
+      }
+      p = n;
+    }
+    return p;
+  }
+
+  function corregir(datos, nEc) {
+    const gen = polinomioGenerador(nEc);
+    const res = new Array(nEc).fill(0);
+    for (const b of datos) {
+      const factor = b ^ res[0];
+      res.shift(); res.push(0);
+      if (factor !== 0) for (let i = 0; i < nEc; i++) res[i] ^= mul(gen[i + 1], factor);
+    }
+    return res;
+  }
+
+  // ─── Bits ───
+  class Bits {
+    constructor() { this.b = []; }
+    push(valor, n) { for (let i = n - 1; i >= 0; i--) this.b.push((valor >> i) & 1); }
+    get largo() { return this.b.length; }
+  }
+
+  function elegirVersion(nBytes, nivel) {
+    for (let v = 1; v <= 10; v++) {
+      const [ec, grupos] = TABLA[nivel][v];
+      const datos = grupos.reduce((a, [n, c]) => a + n * c, 0);
+      const cabecera = 4 + (v <= 9 ? 8 : 16);
+      if (nBytes * 8 + cabecera <= datos * 8) return v;
+    }
+    throw new Error("El contenido no cabe en un QR de versión 10 o menor.");
+  }
+
+  function codewords(bytes, version, nivel) {
+    const [nEc, grupos] = TABLA[nivel][version];
+    const totalDatos = grupos.reduce((a, [n, c]) => a + n * c, 0);
+
+    const bits = new Bits();
+    bits.push(0b0100, 4);                               // modo byte
+    bits.push(bytes.length, version <= 9 ? 8 : 16);     // contador
+    for (const b of bytes) bits.push(b, 8);
+    // terminador + relleno a byte completo
+    for (let i = 0; i < 4 && bits.largo < totalDatos * 8; i++) bits.b.push(0);
+    while (bits.largo % 8 !== 0) bits.b.push(0);
+
+    const datos = [];
+    for (let i = 0; i < bits.largo; i += 8) {
+      let v = 0;
+      for (let j = 0; j < 8; j++) v = (v << 1) | bits.b[i + j];
+      datos.push(v);
+    }
+    const RELLENO = [0xEC, 0x11];
+    for (let i = 0; datos.length < totalDatos; i++) datos.push(RELLENO[i % 2]);
+
+    // partir en bloques
+    const bloquesDatos = [], bloquesEc = [];
+    let p = 0;
+    for (const [n, c] of grupos) {
+      for (let i = 0; i < n; i++) {
+        const bloque = datos.slice(p, p + c); p += c;
+        bloquesDatos.push(bloque);
+        bloquesEc.push(corregir(bloque, nEc));
+      }
+    }
+
+    // intercalar
+    const salida = [];
+    const maxDatos = Math.max(...bloquesDatos.map(b => b.length));
+    for (let i = 0; i < maxDatos; i++)
+      for (const b of bloquesDatos) if (i < b.length) salida.push(b[i]);
+    for (let i = 0; i < nEc; i++)
+      for (const b of bloquesEc) salida.push(b[i]);
+    return salida;
+  }
+
+  // ─── Matriz ───
+  function matrizBase(version) {
+    const n = version * 4 + 17;
+    const m = Array.from({ length: n }, () => new Array(n).fill(null)); // null = libre
+    const fijo = Array.from({ length: n }, () => new Array(n).fill(false));
+
+    const poner = (f, c, v) => { m[f][c] = v; fijo[f][c] = true; };
+
+    // patrones de posición + separadores
+    for (const [f0, c0] of [[0, 0], [0, n - 7], [n - 7, 0]]) {
+      for (let f = -1; f <= 7; f++) for (let c = -1; c <= 7; c++) {
+        const ff = f0 + f, cc = c0 + c;
+        if (ff < 0 || cc < 0 || ff >= n || cc >= n) continue;
+        // el anillo f/c = -1 o 7 es el separador: siempre claro
+        const dentro = f >= 0 && f <= 6 && c >= 0 && c <= 6;
+        const borde = f === 0 || f === 6 || c === 0 || c === 6;
+        const centro = f >= 2 && f <= 4 && c >= 2 && c <= 4;
+        poner(ff, cc, dentro && (borde || centro));
+      }
+    }
+    // patrones de alineación
+    const cen = ALINEACION[version];
+    for (const f0 of cen) for (const c0 of cen) {
+      if (fijo[f0][c0]) continue;
+      for (let f = -2; f <= 2; f++) for (let c = -2; c <= 2; c++) {
+        const anillo = Math.max(Math.abs(f), Math.abs(c));
+        poner(f0 + f, c0 + c, anillo !== 1);
+      }
+    }
+    // temporizadores
+    for (let i = 8; i < n - 8; i++) { poner(6, i, i % 2 === 0); poner(i, 6, i % 2 === 0); }
+    // módulo oscuro siempre presente
+    poner(n - 8, 8, true);
+    // reservar zona de formato
+    for (let i = 0; i < 9; i++) { if (!fijo[8][i]) poner(8, i, false); if (!fijo[i][8]) poner(i, 8, false); }
+    for (let i = 0; i < 8; i++) { if (!fijo[8][n - 1 - i]) poner(8, n - 1 - i, false); if (!fijo[n - 1 - i][8]) poner(n - 1 - i, 8, false); }
+    // reservar zona de versión
+    if (version >= 7) {
+      for (let i = 0; i < 6; i++) for (let j = 0; j < 3; j++) {
+        poner(i, n - 11 + j, false); poner(n - 11 + j, i, false);
+      }
+    }
+    return { m, fijo, n };
+  }
+
+  function colocarDatos(m, fijo, n, datos) {
+    let bit = 0;
+    const total = datos.length * 8;
+    const leer = () => {
+      if (bit >= total) return false;
+      const v = (datos[bit >> 3] >> (7 - (bit & 7))) & 1;
+      bit++;
+      return v === 1;
+    };
+    let arriba = true;
+    for (let c = n - 1; c > 0; c -= 2) {
+      if (c === 6) c--; // saltar la columna del temporizador
+      for (let i = 0; i < n; i++) {
+        const f = arriba ? n - 1 - i : i;
+        for (const cc of [c, c - 1]) if (!fijo[f][cc]) m[f][cc] = leer();
+      }
+      arriba = !arriba;
+    }
+  }
+
+  const MASCARAS = [
+    (f, c) => (f + c) % 2 === 0,
+    (f, c) => f % 2 === 0,
+    (f, c) => c % 3 === 0,
+    (f, c) => (f + c) % 3 === 0,
+    (f, c) => (Math.floor(f / 2) + Math.floor(c / 3)) % 2 === 0,
+    (f, c) => (f * c) % 2 + (f * c) % 3 === 0,
+    (f, c) => ((f * c) % 2 + (f * c) % 3) % 2 === 0,
+    (f, c) => ((f + c) % 2 + (f * c) % 3) % 2 === 0
+  ];
+
+  const NIVEL_BITS = { L: 0b01, M: 0b00, Q: 0b11, H: 0b10 };
+
+  function bitsFormato(nivel, mascara) {
+    const datos = (NIVEL_BITS[nivel] << 3) | mascara;
+    let v = datos << 10;
+    for (let i = 4; i >= 0; i--) if (v & (1 << (i + 10))) v ^= 0b10100110111 << i;
+    return ((datos << 10) | v) ^ 0b101010000010010;
+  }
+
+  function bitsVersion(version) {
+    let v = version << 12;
+    for (let i = 5; i >= 0; i--) if (v & (1 << (i + 12))) v ^= 0b1111100100101 << i;
+    return (version << 12) | v;
+  }
+
+  function penalizacion(m, n) {
+    let p = 0;
+    // regla 1: corridas de 5 o más
+    for (let i = 0; i < n; i++) {
+      for (const filas of [true, false]) {
+        let anterior = null, corrida = 0;
+        for (let j = 0; j < n; j++) {
+          const v = filas ? m[i][j] : m[j][i];
+          if (v === anterior) corrida++;
+          else { if (corrida >= 5) p += corrida - 2; anterior = v; corrida = 1; }
+        }
+        if (corrida >= 5) p += corrida - 2;
+      }
+    }
+    // regla 2: bloques 2x2
+    for (let f = 0; f < n - 1; f++) for (let c = 0; c < n - 1; c++) {
+      const v = m[f][c];
+      if (v === m[f][c + 1] && v === m[f + 1][c] && v === m[f + 1][c + 1]) p += 3;
+    }
+    // regla 3: patrón 1:1:3:1:1 con zona clara
+    const A = [true, false, true, true, true, false, true, false, false, false, false];
+    const B = [false, false, false, false, true, false, true, true, true, false, true];
+    const coincide = (arr, patron) => patron.every((v, i) => arr[i] === v);
+    for (let i = 0; i < n; i++) for (let j = 0; j <= n - 11; j++) {
+      const fila = [], col = [];
+      for (let k = 0; k < 11; k++) { fila.push(m[i][j + k]); col.push(m[j + k][i]); }
+      if (coincide(fila, A) || coincide(fila, B)) p += 40;
+      if (coincide(col, A) || coincide(col, B)) p += 40;
+    }
+    // regla 4: proporción de oscuros
+    let oscuros = 0;
+    for (let f = 0; f < n; f++) for (let c = 0; c < n; c++) if (m[f][c]) oscuros++;
+    const porcentaje = (oscuros * 100) / (n * n);
+    p += Math.floor(Math.abs(porcentaje - 50) / 5) * 10;
+    return p;
+  }
+
+  function ponerFormato(m, n, nivel, mascara) {
+    const bits = bitsFormato(nivel, mascara);
+    const leer = i => ((bits >> i) & 1) === 1;
+    // primera copia: columna 8 hacia abajo, luego fila 8 hacia la izquierda
+    for (let i = 0; i <= 5; i++) m[i][8] = leer(i);
+    m[7][8] = leer(6); m[8][8] = leer(7); m[8][7] = leer(8);
+    for (let i = 9; i <= 14; i++) m[8][14 - i] = leer(i);
+    // segunda copia: fila 8 por la derecha, luego columna 8 desde abajo
+    for (let i = 0; i <= 7; i++) m[8][n - 1 - i] = leer(i);
+    for (let i = 8; i <= 14; i++) m[n - 15 + i][8] = leer(i);
+    m[n - 8][8] = true;
+  }
+
+  function ponerVersion(m, n, version) {
+    if (version < 7) return;
+    const bits = bitsVersion(version);
+    for (let i = 0; i < 18; i++) {
+      const v = ((bits >> i) & 1) === 1;
+      const f = Math.floor(i / 3), c = i % 3;
+      m[f][n - 11 + c] = v;
+      m[n - 11 + c][f] = v;
+    }
+  }
+
+  /**
+   * Genera la matriz del QR.
+   * @param {string} texto  contenido a codificar
+   * @param {"L"|"M"} nivel corrección de errores
+   * @returns {boolean[][]} matriz cuadrada, true = módulo oscuro
+   */
+  function generar(texto, nivel = "M", forzarMascara = null) {
+    const bytes = [...new TextEncoder().encode(texto)];
+    const version = elegirVersion(bytes.length, nivel);
+    const datos = codewords(bytes, version, nivel);
+
+    let mejor = null, mejorPena = Infinity;
+    const rango = forzarMascara === null ? [0,1,2,3,4,5,6,7] : [forzarMascara];
+    for (const mascara of rango) {
+      const { m, fijo, n } = matrizBase(version);
+      colocarDatos(m, fijo, n, datos);
+      for (let f = 0; f < n; f++) for (let c = 0; c < n; c++)
+        if (!fijo[f][c] && MASCARAS[mascara](f, c)) m[f][c] = !m[f][c];
+      ponerFormato(m, n, nivel, mascara);
+      ponerVersion(m, n, version);
+      const p = penalizacion(m, n);
+      if (p < mejorPena) { mejorPena = p; mejor = m; }
+    }
+    return mejor;
+  }
+
+  /** Dibuja la matriz como SVG cuadrado, listo para inyectar en el DOM. */
+  function svg(texto, { nivel = "M", margen = 4, oscuro = "#000", claro = "#fff" } = {}) {
+    const m = generar(texto, nivel);
+    const n = m.length, lado = n + margen * 2;
+    let d = "";
+    for (let f = 0; f < n; f++) for (let c = 0; c < n; c++)
+      if (m[f][c]) d += `M${c + margen} ${f + margen}h1v1h-1z`;
+    return `<svg viewBox="0 0 ${lado} ${lado}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img">` +
+      `<rect width="${lado}" height="${lado}" fill="${claro}"/><path d="${d}" fill="${oscuro}"/></svg>`;
+  }
+
+  return { generar, svg };
+})();
+
+/* ─── Folio legible ───────────────────────────────────────
+   Determinista a partir del id del viaje: la taquilla puede
+   recalcularlo para viajes viejos que aún no lo tengan guardado.
+   Alfabeto sin I, O, 0 ni 1 para que nadie se equivoque al dictarlo.
+   ───────────────────────────────────────────────────────── */
+const ALFA_FOLIO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+function folioDe(viajeId) {
+  if (!viajeId) return "T30-XXXXXX";
+  // Dos hashes independientes: 30 bits reales. Con un solo hash de 32 bits
+  // salían ~40 folios repetidos cada 50 000 viajes; así bajan a ~2.
+  let a = 0x811c9dc5, b = 0x9e3779b9;
+  for (let i = 0; i < viajeId.length; i++) {
+    const c = viajeId.charCodeAt(i);
+    a = Math.imul(a ^ c, 0x01000193) >>> 0;
+    b = Math.imul(b ^ c, 0x85ebca6b) >>> 0;
+    b = ((b << 13) | (b >>> 19)) >>> 0;
+  }
+  let out = "";
+  for (let i = 0; i < 3; i++) { out += ALFA_FOLIO[a & 31]; a >>>= 5; }
+  for (let i = 0; i < 3; i++) { out += ALFA_FOLIO[b & 31]; b >>>= 5; }
+  return "T30-" + out;
+}
+
+/** Contenido que se codifica en el QR. La taquilla lo parte por "|". */
+const cargaPase = v =>
+  ["T30", "1", v.folio || folioDe(v.id), v.id || "", v.uid || ""].join("|");
+
+/* ─── Ventana del pase ──────────────────────────────────── */
+function pase(v) {
+  if (!v) return;
+  const folio = v.folio || folioDe(v.id);
+  const vigente = ["buscando", "asignado", "en_curso", "programado"].includes(v.estado);
+  const f = v.creadoEn?.toDate ? v.creadoEn.toDate() : new Date();
+  const cuando = v.programadoPara ? new Date(v.programadoPara) : f;
+
+  const cerrar = abrirTelon(
+    '<div class="pase' + (vigente ? "" : " pase--muerto") + '">' +
+      '<h3 style="margin-bottom:.2rem">Pase de abordaje</h3>' +
+      '<p class="pase__pie">Muéstralo en taquilla para identificarte.</p>' +
+      '<div class="pase__qr">' + QR.svg(cargaPase(v), { nivel: "M", margen: 4 }) + '</div>' +
+      '<div class="pase__folio">' + esc(folio) + '</div>' +
+      '<p class="pase__pie">Si el lector falla, dicta este folio.</p>' +
+      '<div class="pase__datos">' +
+        renglonRecibo("Pasajero", v.pasajero?.nombre || "—") +
+        renglonRecibo("Ruta", (v.origen?.texto || "—") + " → " + (v.destino?.texto || "—")) +
+        renglonRecibo("Servicio", v.claseNombre || "—") +
+        renglonRecibo("Salida", cuando.toLocaleDateString("es-MX", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })) +
+        renglonRecibo("Total", dinero(v.precio)) +
+        (v.abordadoEn ? renglonRecibo("Abordaje", "Registrado") : "") +
+      '</div>' +
+      (vigente
+        ? '<div class="pase__aviso">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.01"/></svg>' +
+            '<span>Sube el brillo de la pantalla antes de acercarte al lector.</span></div>'
+        : '<div class="pase__aviso">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>' +
+            '<span>Este viaje ya está cerrado. El pase es solo comprobante.</span></div>') +
+      '<div class="dialogo__botones" style="margin-top:1rem">' +
+        '<button class="btn btn--suave" data-cerrar>Cerrar</button>' +
+        '<button class="btn" data-imprimir>Imprimir</button>' +
+      '</div>' +
+    '</div>');
+  $("[data-cerrar]").onclick = () => cerrar(null);
+  $("[data-imprimir]").onclick = () => print();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   14 · TERMINAL — endpoints externos
+   ──────────────────────────────────────────────────────────────
+   AJUSTA SOLO ESTE BLOQUE cuando te pasen la documentación.
+   Mientras base esté vacío, la app funciona igual que antes:
+   guarda en Firestore y usa el tarifario local CLASES.
+   ══════════════════════════════════════════════════════════════ */
+const TERMINAL = {
+  base: "",            // ej. "https://api.tuterminal.mx/v1"  ← pegar aquí
+  token: "",           // ej. "Bearer abc123"                 ← si aplica
+  rutas: {
+    crearViaje: "/viajes",                  // POST  → registra el viaje en la terminal
+    destinos:   "/destinos",                // GET   → catálogo de destinos
+    costos:     "/viajes/{viajeId}/costos"  // GET   → costos de ese viaje
+  },
+  get activo() { return !!this.base; }
+};
+
+async function apiTerminal(ruta, { metodo = "GET", cuerpo = null, params = {} } = {}) {
+  if (!TERMINAL.activo) throw new Error("TERMINAL.base sin configurar");
+  let camino = ruta;
+  for (const [k, val] of Object.entries(params)) camino = camino.replace("{" + k + "}", encodeURIComponent(val));
+  const r = await fetch(TERMINAL.base.replace(/\/$/, "") + camino, {
+    method: metodo,
+    headers: {
+      "Content-Type": "application/json",
+      ...(TERMINAL.token ? { Authorization: TERMINAL.token } : {})
+    },
+    body: cuerpo ? JSON.stringify(cuerpo) : undefined,
+    signal: AbortSignal.timeout(8000)
+  });
+  if (!r.ok) throw new Error("HTTP " + r.status + " en " + camino);
+  return r.status === 204 ? null : r.json();
+}
+
+/* ─── Adaptadores ─────────────────────────────────────────
+   Cambia el lado derecho para que cuadre con los nombres que
+   devuelva la API real. Nada más hay que tocar de aquí abajo.
+   ───────────────────────────────────────────────────────── */
+const mapDestino = d => ({
+  texto:   d.nombre  ?? d.destino ?? d.name  ?? "",
+  detalle: d.municipio ?? d.detalle ?? d.zona ?? "",
+  lat:    +(d.lat ?? d.latitud  ?? d.latitude),
+  lng:    +(d.lng ?? d.longitud ?? d.longitude),
+  costo:   d.costo  ?? d.precio  ?? d.tarifa ?? null,
+  idTerminal: d.id  ?? d.clave   ?? null
+});
+
+const mapCosto = c => ({
+  clase:  c.clase ?? c.servicio ?? c.tipo ?? "",
+  nombre: c.nombre ?? c.descripcion ?? "",
+  precio: +(c.costo ?? c.precio ?? c.tarifa ?? 0)
+});
+
+/** Avisa a la terminal de un viaje recién creado. Devuelve el folio de la terminal. */
+async function crearViajeEnTerminal(viaje, viajeId) {
+  const cuerpo = {
+    referencia: viajeId,
+    folio: folioDe(viajeId),
+    pasajero: { nombre: viaje.pasajero?.nombre || "", telefono: viaje.pasajero?.telefono || "" },
+    origen:   { texto: viaje.origen?.texto || "",  lat: viaje.origen?.lat,  lng: viaje.origen?.lng },
+    destino:  { texto: viaje.destino?.texto || "", lat: viaje.destino?.lat, lng: viaje.destino?.lng },
+    servicio: viaje.clase,
+    km: viaje.km, minutos: viaje.min,
+    total: viaje.precio,
+    pago: viaje.pago
+  };
+  const r = await apiTerminal(TERMINAL.rutas.crearViaje, { metodo: "POST", cuerpo });
+  return r?.folio ?? r?.folioTerminal ?? r?.id ?? null;
+}
+
+/** Catálogo de destinos de la terminal. Cachea 5 min. */
+let _destinosCache = { hasta: 0, lista: [] };
+async function traerDestinos() {
+  if (!TERMINAL.activo) return [];
+  if (Date.now() < _destinosCache.hasta) return _destinosCache.lista;
+  try {
+    const r = await apiTerminal(TERMINAL.rutas.destinos);
+    const lista = (Array.isArray(r) ? r : r?.destinos || r?.datos || [])
+      .map(mapDestino)
+      .filter(d => d.texto && Number.isFinite(d.lat) && Number.isFinite(d.lng));
+    _destinosCache = { hasta: Date.now() + 5 * 60 * 1000, lista };
+    return lista;
+  } catch (e) { console.warn("destinos:", e.message); return []; }
+}
+
+/** Costos de un viaje ya creado en la terminal. */
+async function traerCostos(viajeId) {
+  if (!TERMINAL.activo) return [];
+  try {
+    const r = await apiTerminal(TERMINAL.rutas.costos, { params: { viajeId } });
+    return (Array.isArray(r) ? r : r?.costos || r?.datos || []).map(mapCosto);
+  } catch (e) { console.warn("costos:", e.message); return []; }
+}
+
+/** Busca destinos del catálogo por texto, para mezclarlos con el geocoder. */
+async function destinosQueCoinciden(texto) {
+  const q = texto.trim().toLowerCase();
+  if (q.length < 2) return [];
+  const lista = await traerDestinos();
+  return lista
+    .filter(d => (d.texto + " " + d.detalle).toLowerCase().includes(q))
+    .slice(0, 4)
+    .map(d => ({ ...d, detalle: [d.detalle, d.costo != null ? dinero(d.costo) : ""].filter(Boolean).join(" · ") }));
+}
+
 </script>
 </body>
 </html>
