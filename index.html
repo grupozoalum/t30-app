@@ -29,7 +29,7 @@
   --ambar:#FFA20B; --verde:#1FBF75; --rojo:#F2485B;
 
   --r-sm:12px; --r:18px; --r-lg:26px; --r-xl:34px;
-  --nav:70px;
+  --nav:70px; --lateral:228px;
   --t:200ms cubic-bezier(.22,1,.36,1);
   --t-lento:420ms cubic-bezier(.22,1,.36,1);
   --arriba:env(safe-area-inset-top,0px);
@@ -938,13 +938,17 @@ button{cursor:pointer}
 
 /* ─── Pase de abordaje (QR de taquilla) ─────────────────── */
 .pase{text-align:center}
-.pase__qr{background:#fff;border-radius:var(--r-sm);padding:14px;margin:0 auto;width:min(252px,66vw);
+.pase__qr{background:#fff;border-radius:var(--r-sm);padding:12px;margin:0 auto;width:min(216px,56vw);
   box-shadow:var(--sombra-sm);line-height:0}
 .pase__qr svg{width:100%;height:auto;display:block}
 .pase__folio{font-family:var(--mono,ui-monospace,SFMono-Regular,Menlo,Consolas,monospace);
-  font-size:1.55rem;font-weight:700;letter-spacing:.07em;margin:.85rem 0 .15rem}
-.pase__pie{color:var(--txt-2);font-size:13px;margin:0 0 1rem}
+  font-size:1.4rem;font-weight:700;letter-spacing:.07em;margin:.7rem 0 .1rem}
+.pase__pie{color:var(--txt-2);font-size:12.5px;margin:0 0 .8rem}
 .pase__datos{text-align:left;border-top:1px solid var(--borde);margin-top:.2rem;padding-top:.2rem}
+/* Sin esto, un destino largo se mete encima de su propia etiqueta. */
+.pase__datos>div{gap:1.2rem;align-items:baseline}
+.pase__datos>div>span:first-child{flex:none}
+.pase__datos>div>span:last-child{text-align:right;min-width:0}
 .pase__aviso{display:flex;gap:.5rem;align-items:flex-start;text-align:left;background:var(--campo);
   border-radius:var(--r-sm);padding:.6rem .7rem;margin:.9rem 0 0;color:var(--txt-2);font-size:12.5px}
 .pase__aviso svg{flex:none;margin-top:1px}
@@ -954,6 +958,91 @@ button{cursor:pointer}
   #telon{display:block!important;position:static;background:#fff}
   #telon .dialogo{box-shadow:none;background:#fff;color:#000;max-width:none}
   .pase__aviso,[data-cerrar],[data-imprimir]{display:none!important}
+}
+
+/* ─── Acceso al pase ────────────────────────────────────── */
+
+/* Las vistas con scroll son flex en columna. Un hijo con overflow propio
+   (el carrusel) recibe tamaño mínimo automático 0 y se encoge hasta
+   desaparecer; lo mismo aplasta la última tarjeta contra la barra. */
+.vista--rollo>*{flex-shrink:0}
+
+.btn--pase{display:flex;align-items:center;justify-content:center;gap:.55rem;
+  background:transparent;border:1.5px solid var(--ac);color:var(--txt);margin-bottom:.6rem}
+.btn--pase svg{flex:none}
+.btn--pase b{font-family:var(--mono,ui-monospace,Menlo,Consolas,monospace);letter-spacing:.05em;font-weight:700}
+
+.pase-hoy{display:flex;align-items:center;gap:.85rem;width:100%;text-align:left;
+  background:var(--sup);border:1.5px solid var(--ac);border-radius:var(--r-lg);
+  padding:.95rem 1.05rem;margin-bottom:1.6rem;transition:var(--t)}
+.pase-hoy:active{transform:scale(.99)}
+.pase-hoy__ico{flex:none;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}
+.pase-hoy__txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:.12rem}
+.pase-hoy__txt b{font-size:14.5px;font-weight:700}
+.pase-hoy__txt small{color:var(--txt-2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pase-hoy__folio{font-family:var(--mono,ui-monospace,Menlo,Consolas,monospace);
+  font-size:12.5px;font-weight:700;color:var(--ac);letter-spacing:.05em}
+
+.renglon__qr{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac);margin-left:.4rem}
+
+/* ─── Escritorio ────────────────────────────────────────── */
+@media (min-width:1024px){
+  .mundo{align-items:stretch;justify-content:stretch}
+  .mundo::before{opacity:.18}
+  .equipo{max-width:none;width:100%;height:100dvh;border-radius:0;border:0;box-shadow:none}
+
+  /* La barra inferior se convierte en barra lateral. */
+  .nav{
+    left:0;right:auto;top:0;bottom:0;width:var(--lateral);height:auto;
+    grid-template-columns:1fr;grid-auto-rows:max-content;align-content:start;gap:.2rem;
+    padding:calc(1.4rem + var(--arriba)) .75rem 1.2rem;
+    background:var(--fondo-2);backdrop-filter:none;
+    border:0;border-right:1px solid var(--borde);border-radius:0;box-shadow:none
+  }
+  .nav button{
+    flex-direction:row;justify-content:flex-start;gap:.8rem;
+    font-size:13.5px;padding:.72rem .85rem;border-radius:13px
+  }
+  .nav button:hover{background:var(--campo)}
+  .nav button[aria-selected="true"]{background:color-mix(in srgb,var(--ac) 15%,transparent)}
+  .nav svg{width:19px;height:19px}
+  .nav__punto{display:none}
+
+  /* Las vistas arrancan después de la barra lateral. */
+  .vista--rollo{
+    padding:calc(1.8rem + var(--arriba)) 2.2rem 3rem calc(var(--lateral) + 2.2rem);
+    animation:none
+  }
+  .vista--rollo>*{max-width:860px}
+  #carrusel{margin:0 0 .3rem!important;border-radius:var(--r-xl)!important}
+  #mapa{left:var(--lateral)}
+  .brujula{right:1.6rem;top:1.6rem}
+
+  /* La hoja del viaje deja de ser cajón y se vuelve panel fijo. */
+  .hoja{
+    left:var(--lateral);right:auto;top:0;bottom:0;width:400px;
+    max-height:none!important;border-radius:0;border-top:0;border-right:1px solid var(--borde);
+    box-shadow:14px 0 40px -30px rgba(0,0,0,.7)
+  }
+  .hoja__asa{display:none}
+  .hoja__cuerpo{padding:calc(1.6rem + var(--arriba)) 1.4rem 2rem}
+  .flota{left:calc(var(--lateral) + 424px)}
+
+  /* Acceso: relato a la izquierda, formulario a la derecha. */
+  .acceso{flex-direction:row;overflow:hidden}
+  .acceso__hero{flex:1 1 46%;display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
+  .acceso__cuerpo{flex:1 1 54%;overflow-y:auto;border-radius:0;margin:0;
+    display:flex;flex-direction:column;justify-content:center}
+  .acceso__cuerpo>*{width:100%;max-width:400px;margin-inline:auto}
+
+  .dialogo{max-width:460px}
+}
+
+/* Pantallas muy anchas: que el texto no se estire de lado a lado. */
+@media (min-width:1600px){
+  .vista--rollo>*{max-width:960px}
 }
 </style>
 </head>
@@ -1151,6 +1240,9 @@ button{cursor:pointer}
             <span>Al AIFA</span>
           </button>
         </div>
+
+        <!-- PASE DE ABORDAJE (solo si hay viaje vigente) -->
+        <div id="pase-inicio"></div>
 
         <!-- TARJETA DE FIDELIDAD -->
         <div class="home-sec">
@@ -2597,7 +2689,7 @@ function pintarBuscando(c) {
         '<circle cx="50" cy="50" r="34" stroke="#E4007E" stroke-width="16" stroke-dasharray="118 216" transform="rotate(-98 50 50)"/>' +
         '<circle cx="50" cy="50" r="34" stroke="#FFA20B" stroke-width="16" stroke-dasharray="66 216" transform="rotate(38 50 50)"/></svg>' +
       '<div class="estado__txt"><h2>Buscando conductor</h2><p>Avisando a las unidades cerca de ti.</p></div></div>' +
-    pasos(1) + resumenViaje() +
+    pasos(1) + resumenViaje() + botonPase(S.viaje) +
     '<button class="btn btn--suave" id="btn-cancelar">Cancelar solicitud</button>';
   $("#btn-cancelar").onclick = cancelarViaje;
 }
@@ -2614,7 +2706,7 @@ function pintarAsignado(c) {
     (cercano ? '<div class="rd-aviso rd-aviso--info" style="margin:.7rem 0">' +
       '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>' +
       '<span>Mantente atento a la app y a tu teléfono: tu conductor podría comunicarse contigo.</span></div>' : '') +
-    pasos(2) + tarjetaChofer(S.viaje?.conductor || {}) + resumenViaje() +
+    pasos(2) + tarjetaChofer(S.viaje?.conductor || {}) + resumenViaje() + botonPase(S.viaje) +
     '<button class="btn btn--suave" id="btn-cancelar">Cancelar viaje</button>';
   $("#btn-cancelar").onclick = cancelarViaje;
 }
@@ -2625,7 +2717,7 @@ function pintarEnCurso(c) {
       '<div class="ico" style="width:44px;height:44px;background:color-mix(in srgb,var(--verde) 16%,transparent)">' +
         '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="2" stroke-linecap="round"><path d="M5 12.5 10 17l9-10"/></svg></div>' +
       '<div class="estado__txt"><h2>En camino</h2><p>Llegas alrededor de las ' + horaLlegada() + '.</p></div></div>' +
-    pasos(3) + tarjetaChofer(S.viaje?.conductor || {}) + resumenViaje() +
+    pasos(3) + tarjetaChofer(S.viaje?.conductor || {}) + resumenViaje() + botonPase(S.viaje) +
     '<button class="btn btn--suave" id="btn-terminar">Ya llegué</button>';
   $("#btn-terminar").onclick = terminarViaje;
 }
@@ -2933,11 +3025,25 @@ function pintarActividad() {
       }).join("") + '</div>').join("");
 
   $$("[data-viaje]", c).forEach(b => b.onclick = () => recibo(S.historial.find(v => v.id === b.dataset.viaje)));
-  // Los viajes vigentes abren directo el pase: es lo que se necesita en taquilla.
+
+  // A los viajes vigentes se les cuelga un botón de QR visible: antes el pase
+  // solo salía tocando el renglón y nadie lo encontraba.
   $$("[data-viaje]", c).forEach(b => {
     const v = S.historial.find(x => x.id === b.dataset.viaje);
-    if (v && ["buscando", "asignado", "en_curso", "programado"].includes(v.estado)) b.onclick = () => pase(v);
+    if (!v || !vigente(v)) return;
+    const q = document.createElement("span");
+    q.className = "renglon__qr";
+    q.setAttribute("role", "button");
+    q.setAttribute("tabindex", "0");
+    q.setAttribute("aria-label", "Ver pase QR");
+    q.innerHTML = icoQR(16);
+    const abrir = ev => { ev.stopPropagation(); pase(v); };
+    q.onclick = abrir;
+    q.onkeydown = ev => { if (ev.key === "Enter" || ev.key === " ") abrir(ev); };
+    b.appendChild(q);
   });
+
+  pintarPaseInicio();
 }
 
 const renglonRecibo = (k, v) =>
@@ -3310,16 +3416,62 @@ function folioDe(viajeId) {
 const cargaPase = v =>
   ["T30", "1", v.folio || folioDe(v.id), v.id || "", v.uid || ""].join("|");
 
+/* ─── Accesos visibles al pase ──────────────────────────── */
+const ESTADOS_VIGENTES = ["buscando", "asignado", "en_curso", "programado"];
+const vigente = v => ESTADOS_VIGENTES.includes(v?.estado);
+
+const icoQR = (t = 18) =>
+  '<svg width="' + t + '" height="' + t + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round">' +
+  '<rect x="3" y="3" width="7" height="7" rx="1.4"/><rect x="14" y="3" width="7" height="7" rx="1.4"/>' +
+  '<rect x="3" y="14" width="7" height="7" rx="1.4"/>' +
+  '<path d="M14 14h3v3h-3zM20.5 14v3M14 20.5h3M20.5 20.5v.01"/></svg>';
+
+/** Botón para la hoja del viaje. El pase existe desde que se pide el viaje. */
+function botonPase(v) {
+  if (!v?.id) return "";
+  return '<button class="btn btn--pase" data-abrir-pase="' + esc(v.id) + '">' +
+    icoQR(17) + 'Mostrar pase QR · <b>' + esc(v.folio || folioDe(v.id)) + '</b></button>';
+}
+
+/** Tarjeta en Inicio mientras haya un viaje vigente. */
+function pintarPaseInicio() {
+  const c = $("#pase-inicio");
+  if (!c) return;
+  const v = (S.historial || []).find(vigente);
+  if (!v) { c.innerHTML = ""; return; }
+  c.innerHTML =
+    '<button class="pase-hoy" data-abrir-pase="' + esc(v.id) + '">' +
+      '<span class="pase-hoy__ico">' + icoQR(21) + '</span>' +
+      '<span class="pase-hoy__txt">' +
+        '<b>Tu pase de abordaje</b>' +
+        '<small>' + esc(v.destino?.texto || "Viaje en curso") + '</small>' +
+        '<span class="pase-hoy__folio">' + esc(v.folio || folioDe(v.id)) + '</span>' +
+      '</span>' +
+      '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--txt-3)" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>' +
+    '</button>';
+}
+
+/* Un solo escucha para todos los botones de pase, estén donde estén.
+   Así no hay que recablear nada cada vez que se repinta una vista. */
+document.addEventListener("click", ev => {
+  const b = ev.target.closest?.("[data-abrir-pase]");
+  if (!b) return;
+  const id = b.dataset.abrirPase;
+  const v = (S.viaje?.id === id ? S.viaje : null) || (S.historial || []).find(x => x.id === id);
+  if (v) pase(v);
+  else avisar("No encontramos ese viaje.", "mal");
+});
+
 /* ─── Ventana del pase ──────────────────────────────────── */
 function pase(v) {
   if (!v) return;
   const folio = v.folio || folioDe(v.id);
-  const vigente = ["buscando", "asignado", "en_curso", "programado"].includes(v.estado);
+  const vigenteEste = vigente(v);
   const f = v.creadoEn?.toDate ? v.creadoEn.toDate() : new Date();
   const cuando = v.programadoPara ? new Date(v.programadoPara) : f;
 
   const cerrar = abrirTelon(
-    '<div class="pase' + (vigente ? "" : " pase--muerto") + '">' +
+    '<div class="pase' + (vigenteEste ? "" : " pase--muerto") + '">' +
       '<h3 style="margin-bottom:.2rem">Pase de abordaje</h3>' +
       '<p class="pase__pie">Muéstralo en taquilla para identificarte.</p>' +
       '<div class="pase__qr">' + QR.svg(cargaPase(v), { nivel: "M", margen: 4 }) + '</div>' +
@@ -3333,7 +3485,7 @@ function pase(v) {
         renglonRecibo("Total", dinero(v.precio)) +
         (v.abordadoEn ? renglonRecibo("Abordaje", "Registrado") : "") +
       '</div>' +
-      (vigente
+      (vigenteEste
         ? '<div class="pase__aviso">' +
             '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.01"/></svg>' +
             '<span>Sube el brillo de la pantalla antes de acercarte al lector.</span></div>'
