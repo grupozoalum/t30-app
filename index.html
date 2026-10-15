@@ -543,9 +543,9 @@ button{cursor:pointer}
 }
 .quick-viaje:hover::after{opacity:1}
 .quick-viaje:active{transform:scale(.975);box-shadow:0 4px 14px -8px var(--ac)}
-#btn-aifa{transition:var(--t)}
-#btn-aifa:hover{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,var(--sup))}
-#btn-aifa:active{transform:scale(.96)}
+#btn-tarifas{transition:var(--t)}
+#btn-tarifas:hover{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,var(--sup))}
+#btn-tarifas:active{transform:scale(.96)}
 /* Carrusel: escala sutil en la lámina activa */
 .car__slide{transition:opacity .4s}
 .car__dot{cursor:pointer}
@@ -1082,6 +1082,100 @@ button{cursor:pointer}
 
 .chip-vuelo{display:inline-flex;align-items:center;gap:.35rem;background:color-mix(in srgb,var(--azul-claro) 18%,transparent);
   color:var(--azul-claro);font-size:11.5px;font-weight:700;padding:.2rem .55rem;border-radius:99px;margin-right:.35rem}
+
+/* ─── Destinos con tarifa fija ──────────────────────────── */
+.destino-fijo{flex:0 0 auto;min-width:142px;text-align:left;padding:.8rem .9rem;border-radius:16px;
+  background:var(--sup);border:1.5px solid var(--borde);transition:var(--t)}
+.destino-fijo:hover{border-color:var(--ac)}
+.destino-fijo:active{transform:scale(.97)}
+.destino-fijo b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap}
+.destino-fijo small{display:block;font-size:11.5px;color:var(--txt-3);margin-top:.15rem}
+.destino-fijo .precio{font-size:14px;color:var(--ac-2);margin-top:.35rem;display:block}
+.destinos-rejilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.5rem;margin:.8rem 0 1rem;max-height:52vh;overflow-y:auto}
+.destinos-buscar{width:100%;background:var(--campo);border:1.5px solid transparent;border-radius:var(--r-sm);padding:.75rem .9rem;font-size:15px}
+.destinos-buscar:focus{outline:none;border-color:var(--ac)}
+.sugerencia__ico--fijo{background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}
+.tarifa-fija{display:flex;align-items:center;gap:.5rem;margin:.1rem 0 .7rem;padding:.6rem .8rem;border-radius:12px;
+  font-size:12.5px;background:color-mix(in srgb,var(--verde) 11%,transparent);color:var(--verde);font-weight:600}
+.clase:disabled{opacity:.45;cursor:not-allowed}
+
+/* ─── Aviso de perfil incompleto ────────────────────────── */
+.aviso-perfil{display:flex;align-items:center;gap:.8rem;width:100%;text-align:left;margin-bottom:1.6rem;
+  padding:.9rem 1rem;border-radius:var(--r-lg);background:color-mix(in srgb,var(--ambar) 10%,var(--sup));
+  border:1.5px solid color-mix(in srgb,var(--ambar) 35%,transparent)}
+.aviso-perfil b{display:block;font-size:14px}
+.aviso-perfil small{display:block;color:var(--txt-2);font-size:12.5px;margin-top:.1rem}
+
+/* ─── Estado en taquilla dentro del viaje ───────────────── */
+.taquilla-estado{display:flex;align-items:center;gap:.55rem;font-size:12.5px;color:var(--txt-2);
+  padding:.6rem .8rem;border-radius:12px;background:var(--campo);margin-bottom:.8rem}
+.taquilla-estado i{width:8px;height:8px;border-radius:50%;flex:none;background:var(--txt-3)}
+.taquilla-estado--ok i{background:var(--verde)}
+.taquilla-estado--espera i{background:var(--ambar);animation:late 1.6s ease-out infinite}
+.taquilla-estado b{color:var(--txt);font-family:'Azeret Mono',monospace;font-weight:600}
+
+/* ─── Ruta con salida fija en el AIFA ───────────────────── */
+.ruta-fija{background:var(--campo);border-radius:18px;padding:.35rem .25rem;margin-bottom:.9rem}
+.ruta-fija__fila{display:flex;align-items:center;gap:.8rem;width:100%;padding:.6rem .75rem;text-align:left;border-radius:14px;min-height:52px}
+.ruta-fija__fila--boton{transition:var(--t);cursor:pointer}
+.ruta-fija__fila--boton:hover{background:color-mix(in srgb,var(--ac) 7%,transparent)}
+.ruta-fija__fila--boton:active{transform:scale(.99)}
+.ruta-fija__punto{width:12px;height:12px;flex:none;border-radius:50%}
+.ruta-fija__punto--origen{background:var(--azul-claro,#5b8def);box-shadow:0 0 0 4px color-mix(in srgb,var(--azul-claro,#5b8def) 22%,transparent)}
+.ruta-fija__punto--destino{background:var(--ac);border-radius:3px;box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 20%,transparent)}
+.ruta-fija__linea{display:block;width:2px;height:12px;margin:-6px 0 -6px calc(.75rem + 5px);background:repeating-linear-gradient(var(--txt-3) 0 3px,transparent 3px 6px)}
+.ruta-fija__txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.ruta-fija__txt small{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3);font-weight:700}
+.ruta-fija__txt b{font-size:15px;font-weight:700;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ruta-fija__vacio{color:var(--txt-3);font-weight:600!important}
+.ruta-fija__fila:first-child .ruta-fija__txt b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ruta-fija__nota{color:var(--txt-3);flex:none;display:grid;place-items:center;width:28px;height:28px}
+.ruta-fija__cambiar{flex:none;font-size:12.5px;font-weight:700;color:var(--ac-2);padding:.35rem .7rem;border-radius:99px;background:color-mix(in srgb,var(--ac) 12%,transparent)}
+
+/* ─── Buscador y lista de destinos ──────────────────────── */
+.buscador-destino{position:relative;display:flex;align-items:center;gap:.55rem;background:var(--sup);border:1.5px solid var(--borde);border-radius:14px;padding:0 .4rem 0 .85rem;margin-bottom:.6rem;transition:var(--t)}
+.buscador-destino:focus-within{border-color:var(--ac)}
+.buscador-destino>svg{color:var(--txt-3);flex:none}
+.buscador-destino input{flex:1;min-width:0;background:none;border:0;padding:.85rem 0;font-size:16px;color:var(--txt)}
+.buscador-destino input:focus{outline:none}
+.buscador-destino input::-webkit-search-cancel-button{-webkit-appearance:none}
+.buscador-destino__x{flex:none;font-size:12.5px;font-weight:700;color:var(--txt-2);padding:.45rem .6rem;border-radius:10px}
+.lista-destinos{display:flex;flex-direction:column}
+.lista-destinos--dialogo{max-height:min(52vh,460px);overflow-y:auto;overscroll-behavior:contain;margin:0 -.3rem 1rem;padding:0 .3rem}
+.lista-destinos__h{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3);font-weight:700;margin:.7rem 0 .2rem}
+.fila-destino{display:flex;align-items:center;gap:.75rem;width:100%;text-align:left;padding:.7rem .3rem;border-bottom:1px solid var(--borde);min-height:52px;transition:background .15s}
+.fila-destino:hover{background:var(--campo)}
+.fila-destino:active{background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.fila-destino__ico{width:34px;height:34px;flex:none;border-radius:11px;display:grid;place-items:center;background:var(--campo);color:var(--txt-2)}
+.fila-destino__nombre{flex:1;min-width:0;font-size:14.5px;font-weight:600;line-height:1.3}
+.fila-destino__nombre small{display:block;font-size:11.5px;font-weight:600;color:var(--ac-2);margin-top:.05rem}
+.fila-destino__precio{flex:none;font-family:'Azeret Mono',monospace;font-size:14px;font-weight:600;color:var(--txt)}
+.lista-vacia{display:flex;flex-direction:column;gap:.35rem;padding:1.4rem .4rem;text-align:center;color:var(--txt-2);font-size:13.5px}
+.lista-vacia b{color:var(--txt);font-size:14.5px}
+
+/* ─── Precio del viaje ──────────────────────────────────── */
+.tarifa-card{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1rem 1.1rem;border-radius:18px;margin-bottom:.4rem;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 16%,var(--sup)),var(--sup));border:1.5px solid color-mix(in srgb,var(--ac) 30%,transparent)}
+.tarifa-card__precio small{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-2);font-weight:700}
+.tarifa-card__precio b{font-family:'Archivo',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.tarifa-card__meta{display:flex;flex-direction:column;align-items:flex-end;gap:.15rem;font-size:12.5px;color:var(--txt-2);text-align:right}
+.tarifa-card__meta span:first-child{color:var(--txt);font-weight:600}
+@media (max-width:360px){.tarifa-card__meta{align-items:flex-start;text-align:left}}
+.desglose-saldo{margin-top:.7rem;padding:.75rem .9rem;background:var(--campo);border-radius:12px;font-size:13px;display:flex;flex-direction:column;gap:.3rem}
+.desglose-saldo div{display:flex;justify-content:space-between;color:var(--txt-2)}
+.desglose-saldo__saldo{color:var(--verde)!important}
+.desglose-saldo__total{font-weight:800;color:var(--txt)!important;padding-top:.4rem;border-top:1px solid var(--borde)}
+.extras-campo--ancho{flex:none}
+.extras-campo textarea{width:100%;resize:vertical;min-height:58px;background:var(--fondo-2);color:var(--txt);border:1px solid var(--borde);border-radius:11px;padding:.55rem .6rem;font:inherit;font-size:13.5px}
+.extras-campo textarea:focus{border-color:var(--ac);outline:none}
+.opcional{font-weight:500;color:var(--txt-3);text-transform:none;letter-spacing:0}
+.quick-viaje__sub{display:block;font-size:12px;font-weight:500;opacity:.85;margin-top:.1rem}
+#btn-pedir{margin-top:1rem}
+
+/* En teléfonos, menos de 16px hace que iOS acerque la pantalla al escribir. */
+@media (hover:none) and (pointer:coarse){
+  .extras-campo input,.extras-campo select,.extras-campo textarea,.entrada input,#dlg-input{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -1176,17 +1270,27 @@ button{cursor:pointer}
 
         <form id="form-registro" hidden novalidate>
           <div class="campo">
-            <label for="re-nombre">Nombre completo</label>
+            <label for="re-nombre">Nombre(s)</label>
             <div class="entrada entrada--icono">
               <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
-              <input id="re-nombre" type="text" autocomplete="name" placeholder="Ana Ramírez" required />
+              <input id="re-nombre" type="text" autocomplete="given-name" placeholder="Ana María" required />
+            </div>
+          </div>
+          <div class="duo">
+            <div class="campo">
+              <label for="re-apellidop">Apellido paterno</label>
+              <div class="entrada"><input id="re-apellidop" type="text" autocomplete="off" placeholder="Ramírez" required /></div>
+            </div>
+            <div class="campo">
+              <label for="re-apellidom">Apellido materno</label>
+              <div class="entrada"><input id="re-apellidom" type="text" autocomplete="off" placeholder="López" /></div>
             </div>
           </div>
           <div class="duo">
             <div class="campo">
               <label for="re-tel">Teléfono</label>
               <div class="entrada">
-                <input id="re-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="771 123 4567" required />
+                <input id="re-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="771 123 4567" maxlength="16" required />
               </div>
             </div>
             <div class="campo">
@@ -1265,22 +1369,34 @@ button{cursor:pointer}
         <div style="display:flex;gap:.65rem;margin:1.2rem 0">
           <button class="quick-viaje" id="btn-quick-viaje" style="flex:1;margin:0">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17v-4.2l2-4.6A2 2 0 0 1 6.8 7h10.4a2 2 0 0 1 1.8 1.2l2 4.6V17z"/><path d="M3 13h18M7 17h.01M17 17h.01"/></svg>
-            <span style="flex:1">Pedir viaje</span>
+            <span style="flex:1;text-align:left">Pedir taxi<small class="quick-viaje__sub">Salida desde el AIFA</small></span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>
           </button>
-          <button id="btn-aifa" style="
+          <button id="btn-tarifas" aria-label="Ver destinos y tarifas" style="
             display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;
             padding:.85rem .9rem;background:var(--sup);border:1.5px solid var(--borde);
             border-radius:var(--r-xl);font-size:11px;font-weight:700;color:var(--txt);
             flex-shrink:0;min-width:72px;line-height:1.1
           ">
-            <span style="font-size:1.5rem;line-height:1">✈️</span>
-            <span>Al AIFA</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="1.9" stroke-linecap="round"><path d="M20 12 12 20 4 12V4h8z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+            <span>Tarifas</span>
           </button>
         </div>
 
         <!-- PASE DE ABORDAJE (solo si hay viaje vigente) -->
         <div id="pase-inicio"></div>
+
+        <!-- PERFIL INCOMPLETO (sin teléfono la taquilla no puede registrar el viaje) -->
+        <div id="aviso-perfil"></div>
+
+        <!-- DESTINOS CON TARIFA FIJA (catálogo de taquilla) -->
+        <div class="home-sec" id="sec-destinos" hidden>
+          <div class="home-sec__cab">
+            <span class="home-sec__h" id="destinos-inicio-h">Destinos populares</span>
+            <button class="home-sec__ver" id="ver-destinos">Todos los destinos</button>
+          </div>
+          <div class="h-scroll" id="destinos-inicio"></div>
+        </div>
 
         <!-- TARJETA DE FIDELIDAD -->
         <div class="home-sec">
@@ -1314,7 +1430,7 @@ button{cursor:pointer}
 
       <div class="vista" id="vista-viaje" hidden>
         <div id="mapa"></div>
-        <div class="flota" id="flota"><i></i><span>Buscando unidades…</span></div>
+        <div class="flota" id="flota"><i></i><span>Salidas desde el AIFA</span></div>
         <button class="brujula" id="btn-ubicarme" aria-label="Centrar en mi ubicación">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21"/><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg>
         </button>
@@ -1360,13 +1476,23 @@ button{cursor:pointer}
         <div class="tarjeta">
           <form id="form-perfil">
             <div class="campo">
-              <label for="pe-nombre">Nombre completo</label>
-              <div class="entrada"><input id="pe-nombre" type="text" required /></div>
+              <label for="pe-nombre">Nombre(s)</label>
+              <div class="entrada"><input id="pe-nombre" type="text" autocomplete="given-name" required /></div>
+            </div>
+            <div class="duo">
+              <div class="campo">
+                <label for="pe-apellidop">Apellido paterno</label>
+                <div class="entrada"><input id="pe-apellidop" type="text" autocomplete="off" /></div>
+              </div>
+              <div class="campo">
+                <label for="pe-apellidom">Apellido materno</label>
+                <div class="entrada"><input id="pe-apellidom" type="text" autocomplete="off" /></div>
+              </div>
             </div>
             <div class="duo">
               <div class="campo">
                 <label for="pe-tel">Teléfono</label>
-                <div class="entrada"><input id="pe-tel" type="tel" inputmode="tel" /></div>
+                <div class="entrada"><input id="pe-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="10 dígitos" maxlength="16" /></div>
               </div>
               <div class="campo">
                 <label for="pe-ciudad">Ciudad</label>
@@ -1376,13 +1502,13 @@ button{cursor:pointer}
             <div class="campo">
               <label for="pe-correo">Correo</label>
               <div class="entrada"><input id="pe-correo" type="email" disabled /></div>
-              <span class="pista">El correo es tu identificador y no se puede cambiar.</span>
+              <span class="pista">Tu teléfono es con el que te identifican en la base del AIFA.</span>
             </div>
             <button class="btn" type="submit" id="btn-guardar">Guardar cambios</button>
           </form>
         </div>
 
-        <p class="rotulo" style="margin:1.4rem 0 .6rem">Lugares guardados</p>
+        <p class="rotulo" style="margin:1.4rem 0 .6rem">Destinos favoritos</p>
         <div class="tarjeta">
           <button class="opcion" id="op-casa">
             <span style="display:flex;align-items:center;gap:.7rem;min-width:0">
@@ -1471,7 +1597,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
   onAuthStateChanged, updateProfile, sendPasswordResetEmail, deleteUser,
-  GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult
+  GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult,
+  EmailAuthProvider, reauthenticateWithCredential, reauthenticateWithPopup
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, collection, addDoc,
@@ -1501,10 +1628,11 @@ const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 // ─── Zona de operación T30 ───────────────────────────────
 // Hub principal: AIFA (Santa Lucía del Camino, Zumpango)
 // Cobertura: Hidalgo · EdoMex norte · CDMX norte
-const AIFA   = { lat: 19.9458, lng: -99.0785 }; // hub de concesión
+// Coordenadas oficiales del AIFA (DOF 22/02/2022: 19°44'40.7" N, 99°00'53.2" O).
+// La versión anterior (19.9458, -99.0785) quedaba ~25 km al norte del aeropuerto.
+const AIFA   = { lat: 19.74464, lng: -99.01478 }; // hub de concesión
 const PACHUCA = { lat: 20.1011, lng: -98.7591 }; // ciudad base
-// Centro de mapa = punto medio entre ambos
-const CENTRO = { lat: 20.022, lng: -98.912 };
+
 
 // Municipios relevantes de la concesión
 const ZONAS = [
@@ -1514,22 +1642,26 @@ const ZONAS = [
   "Mineral del Chico","Ecatepec","Apaxco","Tepeji","Teotihuacan"
 ].join(", ");
 
+/* Por ahora todos los viajes salen de la base T30 en el AIFA. */
+const ORIGEN_AIFA = Object.freeze({
+  texto: "AIFA · Aeropuerto Internacional Felipe Ángeles", detalle: "Base T30",
+  lat: 19.74464, lng: -99.01478, idTerminal: null
+});
+
 const S = {
   usuario: null, perfil: null,
   fase: 0,            // 0 planear · 1 buscando · 2 asignado · 3 en curso · 4 calificar
-  origen: null, destino: null, ruta: null,
-  clase: "express", pago: "efectivo",
+  origen: { ...ORIGEN_AIFA }, destino: null, ruta: null, eligiendo: false,
+  clase: "sedan", pago: "efectivo",
   viajeId: null, viaje: null, historial: [],
   campoActivo: "destino",
   cupon: null,        // cupón aplicado al viaje en curso de planeación
+  destinos: [],       // catálogo de taquilla (colección destinosTerminal)
   cancelar: [], relojes: []
 };
 
-const CLASES = {
-  express: { nombre: "T30 Express", pie: "Rápido y económico",     base: 22, km: 6.8,  min: 1.6, piso: 45, plazas: 4, color: "rosa" },
-  confort: { nombre: "T30 Confort", pie: "Autos nuevos y amplios", base: 32, km: 9.2,  min: 2.2, piso: 65, plazas: 4, color: "azul-claro" },
-  xl:      { nombre: "T30 XL",      pie: "Hasta 6 pasajeros",      base: 45, km: 12.5, min: 2.8, piso: 90, plazas: 6, color: "ambar" }
-};
+// Único servicio: taxi sedán de 4 plazas (la flota son 10 sedanes).
+const CLASES = { sedan: { nombre: "Taxi sedán", plazas: 4 } };
 
 /* ─── PROMOCIONES ─────────────────────────────────────────
    Catálogo declarativo. Cada cupón define sus propias reglas
@@ -1645,15 +1777,18 @@ const preguntar = ({ titulo, texto, ok = "Confirmar", riesgo = false }) => new P
   $("[data-si]").onclick = () => cerrar(true);
 });
 
-const pedirTexto = ({ titulo, texto, valor = "", marcador = "" }) => new Promise(res => {
+const pedirTexto = ({ titulo, texto, valor = "", marcador = "", tipo = "text" }) => new Promise(res => {
   const cerrar = abrirTelon(
     '<h3>' + esc(titulo) + '</h3><p>' + esc(texto) + '</p>' +
-    '<div class="entrada" style="margin-bottom:1.1rem"><input id="dlg-input" type="text" value="' + esc(valor) + '" placeholder="' + esc(marcador) + '" /></div>' +
+    '<div class="entrada" style="margin-bottom:1.1rem"><input id="dlg-input" type="' + esc(tipo) + '"' +
+      (tipo === "tel" ? ' inputmode="tel" autocomplete="tel-national"' : '') +
+      ' value="' + esc(valor) + '" placeholder="' + esc(marcador) + '" /></div>' +
     '<div class="dialogo__botones"><button class="btn btn--suave" data-no>Cancelar</button><button class="btn" data-si>Guardar</button></div>',
     res);
   setTimeout(() => $("#dlg-input")?.focus(), 120);
   $("[data-no]").onclick = () => cerrar(null);
   $("[data-si]").onclick = () => cerrar($("#dlg-input").value.trim());
+  $("#dlg-input").onkeydown = ev => { if (ev.key === "Enter") { ev.preventDefault(); cerrar($("#dlg-input").value.trim()); } };
 });
 
 const pintarRed = () => $("#sin-red").classList.toggle("viva", !navigator.onLine);
@@ -1856,28 +1991,28 @@ $("#form-entrar").onsubmit = async ev => {
   catch (e) { alertar(leer(e)); ocupar($("#btn-entrar"), false); }
 };
 
+/* El perfil lo crea onAuthStateChanged. Antes lo creaban los dos a la vez:
+   el observador se adelantaba, guardaba "Pasajero T30" sin teléfono en memoria
+   y el registro escribía después el bueno, pero la app seguía con el viejo. */
+let altaPendiente = null;
+
 $("#form-registro").onsubmit = async ev => {
   ev.preventDefault(); alertar("");
-  const nombre = $("#re-nombre").value.trim();
-  if (nombre.length < 3) return alertar("Escribe tu nombre completo.");
+  const nombres = limpiarNombre($("#re-nombre").value);
+  const { apellidop, apellidom } = separarApellidos($("#re-apellidop").value, $("#re-apellidom").value);
+  const telefono = normalizarTelefono($("#re-tel").value);
+  if (nombres.length < 2) return alertar("Escribe tu nombre.");
+  if (apellidop.length < 2) return alertar("Escribe tu apellido paterno.");
+  if (!telefono) return alertar("Escribe tu teléfono a 10 dígitos. Es con el que te identifican en la base.");
+  const correo = $("#re-correo").value.trim();
+  const nombre = nombreCompleto({ nombres, apellidop, apellidom });
+  altaPendiente = { nombre, nombres, apellidop, apellidom, telefono, correo, ciudad: $("#re-ciudad").value.trim() };
   ocupar($("#btn-registro"), true, "Creando cuenta");
   try {
-    const cred = await createUserWithEmailAndPassword(auth, $("#re-correo").value.trim(), $("#re-clave").value);
+    const cred = await createUserWithEmailAndPassword(auth, correo, $("#re-clave").value);
     await updateProfile(cred.user, { displayName: nombre });
-    await setDoc(doc(db, "usuarios", cred.user.uid), {
-      uid: cred.user.uid,
-      nombre,
-      correo: $("#re-correo").value.trim(),
-      telefono: $("#re-tel").value.trim(),
-      ciudad: $("#re-ciudad").value.trim() || "",
-      foto: null,
-      lugares: { casa: null, trabajo: null },
-      pago: "efectivo", tema: "oscuro", acento: "rosa", avisos: true,
-      viajes: 0, gastado: 0, estrellas: 5,
-      creadoEn: serverTimestamp()
-    });
     avisar("Cuenta creada. Bienvenida a bordo.", "bien");
-  } catch (e) { alertar(leer(e)); ocupar($("#btn-registro"), false); }
+  } catch (e) { altaPendiente = null; alertar(leer(e)); ocupar($("#btn-registro"), false); }
 };
 
 $("#btn-recuperar").onclick = async () => {
@@ -1892,12 +2027,30 @@ $("#btn-salir").onclick = async () => {
   limpiar(); await signOut(auth);
 };
 
+/* Firebase solo deja borrar una cuenta si la sesión es reciente; si no,
+   responde 400 (auth/requires-recent-login). Antes se borraba primero el
+   perfil y luego fallaba la cuenta: quedaba una cuenta sin perfil. Ahora se
+   confirma la identidad primero y el perfil se borra solo si eso funcionó. */
+async function confirmarIdentidad() {
+  const u = auth.currentUser;
+  if ((u.providerData || []).some(p => p.providerId === "google.com")) {
+    await reauthenticateWithPopup(u, googleProvider);
+    return true;
+  }
+  const clave = await pedirTexto({ titulo: "Confirma tu contraseña", texto: "Por seguridad, escribe tu contraseña para eliminar la cuenta.", tipo: "password" });
+  if (!clave) return false;
+  await reauthenticateWithCredential(u, EmailAuthProvider.credential(u.email, clave));
+  return true;
+}
+
 $("#btn-borrar").onclick = async () => {
   if (!await preguntar({ titulo: "Eliminar cuenta", texto: "Se borran tu perfil y tu historial. Esta acción no se puede deshacer.", ok: "Eliminar", riesgo: true })) return;
   try {
+    if (!await confirmarIdentidad()) return;
+    const u = auth.currentUser, uid = u.uid;
+    await deleteDoc(doc(db, "usuarios", uid));
     limpiar();
-    await deleteDoc(doc(db, "usuarios", S.usuario.uid));
-    await deleteUser(auth.currentUser);
+    await deleteUser(u);
     avisar("Cuenta eliminada.");
   } catch (e) { avisar(leer(e), "mal"); }
 };
@@ -1911,7 +2064,7 @@ onAuthStateChanged(auth, async usuario => {
   limpiar();
   S.usuario = usuario;
   if (!usuario) {
-    Object.assign(S, { perfil: null, viajeId: null, viaje: null, fase: 0, origen: null, destino: null, ruta: null, historial: [] });
+    Object.assign(S, { perfil: null, viajeId: null, viaje: null, fase: 0, origen: { ...ORIGEN_AIFA }, destino: null, ruta: null, eligiendo: false, historial: [] });
     aplicarTema("oscuro", "rosa");
     mostrar("pantalla-acceso");
     ocupar($("#btn-entrar"), false); ocupar($("#btn-registro"), false);
@@ -1935,11 +2088,17 @@ onAuthStateChanged(auth, async usuario => {
     } else {
       // Usuario nuevo — puede venir de Google (tiene foto y displayName) o de correo
       const fotoGoogle = usuario.photoURL || null;
+      const alta = altaPendiente || {};
+      altaPendiente = null;
       S.perfil = {
         uid: usuario.uid,
-        nombre: usuario.displayName || "Pasajero T30",
+        nombre: alta.nombre || usuario.displayName || "Pasajero T30",
+        nombres: alta.nombres || usuario.displayName || "",
+        apellidop: alta.apellidop || "",
+        apellidom: alta.apellidom || "",
         correo: usuario.email,
-        ciudad: usuario.phoneNumber || "",
+        telefono: alta.telefono || normalizarTelefono(usuario.phoneNumber) || "",
+        ciudad: alta.ciudad || "",
         foto: fotoGoogle,
         lugares: { casa: null, trabajo: null },
         pago: "efectivo", tema: "oscuro", acento: "rosa", avisos: true,
@@ -1953,10 +2112,12 @@ onAuthStateChanged(auth, async usuario => {
     }
     S.pago = S.perfil.pago || "efectivo";
     aplicarTema(S.perfil.tema || "oscuro", S.perfil.acento || "rosa");
-    pintarPerfil();
+    pintarPerfil(true);
     mostrar("pantalla-app");
     cargarInicio();
     pintarHoja();
+    escucharPerfil();
+    escucharDestinos();
     escucharViajes();
     ubicarme(false);
   } catch (e) {
@@ -1970,7 +2131,31 @@ setTimeout(() => { if ($("#pantalla-carga").classList.contains("viva") && !auth.
 /* ══════════════════════════════════════════════════════════════
    7 · PERFIL
    ══════════════════════════════════════════════════════════════ */
-function pintarPerfil() {
+/* ─── Datos del pasajero que usa la taquilla ─────────────── */
+const limpiarNombre = v => String(v || "").trim().replace(/\s+/g, " ");
+const nombreCompleto = p => [p.nombres, p.apellidop, p.apellidom].map(limpiarNombre).filter(Boolean).join(" ");
+
+/** Si en "paterno" vienen los dos apellidos (típico del autocompletado), los separa:
+    "Díaz Martínez" + "Martínez" → "Díaz" + "Martínez"; "Díaz Martínez" + "" → igual. */
+function separarApellidos(paterno, materno) {
+  let p = limpiarNombre(paterno), m = limpiarNombre(materno);
+  const fin = " " + m.toLowerCase();
+  if (m && p.toLowerCase().endsWith(fin)) p = p.slice(0, -fin.length).trim();
+  return { apellidop: p, apellidom: m };
+}
+
+/** La taquilla identifica al cliente por teléfono: siempre 10 dígitos, sin lada de país. */
+function normalizarTelefono(v) {
+  let d = String(v ?? "").replace(/\D/g, "");
+  if (d.length === 13 && d.startsWith("521")) d = d.slice(3);
+  else if (d.length === 12 && d.startsWith("52")) d = d.slice(2);
+  return /^\d{10}$/.test(d) ? d : null;
+}
+const telefonoBonito = t => (t && t.length === 10) ? t.slice(0, 3) + " " + t.slice(3, 6) + " " + t.slice(6) : (t || "");
+
+/** `formulario` = también rellenar los campos editables. El perfil se escucha en
+    vivo y no queremos borrar lo que el pasajero está escribiendo. */
+function pintarPerfil(formulario = false) {
   const p = S.perfil;
   if (!p) return;
   $("#perfil-nombre").textContent = p.nombre;
@@ -1978,12 +2163,18 @@ function pintarPerfil() {
   $("#stat-viajes").textContent = p.viajes || 0;
   $("#stat-gasto").textContent = dinero(p.gastado || 0);
   $("#stat-desde").textContent = p.creadoEn?.toDate ? p.creadoEn.toDate().getFullYear() : new Date().getFullYear();
-  $("#pe-nombre").value = p.nombre || "";
-  $("#pe-tel").value = p.telefono || "";
-  $("#pe-ciudad").value = p.ciudad || "";
+  if (formulario) {
+    // Perfiles viejos solo tienen `nombre`: se muestra completo en "Nombre(s)" hasta que lo separen.
+    $("#pe-nombre").value = p.apellidop ? (p.nombres || "") : (p.nombre || "");
+    $("#pe-apellidop").value = p.apellidop || "";
+    $("#pe-apellidom").value = p.apellidom || "";
+    $("#pe-tel").value = telefonoBonito(p.telefono);
+    $("#pe-ciudad").value = p.ciudad || "";
+  }
   $("#pe-correo").value = p.correo || "";
-  $("#txt-casa").textContent = p.lugares?.casa?.texto || "Sin definir";
-  $("#txt-trabajo").textContent = p.lugares?.trabajo?.texto || "Sin definir";
+  const lugar = l => l?.idTerminal != null ? l.texto : "Elige un destino";
+  $("#txt-casa").textContent = lugar(p.lugares?.casa);
+  $("#txt-trabajo").textContent = lugar(p.lugares?.trabajo);
   $("#sw-avisos").setAttribute("aria-checked", String(p.avisos !== false));
   $$("#seg-pago button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pago === (p.pago || "efectivo"))));
 
@@ -1991,23 +2182,90 @@ function pintarPerfil() {
   if (p.foto) caja.outerHTML = '<img id="retrato-txt" src="' + esc(p.foto) + '" alt="" />';
   else if (caja.tagName === "IMG") caja.outerHTML = '<span id="retrato-txt">' + iniciales(p.nombre) + '</span>';
   else caja.textContent = iniciales(p.nombre);
+  pintarAvisoPerfil();
+}
+
+/** Sin teléfono la taquilla no puede registrar el viaje: se avisa en Inicio. */
+function pintarAvisoPerfil() {
+  const c = $("#aviso-perfil");
+  if (!c || !S.perfil) return;
+  const falta = !normalizarTelefono(S.perfil.telefono) ? "tu teléfono"
+    : !S.perfil.apellidop ? "tus apellidos" : null;
+  c.innerHTML = falta
+    ? '<button class="aviso-perfil" id="btn-completar">' +
+        '<span style="font-size:1.3rem">📋</span>' +
+        '<span style="flex:1;min-width:0"><b>Completa tu perfil</b>' +
+        '<small>Agrega ' + falta + ' para que la base del AIFA registre tus viajes.</small></span>' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt-3)" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>' +
+      '</button>'
+    : "";
+  const b = $("#btn-completar");
+  if (b) b.onclick = () => { irAVista("vista-perfil"); setTimeout(() => $(falta === "tu teléfono" ? "#pe-tel" : "#pe-apellidop")?.focus(), 200); };
 }
 
 $("#form-perfil").onsubmit = async ev => {
   ev.preventDefault();
-  const nombre = $("#pe-nombre").value.trim();
-  if (nombre.length < 3) return avisar("Escribe tu nombre completo.", "mal");
+  const nombres = limpiarNombre($("#pe-nombre").value);
+  const { apellidop, apellidom } = separarApellidos($("#pe-apellidop").value, $("#pe-apellidom").value);
+  const telTexto = $("#pe-tel").value.trim();
+  const telefono = normalizarTelefono(telTexto);
+  if (nombres.length < 2) return avisar("Escribe tu nombre.", "mal");
+  if (telTexto && !telefono) return avisar("El teléfono debe tener 10 dígitos.", "mal");
   ocupar($("#btn-guardar"), true, "Guardando");
-  const cambios = { nombre, telefono: $("#pe-tel").value.trim(), ciudad: $("#pe-ciudad").value.trim() };
+  const nombre = apellidop ? nombreCompleto({ nombres, apellidop, apellidom }) : nombres;
+  const cambios = { nombre, nombres, apellidop, apellidom, telefono: telefono || "", ciudad: $("#pe-ciudad").value.trim() };
   try {
     await updateDoc(doc(db, "usuarios", S.usuario.uid), cambios);
     if (nombre !== auth.currentUser.displayName) await updateProfile(auth.currentUser, { displayName: nombre });
     Object.assign(S.perfil, cambios);
-    pintarPerfil();
+    pintarPerfil(true);
     avisar("Perfil actualizado.", "bien");
   } catch (e) { avisar(leer(e), "mal"); }
   finally { ocupar($("#btn-guardar"), false); }
 };
+
+/** Pide el teléfono justo cuando hace falta (antes de pedir un viaje) y lo guarda. */
+async function asegurarTelefono() {
+  if (normalizarTelefono(S.perfil?.telefono)) return true;
+  let aviso = "La base del AIFA te identifica por teléfono. Lo usamos también para que tu conductor te contacte.";
+  for (;;) {
+    const t = await pedirTexto({ titulo: "Tu teléfono", texto: aviso, marcador: "771 123 4567", tipo: "tel" });
+    if (t === null) return false;
+    const tel = normalizarTelefono(t);
+    if (!tel) { aviso = "Necesitamos 10 dígitos, por ejemplo 771 123 4567."; continue; }
+    try {
+      await updateDoc(doc(db, "usuarios", S.usuario.uid), { telefono: tel });
+      S.perfil.telefono = tel;
+      pintarPerfil(true);
+      return true;
+    } catch (e) { avisar(leer(e), "mal"); return false; }
+  }
+}
+
+/* El perfil se escucha en vivo: la función del servidor acredita puntos,
+   viajes y devoluciones de saldo, y la app tiene que enterarse sola. */
+function escucharPerfil() {
+  const off = onSnapshot(doc(db, "usuarios", S.usuario.uid), snap => {
+    if (!snap.exists() || !S.perfil) return;
+    const antes = S.perfil;
+    const nuevo = snap.data();
+    const nivelAntes = nivelActual().id;
+    S.perfil = { ...antes, ...nuevo };
+    const ganados = (nuevo.puntos || 0) - (antes.puntos || 0);
+    const devuelto = (nuevo.saldo || 0) - (antes.saldo || 0);
+    if (ganados > 0 && !snap.metadata.hasPendingWrites) {
+      avisar("+" + ganados + " puntos T30 🎉", "bien");
+      const n = nivelActual();
+      if (n.id !== nivelAntes) espera(() => avisar("¡Subiste a nivel " + n.nombre + "! " + n.bono, "bien"), 1400);
+    }
+    if (devuelto > 0 && !snap.metadata.hasPendingWrites && antes.saldo !== undefined && !S.canjeando) {
+      avisar("Te devolvimos " + dinero(devuelto) + " de saldo T30.", "bien");
+    }
+    pintarPerfil(false);
+    pintarInicio();
+  }, () => {});
+  S.cancelar.push(off);
+}
 
 // La foto se recorta a 220px y se guarda como data URL en el documento (sin Storage).
 $("#btn-foto").onclick = () => $("#entrada-foto").click();
@@ -2038,26 +2296,22 @@ const recortar = (archivo, lado) => new Promise((res, rej) => {
   img.src = URL.createObjectURL(archivo);
 });
 
+/* Casa y Trabajo son destinos del catálogo (los viajes solo van a ellos). */
 async function editarLugar(clave, etiqueta) {
-  const texto = await pedirTexto({
-    titulo: etiqueta, texto: "Escribe la dirección y la buscamos por ti.",
-    valor: S.perfil.lugares?.[clave]?.texto || "", marcador: "Calle, número, colonia"
+  const actual = S.perfil.lugares?.[clave];
+  const d = await elegirDestinoEnDialogo({
+    titulo: etiqueta,
+    texto: actual ? "Ahora: " + actual.texto + ". Elige otro destino o cierra para dejarlo igual." : "Elige el destino de la lista que te queda más cerca."
   });
-  if (texto === null) return;
-  let lugares;
-  if (!texto) {
-    lugares = { ...(S.perfil.lugares || {}), [clave]: null };
-  } else {
-    const r = (await geocodificar(texto))[0];
-    if (!r) return avisar("No encontramos esa dirección.", "mal");
-    lugares = { ...(S.perfil.lugares || {}), [clave]: r };
-  }
+  if (!d) return;
+  const lugares = { ...(S.perfil.lugares || {}), [clave]: puntoDeDestino(d) };
   try {
     await updateDoc(doc(db, "usuarios", S.usuario.uid), { lugares });
     S.perfil.lugares = lugares;
     pintarPerfil();
+    pintarDestinosInicio();
     if (S.fase === 0) pintarHoja();
-    avisar(texto ? etiqueta + " guardado." : etiqueta + " eliminado.", "bien");
+    avisar(etiqueta + ": " + d.nombre, "bien");
   } catch (e) { avisar(leer(e), "mal"); }
 }
 $("#op-casa").onclick = () => editarLugar("casa", "Casa");
@@ -2066,11 +2320,15 @@ $("#op-trabajo").onclick = () => editarLugar("trabajo", "Trabajo");
 /* ══════════════════════════════════════════════════════════════
    8 · NAVEGACIÓN
    ══════════════════════════════════════════════════════════════ */
-$$(".nav button").forEach(b => b.onclick = () => {
-  $$(".nav button").forEach(o => o.setAttribute("aria-selected", String(o === b)));
-  $$(".vista").forEach(v => { v.hidden = v.id !== b.dataset.vista; });
-  if (b.dataset.vista === "vista-viaje") { iniciarMapa(); setTimeout(() => mapa?.invalidateSize(), 80); }
-});
+$$(".nav button").forEach(b => b.onclick = () => irAVista(b.dataset.vista));
+
+/* Antes no existía: "Pedir viaje" y "Al AIFA" en Inicio llamaban a irAVista()
+   y tronaban con ReferenceError, así que no hacían nada. */
+function irAVista(id) {
+  $$(".nav button").forEach(o => o.setAttribute("aria-selected", String(o.dataset.vista === id)));
+  $$(".vista").forEach(v => { v.hidden = v.id !== id; });
+  if (id === "vista-viaje") { iniciarMapa(); setTimeout(() => mapa?.invalidateSize(), 80); }
+}
 
 /* ══════════════════════════════════════════════════════════════
    9 · PANTALLA INICIO — carrusel + fidelidad
@@ -2083,6 +2341,8 @@ function cargarInicio() {
 // Repinta todos los bloques dinámicos del Inicio
 function pintarInicio() {
   pintarNivel();
+  pintarAvisoPerfil();
+  pintarDestinosInicio();
 }
 
 /* ─── Tarjeta de membresía ─────────────────────────────── */
@@ -2202,15 +2462,7 @@ function siguienteNivel() {
 }
 
 // ─── Contexto de evaluación ────────────────────────────────
-const tocaElAIFA = () => {
-  const cerca = (pt) => pt && pt.lat != null && Math.abs(pt.lat - AIFA.lat) < 0.09 && Math.abs(pt.lng - AIFA.lng) < 0.09;
-  const dice  = (pt) => pt && /aifa|felipe ángeles|felipe angeles/i.test(pt.texto || "");
-  // Cubre el viaje normal y el borrador del asistente de redondo
-  const puntos = [S.origen, S.destino,
-                  (typeof B !== "undefined" && B ? B.origen : null),
-                  (typeof B !== "undefined" && B ? B.destino : null)];
-  return puntos.some(p => cerca(p) || dice(p));
-};
+const tocaElAIFA = () => esAIFA(S.origen) || esAIFA(S.destino);
 
 function huboViajeHoy() {
   const hoy = new Date().toDateString();
@@ -2238,19 +2490,9 @@ function agotado(cup) { return usosDe(cup.id) >= (cup.usos || 1); }
 
 
 
-// ─── Otorgar puntos al completar viaje ─────────────────────
-async function otorgarPuntos(precio) {
-  const mult = nivelActual().mult;
-  const ganados = Math.round(PUNTOS_POR_VIAJE * mult);
-  const antesNivel = nivelActual().id;
-  S.perfil.puntos = puntosActuales() + ganados;
-  try { await updateDoc(doc(db, "usuarios", S.usuario.uid), { puntos: increment(ganados) }); } catch {}
-  const ahoraNivel = nivelActual();
-  if (ahoraNivel.id !== antesNivel) {
-    espera(() => avisar("¡Subiste a nivel " + ahoraNivel.nombre + "! " + ahoraNivel.bono, "bien"), 1200);
-  }
-  return ganados;
-}
+// Los puntos, el conteo de viajes y lo gastado los acredita la función del
+// servidor al completarse el viaje (desde la app o desde el panel). La app se
+// entera por escucharPerfil().
 
 // ─── Canjear puntos por saldo ──────────────────────────────
 async function canjearPuntos() {
@@ -2262,20 +2504,24 @@ async function canjearPuntos() {
     ok: "Canjear"
   });
   if (!ok) return;
+  S.canjeando = true;
   S.perfil.puntos = p - CANJE_PUNTOS;
   S.perfil.saldo  = (S.perfil.saldo || 0) + CANJE_VALOR;
   try {
     await updateDoc(doc(db, "usuarios", S.usuario.uid), { puntos: increment(-CANJE_PUNTOS), saldo: increment(CANJE_VALOR) });
     avisar("Canjeado. Tienes " + dinero(S.perfil.saldo) + " de saldo.", "bien");
   } catch (e) { avisar(leer(e), "mal"); }
+  finally { setTimeout(() => { S.canjeando = false; }, 1500); }
   pintarInicio();
 }
 
 /* ─── Carrusel de anuncios ─────────────────────────────── */
+let carruselListo = false;
 function iniciarCarrusel() {
   const pista = $("#car-pista");
   const dots  = $$("#car-dots .car__dot");
-  if (!pista || !dots.length) return;
+  if (!pista || !dots.length || carruselListo) return;
+  carruselListo = true;
   const total = pista.children.length;
   let idx = 0, timer, startX = 0, arrastrado = false;
 
@@ -2299,30 +2545,34 @@ function iniciarCarrusel() {
 }
 
 /* ─── Ir a la pantalla de viaje ────────────────────────── */
-function irAViaje(destPredefinido) {
+function irAViaje() {
   irAVista("vista-viaje");
   iniciarMapa();
-  if (destPredefinido) {
-    setTimeout(() => {
-      const cd = $("#c-destino");
-      if (cd) { cd.value = destPredefinido; cd.dispatchEvent(new Event("input")); cd.focus(); }
-    }, 420);
+  if (S.fase === 0) {
+    S.eligiendo = !destinoActual();
+    pintarHoja();
+    if (S.eligiendo) abrirHoja();
   }
   setTimeout(() => mapa?.invalidateSize(), 90);
 }
 
-
+/** Desde Inicio o el catálogo: va directo al resumen con ese destino. */
+function irConDestino(d) {
+  irAVista("vista-viaje");
+  if (S.fase !== 0) return avisar("Ya tienes un viaje en curso.", "mal");
+  elegirDestino(d);
+}
 
 /* ─── Accesos rápidos del Inicio ───────────────────────── */
-$("#btn-quick-viaje").onclick = () => irAViaje(null);
-$("#btn-aifa").onclick = () => irAViaje("AIFA · Aeropuerto Felipe Ángeles");
+$("#btn-quick-viaje").onclick = () => irAViaje();
+$("#btn-tarifas").onclick = verCatalogo;
 
 /* ── Alerta de viaje redondo al operador ─────────────────── */
 $("#btn-alerta-redondo").onclick = async () => {
   const notas = await pedirTexto({
     titulo: "Viaje redondo",
     texto: "Cuéntanos a dónde vas y cuándo necesitas el regreso. El operador te contacta para coordinar.",
-    marcador: "Ej. Voy al AIFA hoy 6pm, regreso mañana 9am"
+    marcador: "Ej. AIFA → Polanco hoy 6pm, regreso mañana 9am"
   });
   if (notas === null) return;
   try {
@@ -2330,7 +2580,7 @@ $("#btn-alerta-redondo").onclick = async () => {
       uid: S.usuario.uid,
       nombre: S.perfil?.nombre || "",
       telefono: S.perfil?.telefono || "",
-      origen: S.origen?.texto || "",
+      origen: ORIGEN_AIFA.texto,
       destino: S.destino?.texto || "",
       notas: notas || "",
       estado: "pendiente",
@@ -2349,12 +2599,14 @@ const TESELA_OSM = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 function iniciarMapa() {
   if (mapa) { setTimeout(() => mapa.invalidateSize(), 150); return; }
-  mapa = L.map("mapa", { zoomControl: false }).setView([CENTRO.lat, CENTRO.lng], 11);
+  mapa = L.map("mapa", { zoomControl: false }).setView([AIFA.lat, AIFA.lng], 12);
   mapa.attributionControl.setPrefix("");
   capa = L.tileLayer(TESELA_OSM, {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(mapa);
+  ponerMarca("origen", S.origen);
+  if (tieneCoords(S.destino)) { ponerMarca("destino", S.destino); calcularRuta(); }
   setTimeout(() => mapa.invalidateSize(), 220);
 }
 
@@ -2365,7 +2617,7 @@ function cambiarTeselas() { /* manejado por CSS */ }
 const icono = (clase, t = 20) => L.divIcon({ className: "", html: '<div class="' + clase + '"></div>', iconSize: [t, t], iconAnchor: [t / 2, t / 2] });
 
 function ponerMarca(cual, punto) {
-  if (!mapa || !punto) return;
+  if (!mapa || !punto || !tieneCoords(punto)) return;
   const previa = cual === "origen" ? marcaOrigen : cual === "destino" ? marcaDestino : marcaYo;
   if (previa) return previa.setLatLng([punto.lat, punto.lng]);
   const clase = cual === "origen" ? "pin__punto" : cual === "destino" ? "pin__meta" : "pin__yo";
@@ -2429,13 +2681,8 @@ async function ubicarme(gritar = true) {
     geoNegada = false;
     const p = { lat: pos.coords.latitude, lng: pos.coords.longitude };
     ponerMarca("yo", p);
-    if (S.fase === 0 && !S.origen) {
-      S.origen = { ...p, texto: (await reverso(p)) || "Mi ubicación actual", detalle: "" };
-      ponerMarca("origen", S.origen);
-      const campo = $("#c-origen");
-      if (campo) campo.value = S.origen.texto;
-    }
-    mapa?.setView([p.lat, p.lng], 15);
+    // La salida siempre es el AIFA: tu ubicación solo se muestra en el mapa.
+    if (gritar) mapa?.setView([p.lat, p.lng], 15);
   }, err => {
     if (err.code === err.PERMISSION_DENIED) geoNegada = true;
     if (gritar) {
@@ -2457,12 +2704,15 @@ $("#btn-ubicarme").onclick = () => ubicarme(true);
 const BBOX = { lonMin: -99.65, latMin: 19.38, lonMax: -98.18, latMax: 20.55 };
 
 async function geocodificar(texto) {
-  // Photon — bias hacia el centro de operación (AIFA)
+  // Photon — bias hacia el centro de operación (AIFA).
+  // Sin `lang`: Photon solo acepta default/en/de/fr y con "es" responde 400,
+  // así que antes todas las búsquedas caían al respaldo (Nominatim), más lento.
   try {
     const r = await fetch(
-      "https://photon.komoot.io/api/?lang=es&limit=7&lat=" + AIFA.lat + "&lon=" + AIFA.lng + "&zoom=11&q=" + encodeURIComponent(texto),
+      "https://photon.komoot.io/api/?limit=7&lat=" + AIFA.lat + "&lon=" + AIFA.lng + "&zoom=11&q=" + encodeURIComponent(texto),
       { signal: AbortSignal.timeout(5000) }
     );
+    if (!r.ok) throw new Error("photon " + r.status);
     const feats = (await r.json())?.features || [];
     // Filtrar solo resultados dentro de la zona de cobertura
     const enZona = feats.filter(f => {
@@ -2511,8 +2761,12 @@ const haversine = (a, b) => {
   return 2 * R * Math.asin(Math.sqrt(x));
 };
 
+let turnoRuta = 0;
+const tieneCoords = p => p && Number.isFinite(+p.lat) && Number.isFinite(+p.lng) && p.lat !== null && p.lng !== null;
+
 async function calcularRuta() {
-  if (!S.origen || !S.destino) { S.ruta = null; dibujarLinea(null); return; }
+  const turno = ++turnoRuta;   // si el pasajero cambia de destino a medio cálculo, gana el último
+  if (!tieneCoords(S.origen) || !tieneCoords(S.destino)) { S.ruta = null; dibujarLinea(null); return; }
   // OSRM — gratuito, sin key
   try {
     const d = await (await fetch(
@@ -2527,15 +2781,61 @@ async function calcularRuta() {
     const km = haversine(S.origen, S.destino) * 1.35;
     S.ruta = { km, min: Math.max(4, Math.round(km * 2.6 + 3)), linea: [[S.origen.lat, S.origen.lng], [S.destino.lat, S.destino.lng]] };
   }
+  if (turno !== turnoRuta) return;
   dibujarLinea(S.ruta.linea);
   encuadrar();
 }
 
-const tarifa = (clase, ruta) => {
-  if (!ruta) return null;
-  const c = CLASES[clase];
-  return Math.max(c.piso, Math.round(c.base + ruta.km * c.km + ruta.min * c.min));
-};
+/** Precio del viaje: tarifa fija de taquilla del destino elegido. */
+const destinoActual = () => destinoPorId(S.destino?.idTerminal);
+const precioViaje = () => destinoActual()?.precio || 0;
+
+/* Ubicación aproximada de un destino del catálogo, solo para dibujarlo en
+   el mapa (el precio no depende de esto). Se guarda en el navegador para
+   no volver a buscarla. Si no se encuentra, el viaje se pide igual. */
+const geoCache = new Map();
+async function ubicarDestino(d) {
+  if (geoCache.has(d.id)) return geoCache.get(d.id);
+  const clave = "t30-geo-" + d.id;
+  try { const g = JSON.parse(localStorage.getItem(clave) || "null"); if (g) { geoCache.set(d.id, g); return g; } } catch {}
+  const valido = (lat, lng) => Number.isFinite(lat) && Number.isFinite(lng) && haversine(AIFA, { lat, lng }) <= 450;
+  let g = null;
+  try {
+    const r = await fetch("https://photon.komoot.io/api/?limit=5&lat=" + AIFA.lat + "&lon=" + AIFA.lng +
+      "&q=" + encodeURIComponent(d.nombre + ", México"), { signal: AbortSignal.timeout(6000) });
+    if (r.ok) {
+      const f = ((await r.json()).features || []).find(f => f.properties?.countrycode === "MX" && valido(f.geometry.coordinates[1], f.geometry.coordinates[0]));
+      if (f) g = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+    }
+  } catch {}
+  if (!g) {
+    try {
+      const r = await fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=3&countrycodes=mx&accept-language=es&q=" +
+        encodeURIComponent(d.nombre), { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(7000) });
+      const f = (await r.json()).find(x => valido(+x.lat, +x.lon));
+      if (f) g = { lat: +f.lat, lng: +f.lon };
+    } catch {}
+  }
+  geoCache.set(d.id, g);
+  if (g) try { localStorage.setItem(clave, JSON.stringify(g)); } catch {}
+  return g;
+}
+
+/** Elige el destino: precio al instante; mapa y tiempo estimado cuando lleguen. */
+async function elegirDestino(d) {
+  if (!d || S.fase !== 0) return;
+  const p = puntoDeDestino(d);
+  S.destino = p; S.ruta = null; S.eligiendo = false;
+  quitarMarca("destino"); dibujarLinea(null);
+  pintarHoja();
+  const g = await ubicarDestino(d);
+  if (S.destino !== p) return;            // ya eligió otro
+  if (g) { p.lat = g.lat; p.lng = g.lng; ponerMarca("destino", p); await calcularRuta(); }
+  else encuadrarAIFA();
+  if (S.destino === p && S.fase === 0) pintarHoja();
+}
+
+function encuadrarAIFA() { mapa?.setView([AIFA.lat, AIFA.lng], 13); }
 
 /* ══════════════════════════════════════════════════════════════
    11 · HOJA DEL VIAJE
@@ -2557,164 +2857,122 @@ function pintarHoja() {
   else pintarCalificar(c);
 }
 
-function pintarPlaneando(c) {
-  const lugares = S.perfil?.lugares || {};
-  const atajos = [];
-  if (lugares.casa) atajos.push({ etiqueta: "Casa", d: lugares.casa });
-  if (lugares.trabajo) atajos.push({ etiqueta: "Trabajo", d: lugares.trabajo });
-  S.historial.filter(v => v.estado === "completado" && v.destino?.texto).slice(0, 3)
-    .forEach(v => { if (!atajos.some(a => a.d.texto === v.destino.texto)) atajos.push({ etiqueta: v.destino.texto, d: v.destino }); });
+/* ─── Planear: salida fija en el AIFA, destino del catálogo ── */
+const icoCandado = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 
-  c.innerHTML =
-    '<div class="ruta">' +
-      '<div class="ruta__riel"><span></span><i></i><span></span></div>' +
-      '<div class="ruta__campos">' +
-        '<input id="c-origen" placeholder="¿Dónde te recogemos?" value="' + esc(S.origen?.texto || "") + '" autocomplete="off" />' +
-        '<input id="c-destino" placeholder="¿A dónde vas?" value="' + esc(S.destino?.texto || "") + '" autocomplete="off" />' +
-      '</div>' +
+function tarjetaRuta() {
+  const d = S.eligiendo ? null : destinoActual();
+  return '<div class="ruta-fija">' +
+    '<div class="ruta-fija__fila">' +
+      '<span class="ruta-fija__punto ruta-fija__punto--origen"></span>' +
+      '<span class="ruta-fija__txt"><small>Salida</small><b>' + esc(ORIGEN_AIFA.texto) + '</b></span>' +
+      '<span class="ruta-fija__nota" title="Por ahora todos los viajes salen del AIFA">' + icoCandado + '</span>' +
     '</div>' +
-    '<div id="sugerencias"></div>' +
-    (atajos.length ? '<div class="atajos">' + atajos.slice(0, 4).map((a, i) =>
-      '<button class="atajo" data-atajo="' + i + '">' +
-        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/></svg>' +
-        esc(a.etiqueta.length > 22 ? a.etiqueta.slice(0, 21) + "…" : a.etiqueta) + '</button>').join("") + '</div>' : "") +
-    '<div id="bloque-clases" style="margin-top:1rem"></div>';
+    '<span class="ruta-fija__linea"></span>' +
+    (d
+      ? '<button class="ruta-fija__fila ruta-fija__fila--boton" id="btn-cambiar-destino">' +
+          '<span class="ruta-fija__punto ruta-fija__punto--destino"></span>' +
+          '<span class="ruta-fija__txt"><small>Destino</small><b>' + esc(d.nombre) + '</b></span>' +
+          '<span class="ruta-fija__cambiar">Cambiar</span></button>'
+      : '<div class="ruta-fija__fila">' +
+          '<span class="ruta-fija__punto ruta-fija__punto--destino"></span>' +
+          '<span class="ruta-fija__txt"><small>Destino</small><b class="ruta-fija__vacio">¿A dónde vas?</b></span></div>') +
+  '</div>';
+}
 
-  const buscar = frenar(async (campo, valor) => {
-    if (valor.trim().length < 3) return pintarSugerencias([]);
-    pintarSugerencias(null);
-    // Primero el catálogo de la terminal, luego el geocoder general.
-    const [catalogo, geo] = await Promise.all([
-      campo === "destino" ? destinosQueCoinciden(valor) : Promise.resolve([]),
-      geocodificar(valor)
-    ]);
-    const vistos = new Set(catalogo.map(d => d.texto.toLowerCase()));
-    pintarSugerencias(catalogo.concat(geo.filter(g => !vistos.has((g.texto || "").toLowerCase()))), campo);
-  }, 420);
+function pintarPlaneando(c) {
+  const d = destinoActual();
+  if (!d) S.eligiendo = true;
 
-  ["origen", "destino"].forEach(cual => {
-    const i = $("#c-" + cual);
-    i.oninput = ev => { S.campoActivo = cual; buscar(cual, ev.target.value); };
-    i.onfocus = () => { S.campoActivo = cual; abrirHoja(); };
-  });
+  if (S.eligiendo) {
+    c.innerHTML = tarjetaRuta() +
+      '<div class="buscador-destino">' +
+        '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
+        '<input id="c-destino" type="search" placeholder="Busca tu destino" autocomplete="off" enterkeyhint="search" aria-label="Busca tu destino" />' +
+        (d ? '<button class="buscador-destino__x" id="btn-cancelar-cambio" aria-label="Conservar destino">Cancelar</button>' : '') +
+      '</div>' +
+      '<div class="lista-destinos" id="lista-destinos">' + listaDestinosHTML("") + '</div>';
+    const input = $("#c-destino", c);
+    input.oninput = () => { $("#lista-destinos").innerHTML = listaDestinosHTML(input.value); };
+    input.onfocus = () => abrirHoja();
+    input.onkeydown = ev => {
+      if (ev.key !== "Enter") return;
+      const primero = filtrarDestinos(input.value)[0];
+      if (primero) { input.blur(); elegirDestino(primero); }
+    };
+    $("#lista-destinos", c).onclick = ev => {
+      const b = ev.target.closest("[data-dest]");
+      if (b) elegirDestino(destinoPorId(b.dataset.dest));
+    };
+    const x = $("#btn-cancelar-cambio", c);
+    if (x) x.onclick = () => { S.eligiendo = false; pintarHoja(); };
+    return;
+  }
 
-  $$("[data-atajo]", c).forEach(b => b.onclick = async () => {
-    const a = atajos[+b.dataset.atajo];
-    S.destino = a.d;
-    $("#c-destino").value = a.d.texto;
-    ponerMarca("destino", a.d);
-    pintarSugerencias([]);
-    await calcularRuta();
-    pintarClases();
-  });
-
+  c.innerHTML = tarjetaRuta() + '<div id="bloque-clases"></div>';
+  $("#btn-cambiar-destino", c).onclick = () => { S.eligiendo = true; abrirHoja(); pintarHoja(); };
   pintarClases();
 }
 
-function pintarSugerencias(lista, campo) {
-  const cont = $("#sugerencias");
-  if (!cont) return;
-  if (lista === null) {
-    cont.innerHTML = '<div class="sugerencias">' + [1, 2, 3].map(() =>
-      '<div class="sugerencia"><div class="hueso" style="width:34px;height:34px;border-radius:11px"></div>' +
-      '<div style="flex:1"><div class="hueso" style="height:11px;width:62%;margin-bottom:6px"></div>' +
-      '<div class="hueso" style="height:9px;width:86%"></div></div></div>').join("") + '</div>';
-    return;
-  }
-  if (!lista.length) { cont.innerHTML = ""; return; }
-  cont.innerHTML = '<div class="sugerencias">' + lista.map((r, i) =>
-    '<button class="sugerencia" data-s="' + i + '">' +
-      '<span class="sugerencia__ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>' +
-      '<span class="sugerencia__txt"><b>' + esc(r.texto) + '</b><small>' + esc(r.detalle) + '</small></span></button>').join("") + '</div>';
-
-  $$("[data-s]", cont).forEach(b => b.onclick = async () => {
-    const r = lista[+b.dataset.s];
-    const cual = campo || S.campoActivo;
-    S[cual] = r;
-    const campoInput = $("#c-" + cual);
-    if (campoInput) campoInput.value = r.texto;
-    ponerMarca(cual, r);
-    cont.innerHTML = "";
-    await calcularRuta();
-    pintarClases();
-  });
-}
-
+/** Resumen del viaje elegido: precio, detalles y botón para pedir. */
 function pintarClases() {
   const cont = $("#bloque-clases");
   if (!cont) return;
-  const listo = !!(S.origen && S.destino && S.ruta);
+  const d = destinoActual();
+  if (!d) return;
+  const t = desglose();
+  const estimado = S.ruta ? "≈ " + Math.round(S.ruta.km) + " km · " + tiempoLegible(S.ruta.min) : "";
   cont.innerHTML =
-    '<p class="rotulo" style="margin-bottom:.5rem">' +
-      (listo ? S.ruta.km.toFixed(1) + " km · " + S.ruta.min + " min" : "Elige tu servicio") + '</p>' +
-    '<div class="clases">' + Object.entries(CLASES).map(([id, c]) => {
-      const precio = tarifa(id, S.ruta);
-      return '<button class="clase" data-clase="' + id + '" aria-pressed="' + (id === S.clase) + '">' +
-        '<span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--' + c.color + ')" stroke-width="1.9" stroke-linecap="round"><path d="M3 17v-4.2l2-4.6A2 2 0 0 1 6.8 7h10.4a2 2 0 0 1 1.8 1.2l2 4.6V17z"/><path d="M3 13h18M7 17h.01M17 17h.01"/></svg></span>' +
-        '<span class="clase__txt"><b>' + c.nombre + '</b><small>' + c.pie + ' · ' + c.plazas + ' plazas</small></span>' +
-        '<span class="precio">' + (precio ? dinero(precio) : "—") + '</span></button>';
-    }).join("") + '</div>' +
+    '<div class="tarifa-card">' +
+      '<div class="tarifa-card__precio"><small>Tarifa fija</small><b>' + dinero(d.precio) + '</b></div>' +
+      '<div class="tarifa-card__meta">' +
+        '<span>Taxi sedán · hasta 4 pasajeros</span>' +
+        (estimado ? '<span>' + esc(estimado) + '</span>' : '<span>Mismo precio que en taquilla</span>') +
+      '</div>' +
+    '</div>' +
     '<div class="fila"><span class="fila__izq"><span class="fila__ico">' +
       (S.pago === "tarjeta"
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/></svg>'
         : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="7" width="18" height="10" rx="2.5"/><circle cx="12" cy="12" r="2.4"/></svg>') +
       '</span><span class="opcion__txt"><b>' + (S.pago === "tarjeta" ? "Tarjeta" : "Efectivo") + '</b><small>Cámbialo en Perfil</small></span></span></div>' +
-    bloqueDatosViaje(listo) +
-    bloqueExtras(listo) +
-    '<button class="btn btn--ambar" id="btn-pedir"' + (listo ? "" : " disabled") + '>' +
-      (listo ? "Pedir " + CLASES[S.clase].nombre + " · " + dinero(desglose(S.clase, S.ruta).total) : "Elige tu destino") + '</button>';
+    bloqueDatosViaje(true) +
+    bloqueExtras(true) +
+    '<button class="btn btn--ambar" id="btn-pedir">Pedir taxi · ' + dinero(t.total) + '</button>';
 
-  $$("[data-clase]", cont).forEach(b => b.onclick = () => { S.clase = b.dataset.clase; pintarClases(); });
   enlazarDatosViaje(cont);
-  const btn = $("#btn-pedir", cont);
-  if (btn) btn.onclick = pedirViaje;
-
-  // Quitar cupón aplicado
-  const qc = $("#quitar-cupon", cont);
-  if (qc) qc.onclick = () => { S.cupon = null; pintarClases(); avisar("Cupón retirado."); };
-  // Alternar viaje redondo desde la hoja
-  const tr = $("#toggle-redondo", cont);
-  if (tr) tr.onclick = configurarRedondo;
+  $("#btn-pedir", cont).onclick = pedirViaje;
 }
 
-/* ─── Desglose de precio: base − saldo ────────────────────── */
-function desglose(clase, ruta) {
-  const base = tarifa(clase, ruta) || 0;
+const tiempoLegible = min => min < 60 ? min + " min" : Math.floor(min / 60) + " h" + (min % 60 ? " " + (min % 60) + " min" : "");
+
+/* ─── Desglose de precio: tarifa − saldo ──────────────────── */
+function desglose() {
+  const base = precioViaje();
   if (!base) return { base: 0, saldo: 0, total: 0 };
   const saldo = Math.min(S.perfil?.saldo || 0, base);
   return { base, saldo, total: Math.max(0, base - saldo) };
 }
 
-/* ─── Panel de extras: ya no hay cupones ni redondo aquí ── */
-/* ─── Datos propios de una base de aeropuerto ───────────── */
+/* ─── Detalles del viaje: pasajeros, equipaje, vuelo, dirección ── */
 const TERMINALES = ["Terminal 1", "Zona de carga", "Hangares / aviación general"];
-S.extras = { vuelo: "", terminal: "", pasajeros: 1, maletas: 0, abierto: false };
+const MAX_PASAJEROS = 4;
+S.extras = { vuelo: "", terminal: "", pasajeros: 1, maletas: 0, domicilio: "", abierto: false };
 
-const tocaAIFA = () =>
-  /aifa|felipe [aá]ngeles|aeropuerto/i.test((S.origen?.texto || "") + " " + (S.destino?.texto || ""));
+const tocaAIFA = () => true;    // todos los viajes salen del AIFA
 
 /** Plazas necesarias según personas y equipaje: 2 maletas grandes ocupan una plaza. */
 const plazasNecesarias = () =>
   (S.extras.pasajeros || 1) + Math.floor((S.extras.maletas || 0) / 2);
 
-function claseSugerida() {
-  const n = plazasNecesarias();
-  const cabe = Object.entries(CLASES).filter(([, c]) => c.plazas >= n);
-  return cabe.length ? cabe[0][0] : "xl";
-}
-
-function bloqueDatosViaje(listo) {
-  if (!listo) return "";
+function bloqueDatosViaje() {
   const e = S.extras;
-  const aifa = tocaAIFA();
   const resumen = [
     e.pasajeros + (e.pasajeros === 1 ? " pasajero" : " pasajeros"),
     e.maletas ? e.maletas + (e.maletas === 1 ? " maleta" : " maletas") : null,
-    e.vuelo ? "vuelo " + e.vuelo : null
+    e.vuelo ? "vuelo " + e.vuelo : null,
+    e.domicilio ? "con dirección" : null
   ].filter(Boolean).join(" · ");
-
-  const necesita = plazasNecesarias();
-  const cabe = CLASES[S.clase].plazas >= necesita;
+  const excede = plazasNecesarias() > MAX_PASAJEROS;
 
   return '<div class="extras-viaje">' +
     '<button class="extras-viaje__cab" id="btn-extras" aria-expanded="' + (e.abierto ? "true" : "false") + '">' +
@@ -2726,29 +2984,31 @@ function bloqueDatosViaje(listo) {
       '<div class="extras-fila">' +
         '<div class="extras-campo"><label>Pasajeros</label>' +
           '<div class="contador-num">' +
-            '<button data-cuenta="pasajeros" data-paso="-1"' + (e.pasajeros <= 1 ? " disabled" : "") + '>−</button>' +
+            '<button data-cuenta="pasajeros" data-paso="-1"' + (e.pasajeros <= 1 ? " disabled" : "") + ' aria-label="Menos pasajeros">−</button>' +
             '<b>' + e.pasajeros + '</b>' +
-            '<button data-cuenta="pasajeros" data-paso="1"' + (e.pasajeros >= 6 ? " disabled" : "") + '>+</button>' +
+            '<button data-cuenta="pasajeros" data-paso="1"' + (e.pasajeros >= MAX_PASAJEROS ? " disabled" : "") + ' aria-label="Más pasajeros">+</button>' +
           '</div></div>' +
         '<div class="extras-campo"><label>Maletas grandes</label>' +
           '<div class="contador-num">' +
-            '<button data-cuenta="maletas" data-paso="-1"' + (e.maletas <= 0 ? " disabled" : "") + '>−</button>' +
+            '<button data-cuenta="maletas" data-paso="-1"' + (e.maletas <= 0 ? " disabled" : "") + ' aria-label="Menos maletas">−</button>' +
             '<b>' + e.maletas + '</b>' +
-            '<button data-cuenta="maletas" data-paso="1"' + (e.maletas >= 8 ? " disabled" : "") + '>+</button>' +
+            '<button data-cuenta="maletas" data-paso="1"' + (e.maletas >= 6 ? " disabled" : "") + ' aria-label="Más maletas">+</button>' +
           '</div></div>' +
       '</div>' +
-      (aifa ? '<div class="extras-fila">' +
-        '<div class="extras-campo"><label>Número de vuelo</label>' +
-          '<input id="ex-vuelo" type="text" value="' + esc(e.vuelo) + '" placeholder="Y4 1234" autocomplete="off" maxlength="10" /></div>' +
-        '<div class="extras-campo"><label>Terminal</label><select id="ex-terminal">' +
-          '<option value="">Sin especificar</option>' +
+      '<div class="extras-fila">' +
+        '<div class="extras-campo"><label for="ex-vuelo">Número de vuelo</label>' +
+          '<input id="ex-vuelo" type="text" value="' + esc(e.vuelo) + '" placeholder="Y4 1234" autocomplete="off" autocapitalize="characters" maxlength="10" /></div>' +
+        '<div class="extras-campo"><label for="ex-terminal">Punto de encuentro</label><select id="ex-terminal">' +
+          '<option value="">Base T30</option>' +
           TERMINALES.map(t => '<option value="' + esc(t) + '"' + (e.terminal === t ? " selected" : "") + '>' + esc(t) + '</option>').join("") +
         '</select></div>' +
-      '</div>' : "") +
+      '</div>' +
+      '<div class="extras-campo extras-campo--ancho"><label for="ex-domicilio">Dirección exacta en el destino <span class="opcional">opcional</span></label>' +
+        '<textarea id="ex-domicilio" rows="2" maxlength="200" placeholder="Calle, número, colonia o referencia">' + esc(e.domicilio) + '</textarea></div>' +
     '</div>' : "") +
-    (!cabe ? '<div class="aviso-clase">' +
+    (excede ? '<div class="aviso-clase">' +
       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>' +
-      '<span>Con ' + necesita + ' plazas necesitas ' + esc(CLASES[claseSugerida()].nombre) + '.</span></div>' : "") +
+      '<span>Con ' + e.pasajeros + ' pasajeros y ' + e.maletas + ' maletas grandes puede no caber todo en un sedán. La base te contactará si hace falta otra unidad.</span></div>' : "") +
   '</div>';
 }
 
@@ -2757,39 +3017,55 @@ function enlazarDatosViaje(cont) {
   if (b) b.onclick = () => { S.extras.abierto = !S.extras.abierto; pintarClases(); };
   $$("[data-cuenta]", cont).forEach(x => x.onclick = () => {
     const k = x.dataset.cuenta;
-    const lim = k === "pasajeros" ? [1, 6] : [0, 8];
+    const lim = k === "pasajeros" ? [1, MAX_PASAJEROS] : [0, 6];
     S.extras[k] = Math.min(lim[1], Math.max(lim[0], (S.extras[k] || 0) + (+x.dataset.paso)));
-    // Si ya no caben, subimos solos de clase en vez de dejar que falle en el sitio.
-    const sug = claseSugerida();
-    if (CLASES[S.clase].plazas < plazasNecesarias()) S.clase = sug;
     pintarClases();
   });
   const v = $("#ex-vuelo", cont);
-  if (v) v.oninput = ev => { S.extras.vuelo = ev.target.value.toUpperCase().slice(0, 10); };
+  if (v) v.oninput = ev => { S.extras.vuelo = ev.target.value = ev.target.value.toUpperCase().slice(0, 10); };
   const t = $("#ex-terminal", cont);
   if (t) t.onchange = ev => { S.extras.terminal = ev.target.value; };
+  const dom = $("#ex-domicilio", cont);
+  if (dom) dom.oninput = ev => { S.extras.domicilio = ev.target.value.slice(0, 200); };
 }
 
-function bloqueExtras(listo) {
-  if (!listo) return "";
-  const d = desglose(S.clase, S.ruta);
+function bloqueExtras() {
+  const d = desglose();
   if (!d.saldo) return "";
-  return '<div style="margin-top:.7rem;padding:.75rem .9rem;background:var(--campo);border-radius:12px;font-size:13px">' +
-      '<div style="display:flex;justify-content:space-between;color:var(--txt-2);margin-bottom:.3rem"><span>Viaje</span><span class="mono">' + dinero(d.base) + '</span></div>' +
-      '<div style="display:flex;justify-content:space-between;color:var(--verde);margin-bottom:.3rem"><span>Saldo T30</span><span class="mono">−' + dinero(d.saldo) + '</span></div>' +
-      '<div style="display:flex;justify-content:space-between;font-weight:800;padding-top:.4rem;border-top:1px solid var(--borde)"><span>Total</span><span class="mono">' + dinero(d.total) + '</span></div>' +
+  return '<div class="desglose-saldo">' +
+      '<div><span>Tarifa</span><span class="mono">' + dinero(d.base) + '</span></div>' +
+      '<div class="desglose-saldo__saldo"><span>Saldo T30</span><span class="mono">−' + dinero(d.saldo) + '</span></div>' +
+      '<div class="desglose-saldo__total"><span>Total</span><span class="mono">' + dinero(d.total) + '</span></div>' +
     '</div>';
 }
 
 const pasos = n => '<div class="pasos">' + [1, 2, 3].map(i => '<i class="' + (i <= n ? "viva" : "") + '"></i>').join("") + '</div>';
 
+/** Número de boleto de taquilla, si ya existe. */
+const boletoDe = v => (v?.terminal && typeof v.terminal === "object" && v.terminal.idBoleto != null) ? String(v.terminal.idBoleto) : null;
+
+/** Lo que el pasajero necesita saber del registro en la base del AIFA. */
+function estadoTaquilla(v) {
+  const t = (v?.terminal && typeof v.terminal === "object") ? v.terminal : {};
+  const caja = (tono, html) => '<div class="taquilla-estado taquilla-estado--' + tono + '"><i></i><span>' + html + '</span></div>';
+  if (t.estado === "enviado" || t.estado === "cancelando" || t.estado === "cancelado") {
+    return caja("ok", "Registrado en la base AIFA · boleto <b>" + esc(boletoDe(v) || "—") + "</b>" + (t.simulado ? " (prueba)" : ""));
+  }
+  if (!t.estado || ["pendiente", "enviando", "error"].includes(t.estado)) return caja("espera", "Registrando tu viaje en la base AIFA…");
+  if (t.estado === "sin_telefono") return caja("info", "Agrega tu teléfono en Perfil para que la base registre tu viaje.");
+  if (t.estado === "omitido") return "";
+  return caja("info", "La base revisará tu solicitud y te contactará por teléfono si hace falta.");
+}
+
 function resumenViaje() {
   const v = S.viaje || {};
-  return '<div class="ruta"><div class="ruta__riel"><span></span><i></i><span></span></div>' +
+  const pago = v.pago === "tarjeta" ? "Tarjeta" : "Efectivo";
+  const detalle = [v.pasajeros > 1 ? v.pasajeros + " pasajeros" : "1 pasajero", "Tarifa fija", pago].join(" · ");
+  return estadoTaquilla(v) +
+    '<div class="ruta"><div class="ruta__riel"><span></span><i></i><span></span></div>' +
     '<div class="ruta__resumen"><div>' + esc(v.origen?.texto || "") + '</div><div>' + esc(v.destino?.texto || "") + '</div></div></div>' +
     '<div class="fila" style="margin-top:.2rem;margin-bottom:.9rem">' +
-      '<span class="opcion__txt"><b>' + esc(v.claseNombre || "") + '</b><small>' +
-      (v.km ? v.km.toFixed(1) + " km · " + v.min + " min · " + (v.pago === "tarjeta" ? "Tarjeta" : "Efectivo") : "") + '</small></span>' +
+      '<span class="opcion__txt"><b>' + esc(v.claseNombre || "") + '</b><small>' + esc(detalle) + '</small></span>' +
       '<span class="precio">' + dinero(v.precio) + '</span></div>';
 }
 
@@ -2797,8 +3073,8 @@ function tarjetaChofer(c) {
   return '<div class="chofer">' +
     '<span class="chofer__foto">' + iniciales(c.nombre) + '</span>' +
     '<span class="chofer__datos"><b>' + esc(c.nombre || "Conductor") + '</b>' +
-    '<small>★ ' + (c.estrellas || 5).toFixed(1) + ' · ' + esc(c.auto || "") + '</small></span>' +
-    '<span class="placa">' + esc(c.placas || "—") + '</span></div>' +
+    '<small>' + (c.numeroEconomico ? 'Eco ' + esc(c.numeroEconomico) + ' · ' : '') + esc(c.auto || "Sedán") + '</small></span>' +
+    '<span class="placa">' + esc(c.placas || (c.numeroEconomico ? "Eco " + c.numeroEconomico : "—")) + '</span></div>' +
     '<div class="contacto">' +
       '<button data-contacto="llamar" aria-label="Llamar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 4h3.5l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5V19a1.6 1.6 0 0 1-1.8 1.6C9.6 19.9 4.1 14.4 3.4 5.8A1.6 1.6 0 0 1 5 4z"/></svg></button>' +
       '<button data-contacto="mensaje" aria-label="Mensaje"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5h16v11H9l-5 4z"/></svg></button>' +
@@ -2902,17 +3178,34 @@ document.addEventListener("click", async ev => {
 /* ══════════════════════════════════════════════════════════════
    12 · CICLO DEL VIAJE
    ══════════════════════════════════════════════════════════════ */
-async function pedirViaje() {
-  if (!S.origen || !S.destino || !S.ruta) return;
-  ocupar($("#btn-pedir"), true, "Pidiendo");
+/** Copia limpia de un punto: Firestore rechaza campos undefined. */
+const puntoGuardable = p => ({
+  texto: p.texto || "", detalle: p.detalle || "",
+  lat: tieneCoords(p) ? +p.lat : null, lng: tieneCoords(p) ? +p.lng : null,
+  idTerminal: p.idTerminal ?? null
+});
 
-  const d = desglose(S.clase, S.ruta);
+let pidiendo = false;
+async function pedirViaje() {
+  if (pidiendo || S.fase !== 0) return;
+  const dest = destinoActual();
+  const d = desglose();
+  if (!dest || !d.base) return avisar("Elige un destino de la lista.", "mal");
+  // La base del AIFA identifica al pasajero por teléfono.
+  if (!await asegurarTelefono()) return avisar("Sin teléfono la base no puede registrar tu viaje.", "mal");
+
+  pidiendo = true;
+  ocupar($("#btn-pedir"), true, "Pidiendo");
+  // El id se genera antes para escribir el folio en la misma operación.
+  const ref = doc(collection(db, "viajes"));
   const viaje = {
     uid: S.usuario.uid,
     pasajero: { nombre: S.perfil.nombre, telefono: S.perfil.telefono || "" },
-    origen: S.origen, destino: S.destino,
-    clase: S.clase, claseNombre: CLASES[S.clase].nombre,
-    km: +S.ruta.km.toFixed(2), min: S.ruta.min,
+    origen: puntoGuardable(ORIGEN_AIFA), destino: puntoGuardable(S.destino),
+    clase: "sedan", claseNombre: CLASES.sedan.nombre,
+    km: S.ruta ? +S.ruta.km.toFixed(2) : null, min: S.ruta ? S.ruta.min : null,
+    tarifaFija: { id: dest.id, nombre: dest.nombre, columna: "costo1" },
+    domicilio: (S.extras.domicilio || "").trim() || null,
     precioBase: d.base,
     saldoUsado: d.saldo,
     precio: d.total,
@@ -2920,45 +3213,29 @@ async function pedirViaje() {
     pasajeros: S.extras.pasajeros || 1,
     maletas: S.extras.maletas || 0,
     vuelo: (S.extras.vuelo || "").trim() || null,
-    terminal: S.extras.terminal || null,
+    // Ojo: `terminal` lo usa la función del servidor para el estado en taquilla.
+    terminalAIFA: S.extras.terminal || null,
+    folio: folioDe(ref.id),
     conductor: null, calificacion: null,
     creadoEn: serverTimestamp()
   };
   try {
-    const ref = await addDoc(collection(db, "viajes"), viaje);
+    await setDoc(ref, viaje);
 
     if (d.saldo > 0) {
+      // Si el viaje se cancela, la función del servidor devuelve este saldo.
       S.perfil.saldo = (S.perfil.saldo || 0) - d.saldo;
       updateDoc(doc(db, "usuarios", S.usuario.uid), { saldo: increment(-d.saldo) }).catch(() => {});
     }
-
     pintarNivel();
 
-    // Folio del pase: se guarda para que taquilla pueda buscarlo directo.
-    const folio = folioDe(ref.id);
-    updateDoc(doc(db, "viajes", ref.id), { folio }).catch(() => {});
-    viaje.folio = folio; viaje.id = ref.id; viaje.uid = S.usuario.uid;
-
+    viaje.id = ref.id;
     S.viajeId = ref.id; S.viaje = viaje; S.fase = 1;
     abrirHoja(); pintarHoja();
-
-    // Registrar el viaje en la terminal. Si el endpoint falla, el viaje
-    // ya quedó guardado: solo se avisa y se puede reintentar después.
-    if (TERMINAL.activo) {
-      crearViajeEnTerminal(viaje, ref.id)
-        .then(folioTerminal => {
-          if (folioTerminal) updateDoc(doc(db, "viajes", ref.id), { folioTerminal }).catch(() => {});
-        })
-        .catch(e => {
-          console.warn("terminal:", e.message);
-          updateDoc(doc(db, "viajes", ref.id), { terminalPendiente: true }).catch(() => {});
-          avisar("El viaje se guardó, pero la terminal no respondió. Se reintentará.", "mal");
-        });
-    }
-    // La asignación de unidad la hace el operador desde el panel — no hay
-    // simulación aquí. El estado se actualiza solo/a a través de Firestore
-    // cuando el operador asigna una unidad.
+    // El registro en taquilla lo hace la función del servidor en cuanto se crea
+    // el viaje; el estado llega por escucharViajes() en `viaje.terminal`.
   } catch (e) { avisar(leer(e), "mal"); ocupar($("#btn-pedir"), false); }
+  finally { pidiendo = false; }
 }
 
 const MOTIVOS_CANCELA = [
@@ -3011,20 +3288,19 @@ async function terminarViaje() {
     // operador se acuerde: si no, deja de aparecer en "viajes activos" y ya
     // nadie puede liberarla.
     await liberarUnidadDelViaje(S.viaje);
-    await updateDoc(doc(db, "usuarios", S.usuario.uid), { viajes: increment(1), gastado: increment(S.viaje?.precio || 0) }).catch(() => {});
-    S.perfil.viajes = (S.perfil.viajes || 0) + 1;
-    S.perfil.gastado = (S.perfil.gastado || 0) + (S.viaje?.precio || 0);
-    const ganados = await otorgarPuntos(S.viaje?.precio || 0);
-    avisar("+" + ganados + " puntos T30 🎉", "bien");
-    pintarPerfil(); pintarInicio();
+    // Viajes, gastado y puntos los acredita el servidor (también cuando el
+    // operador cierra el viaje desde el panel). El aviso llega por escucharPerfil().
   } catch (e) { avisar(leer(e), "mal"); }
 }
 
 function reiniciar() {
-  S.fase = 0; S.viajeId = null; S.viaje = null; S.destino = null; S.ruta = null;
+  S.fase = 0; S.viajeId = null; S.viaje = null; S.destino = null; S.ruta = null; S.eligiendo = true;
+  S.origen = { ...ORIGEN_AIFA };
+  S.extras = { vuelo: "", terminal: "", pasajeros: 1, maletas: 0, domicilio: "", abierto: false };
   quitarMarca("destino"); detenerAuto(); dibujarLinea(null);
+  ponerMarca("origen", S.origen);
   pintarHoja();
-  if (marcaOrigen) mapa?.setView(marcaOrigen.getLatLng(), 15);
+  encuadrarAIFA();
 }
 
 function escucharViajes() {
@@ -3115,7 +3391,8 @@ function animarAuto(tipo) {
   }).addTo(mapa);
   const t0 = performance.now(), total = puntos.length;
   const paso = t => {
-    const p = Math.min(1, (t - t0) / dur);
+    // El tiempo del cuadro puede ser anterior a t0: sin el max(0) el índice salía negativo.
+    const p = Math.min(1, Math.max(0, (t - t0) / dur));
     marcaAuto?.setLatLng(puntos[Math.min(total - 1, Math.floor(p * (total - 1)))]);
     animId = p < 1 ? requestAnimationFrame(paso) : null;
   };
@@ -3230,9 +3507,12 @@ function recibo(v) {
     '<div class="ruta"><div class="ruta__riel"><span></span><i></i><span></span></div>' +
     '<div class="ruta__resumen"><div>' + esc(v.origen?.texto || "") + '</div><div>' + esc(v.destino?.texto || "") + '</div></div></div>' +
     '<div style="margin:.9rem 0;border-top:1px solid var(--borde)">' +
+      (boletoDe(v) ? renglonRecibo("Boleto taquilla", boletoDe(v)) : "") +
       renglonRecibo("Servicio", v.claseNombre || "") +
-      renglonRecibo("Distancia", (v.km || 0).toFixed(1) + " km") +
-      renglonRecibo("Duración", (v.min || 0) + " min") +
+      (v.tarifaFija ? renglonRecibo("Tarifa", "Fija de taquilla") : "") +
+      (v.km ? renglonRecibo("Distancia", v.km.toFixed(1) + " km") : "") +
+      (v.min ? renglonRecibo("Duración", v.min + " min") : "") +
+      (v.saldoUsado ? renglonRecibo("Saldo T30 aplicado", "−" + dinero(v.saldoUsado)) : "") +
       renglonRecibo("Pago", v.pago === "tarjeta" ? "Tarjeta" : "Efectivo") +
       (v.conductor?.nombre ? renglonRecibo("Conductor", v.conductor.nombre) : "") +
       (v.calificacion ? renglonRecibo("Tu calificación", "★ " + v.calificacion) : "") +
@@ -3643,7 +3923,7 @@ function pintarPaseInicio() {
       '<span class="pase-hoy__txt">' +
         '<b>Tu credencial</b>' +
         '<small>' + esc(v.destino?.texto || "Viaje en curso") + '</small>' +
-        '<span class="pase-hoy__folio">' + esc(S.perfil?.nombre || "") + '</span>' +
+        '<span class="pase-hoy__folio">' + esc(boletoDe(v) ? "Boleto " + boletoDe(v) : (S.perfil?.nombre || "")) + '</span>' +
       '</span>' +
       '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--txt-3)" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>' +
     '</button>';
@@ -3684,6 +3964,7 @@ function pase(v) {
         renglonRecibo("Pasajero", nombre) +
         renglonRecibo("ID de usuario", u.uid) +
         (v ? renglonRecibo("Viaje", (v.origen?.texto || "—") + " → " + (v.destino?.texto || "—")) : "") +
+        (boletoDe(v) ? renglonRecibo("Boleto taquilla", boletoDe(v)) : "") +
       '</div>' +
       '<div class="pase__aviso">' +
         '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.01"/></svg>' +
@@ -3723,110 +4004,208 @@ function pase(v) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   14 · TERMINAL — endpoints externos
+   14 · DESTINOS (catálogo de taquilla de t30.mx)
    ──────────────────────────────────────────────────────────────
-   AJUSTA SOLO ESTE BLOQUE cuando te pasen la documentación.
-   Mientras base esté vacío, la app funciona igual que antes:
-   guarda en Firestore y usa el tarifario local CLASES.
+   Por ahora todos los viajes salen del AIFA y solo hay un servicio:
+   taxi sedán de 4 plazas con tarifa fija por destino.
+   La función de Firebase copia el catálogo a `destinosTerminal`; si
+   aún no lo ha copiado (o no hay conexión), se usa esta lista.
+   [iddestino, nombre, precio sedán]
    ══════════════════════════════════════════════════════════════ */
-const TERMINAL = {
-  base: "",            // ej. "https://api.tuterminal.mx/v1"  ← pegar aquí
-  token: "",           // ej. "Bearer abc123"                 ← si aplica
-  rutas: {
-    crearViaje: "/viajes",                  // POST  → registra el viaje en la terminal
-    destinos:   "/destinos",                // GET   → catálogo de destinos
-    costos:     "/viajes/{viajeId}/costos"  // GET   → costos de ese viaje
-  },
-  get activo() { return !!this.base; }
-};
+const DESTINOS_BASE = [
+  [203,"20 de Noviembre",800], [88,"Acapulco",9000], [1,"Acolman",600], [3,"Actopan Hidalgo",1600],
+  [202,"Aeropuerto Benito Juarez",800], [188,"Aeropuerto Toluca",1500], [182,"Ajusco",1150], [60,"Alameda Central",850],
+  [48,"Angel De La Independencia",900], [112,"Angeles Del Pedregal",1100], [115,"Anzures",900], [11,"Apaxco",950],
+  [13,"Arboledas Atizapan",700], [14,"Atizapan De Zaragoza",700], [116,"Auditorio Nacional",900], [37,"Av Insurgentes Sur y Periferico",1518],
+  [201,"Avarado",1500], [18,"Axapusco",950], [19,"Azcapotzalco",850], [209,"Base Militar Santa Lucia",200],
+  [95,"Basilica De Guadalupe",650], [61,"Bellas Artes",850], [96,"Bosque De Aragon",700], [46,"Bosque De Las Lomas",1000],
+  [17,"Bosque Esmeralda",750], [99,"Bosque Real",1000], [62,"Buenavista",900], [187,"Calpulalpan",1500],
+  [81,"CD Cuautemoc",450], [87,"Celaya",4600], [172,"Central Camionera De Tepotzotlan",750], [82,"Central De Abastos Ecatepec",450],
+  [196,"Central De Abastos Tultitlan",450], [89,"Central Del Norte",700], [49,"Centro Historico",900], [181,"Ceylan",800],
+  [30,"Chalco",1150], [117,"Chapultepec",950], [31,"Chicoloapan",950], [32,"Chimalhuacan",950],
+  [33,"Chinconcoac",700], [189,"Citi Express Toluca",1500], [50,"City Expres Reforma",900], [34,"Coacalco",500],
+  [22,"Colonia Del Valle",950], [67,"Condesa",950], [2,"Convento De Acolman",650], [38,"Coyoacan",1100],
+  [44,"Coyotepec",650], [39,"CU (Ciudad Universitaria)",1150], [45,"Cuajimalpa",1050], [51,"Cuauhtemoc",900],
+  [74,"Cuautitlan Centro",750], [73,"Cuautitlan De Romero",550], [77,"Cuernavaca",2600], [20,"Cuitlahuac",750],
+  [68,"Doctores",950], [78,"Ecatepec",450], [118,"Escandon",950], [40,"Estadio Azteca",1100],
+  [102,"Estadio GNP",900], [71,"Galaxia Cuautitlan",550], [42,"Galerias Coapa",1100], [210,"Glorieta Militar",350],
+  [85,"Granjas Valle De Guadalupe",550], [6,"Guadalupe Inn",1100], [167,"Heroes Tecamac",300], [52,"Hilton Reforma",900],
+  [69,"Hipodromo Condesa",1000], [127,"Hipodromo De Las Americas",950], [211,"Holiday Inn Felipe Angeles",100], [26,"Hospital 20 de Noviembre",1000],
+  [160,"Hospital IMSS 2000",350], [53,"Hotel El Ejecutivo",900], [161,"Hotel Fuerza Aerea Santa Lucia",250], [120,"Hotel Hiyat Polanco",950],
+  [121,"Hotel Marriot Polanco",950], [156,"Hotel Verticc",350], [97,"Huehuetoca",700], [98,"Huixquilucan",1150],
+  [90,"Indios Verdes",650], [106,"Infonavit Iztacalco",950], [139,"Interlomas",1000], [101,"Ixtapaluca",1150],
+  [103,"Iztacalco",850], [107,"Iztapalapa",950], [204,"Jardin Balbuena",850], [83,"Jardines De Morelos",450],
+  [110,"Jilotepec",1200], [72,"Joyas De Cuautitlan",550], [7,"Kristal Insurgentes",1050], [137,"La Florida",900],
+  [91,"La Raza",750], [75,"Lago De Guadalupe",750], [54,"Lagunilla",900], [84,"Las Americas",450],
+  [92,"Lindavista",650], [15,"Lomas De Atizapan",750], [130,"Lomas De Chapultepec",950], [122,"Lomas De Sotelo",950],
+  [140,"Lomas Tecamachalco",950], [162,"Los Reyes Acozac",400], [111,"Los Reyes La Paz",1050], [93,"Magdalena De Las Salinas",850],
+  [123,"Marina Nacional",900], [124,"Masarik",900], [113,"Melchor Ocampo",450], [114,"Metepec",2500],
+  [131,"Metro Tacubaya",1000], [133,"Milpa Alta",1200], [136,"Mineral del Chico",1200], [28,"Mixcoac",1000],
+  [194,"Museo Del Mamut",250], [163,"Museo Paleontologico y Militar De Aviacion",250], [125,"Museo Sumaya",900], [24,"Napoles",950],
+  [29,"Narvarte Oriente",1000], [138,"Naucalpan",900], [144,"Nextlalpan",250], [147,"Nezahualcoyotl",800],
+  [149,"Nicolas Romero",950], [4,"Observatorio",1000], [168,"Ojo De Agua",250], [150,"Otumba",950],
+  [151,"Pachuca Hidalgo",1150], [104,"Palacio De Los Deportes",850], [63,"Palacio de Mineria",850], [128,"Panteon Frances",900],
+  [105,"Pantitlan",850], [79,"Parada 30-30",400], [23,"Parque Los Venados",1000], [157,"Parque Sierra Hermosa",450],
+  [108,"Paseos Churubusco",900], [164,"Paseos De Tecamac",350], [8,"Pedregal",1050], [183,"Periferico Sur",1150],
+  [76,"Perinorte",700], [41,"Perisur",1100], [36,"Plaza Cosmopol",550], [16,"Plaza Crystal Atizapan",700],
+  [141,"Plaza Toreo",950], [126,"Polanco",900], [27,"Portales",1000], [152,"Puebla",3400],
+  [153,"Queretaro",3500], [154,"Real Del Monte",1150], [94,"Reclusorio Norte",700], [119,"Reforma",950],
+  [55,"Reforma 222",900], [148,"Rio De Los Remedios",700], [56,"Roma Norte",900], [70,"Roma Sur",900],
+  [109,"San Andres Jaltenco",400], [9,"San Angel",1050], [212,"San Bartolo Cuautlalpan",500], [80,"San Cristobal",400],
+  [145,"San Juan Atenanco",250], [155,"San Juan Del Rio",1800], [213,"San Juan Zitlaltepec",550], [165,"San Lucas Xolox",400],
+  [198,"San Pablo De Las Salinas",450], [134,"San Pedro Actopan",1200], [57,"San Rafael",900], [207,"San Sebastian",450],
+  [135,"Santa Ana Tlacontenco",1200], [86,"Santa Clara",500], [47,"Santa Fe",1100], [143,"Santa Ines",250],
+  [166,"Santa Lucia",350], [200,"Santa Maria Ahuacatlan",3500], [64,"Santa Maria La Rivera",700], [142,"Satelite",850],
+  [129,"Tacuba",900], [132,"Tacubaya",950], [158,"Tecamac",350], [100,"Tecamachalco",1050],
+  [10,"Televisa San Angel",1050], [169,"Teoloyucan",500], [170,"Teotihuacan",800], [65,"Tepito",850],
+  [171,"Tepozotlan",800], [176,"Tequisistlan",550], [205,"Terminal Tapo",800], [43,"Terminal Taxqueña",1050],
+  [173,"Texcoco",850], [175,"Tezoyuca",600], [177,"Tizayuca Hidalgo",700], [178,"Tlahuac",1150],
+  [184,"Tlalpan",1150], [179,"Tlanepantla",750], [66,"Tlatelolco",850], [186,"Tlaxcala",3000],
+  [190,"Toluca",1500], [191,"Tonanitla",150], [192,"Tula Hidalgo",1100], [193,"Tulancingo Hidalgo",1450],
+  [195,"Tultepec",400], [197,"Tultitlan",450], [185,"TV Azteca",1150], [199,"Valle de Bravo",3500],
+  [180,"Valle Dorado",1050], [21,"Vallejo",750], [5,"Vasco De Quiroga",1000], [35,"Villa De Las Flores",500],
+  [146,"Villas De Nextlalpan",350], [174,"Villas De Tezontepec",950], [159,"Villas Del Real",350], [25,"WTC",950],
+  [206,"Xochimilco",1100], [12,"Zapotlan",950], [58,"Zocalo",900], [59,"Zona Rosa",900],
+  [208,"Zumpango",450]
+];
+// Los que se ofrecen primero en Inicio cuando el pasajero aún no tiene historial.
+const DESTINOS_POPULARES = [202, 49, 126, 47, 56, 67, 119, 151, 190, 152, 153, 90];
 
-async function apiTerminal(ruta, { metodo = "GET", cuerpo = null, params = {} } = {}) {
-  if (!TERMINAL.activo) throw new Error("TERMINAL.base sin configurar");
-  let camino = ruta;
-  for (const [k, val] of Object.entries(params)) camino = camino.replace("{" + k + "}", encodeURIComponent(val));
-  const r = await fetch(TERMINAL.base.replace(/\/$/, "") + camino, {
-    method: metodo,
-    headers: {
-      "Content-Type": "application/json",
-      ...(TERMINAL.token ? { Authorization: TERMINAL.token } : {})
+const normalizarTexto = t => String(t ?? "")
+  .normalize("NFD").replace(/[̀-ͯ]/g, "")
+  .toUpperCase().replace(/[^A-Z0-9]+/g, " ").trim();
+
+const aDestino = (id, nombre, precio) => ({ id: +id, nombre: String(nombre).trim(), norm: normalizarTexto(nombre), precio: +precio || 0 });
+S.destinos = DESTINOS_BASE.map(([id, n, p]) => aDestino(id, n, p)).sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+
+function escucharDestinos() {
+  const off = onSnapshot(
+    query(collection(db, "destinosTerminal"), where("activo", "==", true)),
+    snap => {
+      const lista = snap.docs.map(d => d.data())
+        .filter(d => Number.isFinite(+d.id) && d.nombre && +d.costo1 > 0)
+        .map(d => aDestino(d.id, d.nombre, d.costo1))
+        .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+      if (!lista.length) return;            // sin copia en Firestore: se queda la lista base
+      S.destinos = lista;
+      pintarDestinosInicio();
+      if (S.fase === 0) pintarHoja();
     },
-    body: cuerpo ? JSON.stringify(cuerpo) : undefined,
-    signal: AbortSignal.timeout(8000)
-  });
-  if (!r.ok) throw new Error("HTTP " + r.status + " en " + camino);
-  return r.status === 204 ? null : r.json();
+    e => console.warn("destinosTerminal:", e.message)
+  );
+  S.cancelar.push(off);
 }
 
-/* ─── Adaptadores ─────────────────────────────────────────
-   Cambia el lado derecho para que cuadre con los nombres que
-   devuelva la API real. Nada más hay que tocar de aquí abajo.
-   ───────────────────────────────────────────────────────── */
-const mapDestino = d => ({
-  texto:   d.nombre  ?? d.destino ?? d.name  ?? "",
-  detalle: d.municipio ?? d.detalle ?? d.zona ?? "",
-  lat:    +(d.lat ?? d.latitud  ?? d.latitude),
-  lng:    +(d.lng ?? d.longitud ?? d.longitude),
-  costo:   d.costo  ?? d.precio  ?? d.tarifa ?? null,
-  idTerminal: d.id  ?? d.clave   ?? null
-});
+const destinoPorId = id => id == null ? null : S.destinos.find(d => d.id === +id) || null;
 
-const mapCosto = c => ({
-  clase:  c.clase ?? c.servicio ?? c.tipo ?? "",
-  nombre: c.nombre ?? c.descripcion ?? "",
-  precio: +(c.costo ?? c.precio ?? c.tarifa ?? 0)
-});
+/** El AIFA (por coordenadas o por nombre). */
+function esAIFA(p) {
+  if (!p) return false;
+  if (p.lat != null && p.lng != null && haversine(AIFA, { lat: +p.lat, lng: +p.lng }) <= 4) return true;
+  const t = " " + normalizarTexto((p.texto || "") + " " + (p.detalle || "")) + " ";
+  return / AIFA /.test(t) || / FELIPE ANGELES /.test(t);
+}
 
-/** Avisa a la terminal de un viaje recién creado. Devuelve el folio de la terminal. */
-async function crearViajeEnTerminal(viaje, viajeId) {
-  const cuerpo = {
-    referencia: viajeId,
-    folio: folioDe(viajeId),
-    pasajero: { nombre: viaje.pasajero?.nombre || "", telefono: viaje.pasajero?.telefono || "" },
-    origen:   { texto: viaje.origen?.texto || "",  lat: viaje.origen?.lat,  lng: viaje.origen?.lng },
-    destino:  { texto: viaje.destino?.texto || "", lat: viaje.destino?.lat, lng: viaje.destino?.lng },
-    servicio: viaje.clase,
-    km: viaje.km, minutos: viaje.min,
-    total: viaje.precio,
-    pago: viaje.pago
+/** Punto de destino tal como se guarda en el viaje. */
+const puntoDeDestino = d => ({ texto: d.nombre, detalle: "Tarifa fija desde el AIFA", idTerminal: d.id, lat: null, lng: null });
+
+/** Busca por palabras sueltas, sin acentos: "cd univ" encuentra "CU (Ciudad Universitaria)". */
+function filtrarDestinos(q) {
+  const palabras = normalizarTexto(q).split(" ").filter(Boolean);
+  if (!palabras.length) return S.destinos;
+  return S.destinos
+    .filter(d => palabras.every(p => d.norm.includes(p)))
+    .sort((a, b) => (b.norm.startsWith(palabras[0]) - a.norm.startsWith(palabras[0])) || a.nombre.localeCompare(b.nombre, "es"));
+}
+
+/** Destinos que el pasajero usa: favoritos y viajes anteriores. */
+function destinosRecientes() {
+  const ids = [];
+  const lug = S.perfil?.lugares || {};
+  for (const k of ["casa", "trabajo"]) if (lug[k]?.idTerminal != null) ids.push(+lug[k].idTerminal);
+  for (const v of S.historial || []) if (v.destino?.idTerminal != null) ids.push(+v.destino.idTerminal);
+  return [...new Set(ids)].map(destinoPorId).filter(Boolean).slice(0, 5);
+}
+
+const icoPin = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>';
+const icoReloj = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
+
+function filaDestino(d, ico = icoPin, etiqueta = "") {
+  return '<button class="fila-destino" data-dest="' + d.id + '">' +
+    '<span class="fila-destino__ico">' + ico + '</span>' +
+    '<span class="fila-destino__nombre">' + esc(d.nombre) + (etiqueta ? '<small>' + esc(etiqueta) + '</small>' : '') + '</span>' +
+    '<span class="fila-destino__precio">' + dinero(d.precio) + '</span></button>';
+}
+
+/** Lista para el buscador: recientes arriba (si no hay búsqueda) y luego todos. */
+function listaDestinosHTML(q) {
+  const lista = filtrarDestinos(q);
+  if (!lista.length) {
+    return '<div class="lista-vacia"><b>No encontramos «' + esc(q.trim()) + '»</b>' +
+      '<span>Por ahora solo hay viajes a los destinos de la lista. Elige el más cercano y escribe la dirección exacta en los detalles del viaje.</span></div>';
+  }
+  const lug = S.perfil?.lugares || {};
+  const etiquetaDe = d => lug.casa?.idTerminal === d.id ? "Casa" : lug.trabajo?.idTerminal === d.id ? "Trabajo" : "";
+  const recientes = q.trim() ? [] : destinosRecientes();
+  return (recientes.length
+      ? '<p class="lista-destinos__h">Tus destinos</p>' + recientes.map(d => filaDestino(d, icoReloj, etiquetaDe(d))).join("")
+      : "") +
+    '<p class="lista-destinos__h">' + (q.trim() ? lista.length + (lista.length === 1 ? " destino" : " destinos") : "Todos los destinos") + '</p>' +
+    lista.map(d => filaDestino(d, icoPin, etiquetaDe(d))).join("");
+}
+
+/** Buscador reutilizable en un diálogo: regresa el destino elegido o null. */
+const elegirDestinoEnDialogo = ({ titulo = "¿A dónde vas?", texto = "Salida desde el AIFA · tarifa fija por destino." } = {}) => new Promise(res => {
+  const cerrar = abrirTelon(
+    '<h3>' + esc(titulo) + '</h3><p>' + esc(texto) + '</p>' +
+    '<div class="buscador-destino"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
+      '<input id="dlg-buscar-destino" type="search" placeholder="Busca tu destino" autocomplete="off" enterkeyhint="search" /></div>' +
+    '<div class="lista-destinos lista-destinos--dialogo" id="dlg-lista-destinos">' + listaDestinosHTML("") + '</div>' +
+    '<div class="dialogo__botones"><button class="btn btn--suave" data-no>Cerrar</button></div>',
+    v => res(v || null));
+  $("[data-no]").onclick = () => cerrar(null);
+  const input = $("#dlg-buscar-destino");
+  input.oninput = () => { $("#dlg-lista-destinos").innerHTML = listaDestinosHTML(input.value); };
+  input.onkeydown = ev => {
+    if (ev.key !== "Enter") return;
+    const primero = filtrarDestinos(input.value)[0];
+    if (primero) cerrar(primero);
   };
-  const r = await apiTerminal(TERMINAL.rutas.crearViaje, { metodo: "POST", cuerpo });
-  return r?.folio ?? r?.folioTerminal ?? r?.id ?? null;
+  $("#dlg-lista-destinos").onclick = ev => {
+    const b = ev.target.closest("[data-dest]");
+    if (b) cerrar(destinoPorId(b.dataset.dest));
+  };
+  // En teléfonos no abrimos el teclado de golpe: tapa la lista.
+  if (matchMedia("(hover: hover)").matches) setTimeout(() => input.focus(), 120);
+});
+
+/* ─── Inicio: destinos sugeridos ─────────────────────────── */
+function pintarDestinosInicio() {
+  const sec = $("#sec-destinos"), c = $("#destinos-inicio");
+  if (!sec || !c) return;
+  const propios = destinosRecientes();
+  const sugeridos = [...propios, ...DESTINOS_POPULARES.map(destinoPorId).filter(Boolean)]
+    .filter((d, i, arr) => arr.findIndex(x => x.id === d.id) === i).slice(0, 10);
+  sec.hidden = !sugeridos.length;
+  $("#destinos-inicio-h").textContent = propios.length ? "Tus destinos" : "Destinos populares";
+  c.innerHTML = sugeridos.map(d =>
+    '<button class="destino-fijo" data-fijo="' + d.id + '"><b>' + esc(d.nombre) + '</b>' +
+    '<span class="precio">' + dinero(d.precio) + '</span></button>').join("");
 }
 
-/** Catálogo de destinos de la terminal. Cachea 5 min. */
-let _destinosCache = { hasta: 0, lista: [] };
-async function traerDestinos() {
-  if (!TERMINAL.activo) return [];
-  if (Date.now() < _destinosCache.hasta) return _destinosCache.lista;
-  try {
-    const r = await apiTerminal(TERMINAL.rutas.destinos);
-    const lista = (Array.isArray(r) ? r : r?.destinos || r?.datos || [])
-      .map(mapDestino)
-      .filter(d => d.texto && Number.isFinite(d.lat) && Number.isFinite(d.lng));
-    _destinosCache = { hasta: Date.now() + 5 * 60 * 1000, lista };
-    return lista;
-  } catch (e) { console.warn("destinos:", e.message); return []; }
+async function verCatalogo() {
+  const d = await elegirDestinoEnDialogo({ titulo: "Destinos y tarifas", texto: "Todos los viajes salen del AIFA. El precio es el mismo que en taquilla." });
+  if (d) irConDestino(d);
 }
 
-/** Costos de un viaje ya creado en la terminal. */
-async function traerCostos(viajeId) {
-  if (!TERMINAL.activo) return [];
-  try {
-    const r = await apiTerminal(TERMINAL.rutas.costos, { params: { viajeId } });
-    return (Array.isArray(r) ? r : r?.costos || r?.datos || []).map(mapCosto);
-  } catch (e) { console.warn("costos:", e.message); return []; }
-}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest?.("#destinos-inicio [data-fijo]");
+  if (!b) return;
+  const d = destinoPorId(b.dataset.fijo);
+  if (d) irConDestino(d);
+});
+$("#ver-destinos").onclick = verCatalogo;
 
-/** Busca destinos del catálogo por texto, para mezclarlos con el geocoder. */
-async function destinosQueCoinciden(texto) {
-  const q = texto.trim().toLowerCase();
-  if (q.length < 2) return [];
-  const lista = await traerDestinos();
-  return lista
-    .filter(d => (d.texto + " " + d.detalle).toLowerCase().includes(q))
-    .slice(0, 4)
-    .map(d => ({ ...d, detalle: [d.detalle, d.costo != null ? dinero(d.costo) : ""].filter(Boolean).join(" · ") }));
-}
 
 </script>
 </body>
