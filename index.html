@@ -937,6 +937,10 @@ button{cursor:pointer}
 .pase__qr{background:#fff;border-radius:var(--r-sm);padding:12px;margin:0 auto;width:min(216px,56vw);
   box-shadow:var(--sombra-sm);line-height:0}
 .pase__qr svg{width:100%;height:auto;display:block}
+.pase__qr--espera{background:var(--campo);aspect-ratio:1;display:grid;place-items:center}
+.pase__espera{display:flex;flex-direction:column;align-items:center;gap:.7rem;text-align:center;padding:1rem;color:var(--txt-2);font-size:12.5px}
+.girador{width:28px;height:28px;border-radius:50%;border:3px solid var(--borde);border-top-color:var(--ac);animation:gira 1s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
 .pase__folio{font-family:var(--mono,ui-monospace,SFMono-Regular,Menlo,Consolas,monospace);
   font-size:1.4rem;font-weight:700;letter-spacing:.07em;margin:.7rem 0 .1rem}
 .pase__pie{color:var(--txt-2);font-size:12.5px;margin:0 0 .8rem}
@@ -1176,6 +1180,51 @@ button{cursor:pointer}
 @media (hover:none) and (pointer:coarse){
   .extras-campo input,.extras-campo select,.extras-campo textarea,.entrada input,#dlg-input{font-size:16px}
 }
+
+/* ─── Registro: CURP o datos personales ─────────────────── */
+.identidad-curp[hidden],#reg-campos-nombre[hidden]{display:none}
+.via-curp{display:flex;flex-direction:column;gap:.9rem;padding:1.1rem;border-radius:var(--r-lg);margin-top:1rem;
+  background:linear-gradient(140deg,color-mix(in srgb,var(--ac) 13%,var(--sup)),var(--sup));border:1.5px solid color-mix(in srgb,var(--ac) 32%,transparent)}
+.via-curp__cab{display:flex;align-items:center;gap:.8rem}
+.via-curp__cab b{display:block;font-family:'Archivo',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.via-curp__cab small{display:block;color:var(--txt-2);font-size:13.5px;margin-top:.1rem}
+.via-curp__bandera{display:flex;width:34px;height:24px;flex:none;border-radius:5px;overflow:hidden;box-shadow:0 0 0 1px var(--borde)}
+.via-curp__bandera i{flex:1}
+.via-curp__bandera i:nth-child(1){background:#006847}.via-curp__bandera i:nth-child(2){background:#fff}.via-curp__bandera i:nth-child(3){background:#ce1126}
+#re-curp{text-transform:uppercase;letter-spacing:.08em;font-family:'Azeret Mono',monospace;font-size:16px}
+.pista a{color:var(--ac-2)}
+.reg-volver{display:inline-flex;align-items:center;gap:.25rem;margin:.6rem 0 .2rem -.4rem;color:var(--txt-2)}
+.reg-nota{display:flex;gap:.55rem;align-items:flex-start;font-size:12.5px;color:var(--txt-2);background:var(--campo);border-radius:12px;padding:.7rem .8rem;margin:.2rem 0 .9rem}
+.reg-nota svg{flex:none;margin-top:1px;color:var(--ac-2)}
+.identidad-curp{display:flex;gap:.8rem;align-items:center;padding:.9rem 1rem;border-radius:16px;margin:.5rem 0 1rem;
+  background:color-mix(in srgb,var(--verde) 10%,var(--sup));border:1.5px solid color-mix(in srgb,var(--verde) 35%,transparent)}
+.identidad-curp__ico{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--verde) 20%,transparent);color:var(--verde)}
+.identidad-curp b{display:block;font-size:15px;line-height:1.3}
+.identidad-curp small{display:block;font-size:12px;color:var(--txt-2);margin-top:.15rem;font-family:'Azeret Mono',monospace;letter-spacing:.02em}
+.identidad-curp em{font-style:normal;color:var(--verde);font-weight:700;font-family:inherit;letter-spacing:0}
+
+/* ─── Verificación de celular y correo ──────────────────── */
+.verificar{flex:1;overflow-y:auto;display:flex;align-items:center;justify-content:center;padding:calc(1.5rem + var(--arriba)) 1.2rem calc(1.5rem + var(--abajo))}
+.verificar__caja{width:100%;max-width:400px}
+.verificar__pasos{list-style:none;display:flex;gap:.5rem;margin:0 0 1.4rem;padding:0}
+.verificar__pasos li{flex:1;display:flex;align-items:center;gap:.5rem;padding:.55rem .7rem;border-radius:12px;background:var(--campo);font-size:13px;font-weight:600;color:var(--txt-3)}
+.verificar__pasos i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;background:var(--sup);border:1.5px solid var(--borde)}
+.verificar__pasos li[data-estado="actual"]{color:var(--txt);background:color-mix(in srgb,var(--ac) 12%,var(--campo))}
+.verificar__pasos li[data-estado="actual"] i{background:var(--ac);border-color:var(--ac);color:#fff}
+.verificar__pasos li[data-estado="hecho"]{color:var(--verde)}
+.verificar__pasos li[data-estado="hecho"] i{background:var(--verde);border-color:var(--verde);color:#fff}
+.verificar h2{font-family:'Archivo',sans-serif;font-size:1.55rem;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.45rem}
+.verificar__txt{color:var(--txt-2);font-size:14.5px;line-height:1.5;margin-bottom:1.2rem}
+.verificar__txt b{color:var(--txt);white-space:nowrap}
+.otp{width:100%;text-align:center;font-family:'Azeret Mono',monospace;font-size:28px;font-weight:600;letter-spacing:.45em;text-indent:.45em;
+  padding:.85rem .5rem;border-radius:16px;background:var(--sup);border:1.5px solid var(--borde);color:var(--txt);margin-bottom:.9rem}
+.otp:focus{outline:none;border-color:var(--ac)}
+.otp::placeholder{color:var(--txt-3);letter-spacing:.45em}
+.verificar__acciones{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.3rem;margin-top:.5rem}
+.verificar__acciones .btn--texto:disabled{color:var(--txt-3);opacity:1}
+.verificar__error{margin:.8rem 0 0;padding:.7rem .9rem;border-radius:12px;background:color-mix(in srgb,#e5484d 12%,transparent);color:#e5484d;font-size:13.5px;line-height:1.45}
+.verificar__error[hidden]{display:none}
+.verificar__ok{display:flex;align-items:center;gap:.6rem;padding:.8rem 1rem;border-radius:14px;background:color-mix(in srgb,var(--verde) 12%,transparent);color:var(--verde);font-weight:700;font-size:14px;margin-bottom:1rem}
 </style>
 </head>
 <body>
@@ -1225,19 +1274,6 @@ button{cursor:pointer}
           <span id="alerta-texto"></span>
         </div>
 
-        <!-- Botón Google (compartido para entrar y registrar) -->
-        <button class="btn--google" id="btn-google" style="margin-top:1.2rem" type="button">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
-          Continuar con Google
-        </button>
-
-        <div class="separador">o</div>
-
         <div class="pestanas" role="tablist" id="pestanas-acceso" data-activa="entrar">
           <div class="pestanas__indicador" aria-hidden="true"></div>
           <button role="tab" id="tab-entrar" aria-selected="true">Entrar</button>
@@ -1268,60 +1304,119 @@ button{cursor:pointer}
           <button class="btn--texto" type="button" id="btn-recuperar" style="margin:.1rem auto 0">¿Olvidaste tu contraseña?</button>
         </form>
 
-        <form id="form-registro" hidden novalidate>
-          <div class="campo">
-            <label for="re-nombre">Nombre(s)</label>
-            <div class="entrada entrada--icono">
-              <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
-              <input id="re-nombre" type="text" autocomplete="given-name" placeholder="Ana María" required />
-            </div>
+        <div id="form-registro" hidden>
+          <!-- Paso 1: elegir cómo registrarse -->
+          <div id="reg-elegir">
+            <form class="via-curp" id="form-curp" novalidate>
+              <div class="via-curp__cab">
+                <span class="via-curp__bandera" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span><b>¿Eres mexicano?</b><small>Regístrate con tu CURP, fácil y rápido</small></span>
+              </div>
+              <div class="campo" style="margin:0">
+                <label for="re-curp">CURP</label>
+                <div class="entrada">
+                  <input id="re-curp" type="text" maxlength="18" autocomplete="off" autocapitalize="characters" spellcheck="false"
+                         placeholder="18 letras y números" aria-describedby="pista-curp" />
+                </div>
+                <span class="pista" id="pista-curp">Tomamos tu nombre del RENAPO. <a href="https://www.gob.mx/curp/" target="_blank" rel="noopener">¿No sabes tu CURP?</a></span>
+              </div>
+              <button class="btn" type="submit" id="btn-curp">Continuar con mi CURP</button>
+            </form>
+            <div class="separador">o</div>
+            <button class="btn btn--suave" type="button" id="btn-via-datos">Regístrate con tus datos personales</button>
           </div>
-          <div class="duo">
-            <div class="campo">
-              <label for="re-apellidop">Apellido paterno</label>
-              <div class="entrada"><input id="re-apellidop" type="text" autocomplete="off" placeholder="Ramírez" required /></div>
+
+          <!-- Paso 2: datos de la cuenta -->
+          <form id="reg-datos" hidden novalidate>
+            <button type="button" class="btn--texto reg-volver" id="btn-reg-volver">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 5-7 7 7 7"/></svg>Volver
+            </button>
+
+            <div class="identidad-curp" id="reg-identidad" hidden></div>
+
+            <div id="reg-campos-nombre">
+              <div class="campo">
+                <label for="re-nombre">Nombre(s)</label>
+                <div class="entrada entrada--icono">
+                  <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+                  <input id="re-nombre" type="text" autocomplete="given-name" placeholder="Ana María" required />
+                </div>
+              </div>
+              <div class="duo">
+                <div class="campo">
+                  <label for="re-apellidop">Apellido paterno</label>
+                  <div class="entrada"><input id="re-apellidop" type="text" autocomplete="off" placeholder="Ramírez" required /></div>
+                </div>
+                <div class="campo">
+                  <label for="re-apellidom">Apellido materno</label>
+                  <div class="entrada"><input id="re-apellidom" type="text" autocomplete="off" placeholder="López" /></div>
+                </div>
+              </div>
             </div>
-            <div class="campo">
-              <label for="re-apellidom">Apellido materno</label>
-              <div class="entrada"><input id="re-apellidom" type="text" autocomplete="off" placeholder="López" /></div>
-            </div>
-          </div>
-          <div class="duo">
-            <div class="campo">
-              <label for="re-tel">Teléfono</label>
-              <div class="entrada">
-                <input id="re-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="771 123 4567" maxlength="16" required />
+            <div class="duo">
+              <div class="campo">
+                <label for="re-tel">Celular</label>
+                <div class="entrada">
+                  <input id="re-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="771 123 4567" maxlength="16" required />
+                </div>
+              </div>
+              <div class="campo">
+                <label for="re-ciudad">Ciudad</label>
+                <div class="entrada"><input id="re-ciudad" type="text" value="" placeholder="Pachuca, Tizayuca…" /></div>
               </div>
             </div>
             <div class="campo">
-              <label for="re-ciudad">Ciudad</label>
-              <div class="entrada"><input id="re-ciudad" type="text" value="" placeholder="Pachuca, Tizayuca, Zumpango…" required /></div>
+              <label for="re-correo">Correo</label>
+              <div class="entrada entrada--icono">
+                <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg></span>
+                <input id="re-correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required />
+              </div>
             </div>
-          </div>
-          <div class="campo">
-            <label for="re-correo">Correo</label>
-            <div class="entrada entrada--icono">
-              <span class="entrada__icono"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg></span>
-              <input id="re-correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required />
+            <div class="campo">
+              <label for="re-clave">Contraseña</label>
+              <div class="entrada">
+                <input id="re-clave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" required />
+                <button type="button" class="entrada__accion" data-ojo="re-clave" aria-label="Mostrar contraseña">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
+                </button>
+              </div>
+              <div class="fuerza" id="fuerza" data-n="0"><i></i><i></i><i></i><i></i></div>
+              <span class="pista" id="pista-clave">Usa al menos 6 caracteres.</span>
             </div>
-          </div>
-          <div class="campo">
-            <label for="re-clave">Contraseña</label>
-            <div class="entrada">
-              <input id="re-clave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" required />
-              <button type="button" class="entrada__accion" data-ojo="re-clave" aria-label="Mostrar contraseña">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
-              </button>
-            </div>
-            <div class="fuerza" id="fuerza" data-n="0"><i></i><i></i><i></i><i></i></div>
-            <span class="pista" id="pista-clave">Usa al menos 6 caracteres.</span>
-          </div>
-          <button class="btn" type="submit" id="btn-registro" style="margin-top:.3rem">Crear cuenta</button>
-          <p class="pista" style="text-align:center;margin-top:.5rem">Al continuar aceptas los <a href="#" style="color:var(--ac-2)">Términos</a> y el <a href="#" style="color:var(--ac-2)">Aviso de privacidad</a> de T30.</p>
-        </form>
+            <p class="reg-nota">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+              Te enviaremos un código por SMS a tu celular y otro a tu correo para confirmarlos.
+            </p>
+            <button class="btn" type="submit" id="btn-registro">Crear cuenta</button>
+            <p class="pista" style="text-align:center;margin-top:.5rem">Al continuar aceptas los <a href="#" style="color:var(--ac-2)">Términos</a> y el <a href="#" style="color:var(--ac-2)">Aviso de privacidad</a> de T30.</p>
+          </form>
+        </div>
         </div><!-- /acceso__formas -->
 
       </div><!-- /acceso__cuerpo -->
+    </div>
+  </section>
+
+  <!-- ═══════════ VERIFICACIÓN ═══════════ -->
+  <section class="pantalla" id="pantalla-verificar">
+    <div class="verificar">
+      <div class="verificar__caja">
+        <div class="marca" style="justify-content:center;margin-bottom:1.2rem">
+          <svg class="arcos" width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="34" stroke="#1B3C7B" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-215 50 50)"/>
+            <circle cx="50" cy="50" r="34" stroke="#E4007E" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-98 50 50)"/>
+            <circle cx="50" cy="50" r="34" stroke="#FFA20B" stroke-width="15" stroke-dasharray="66 216" transform="rotate(38 50 50)"/>
+          </svg>
+          <span class="marca__txt">T30</span>
+        </div>
+        <ol class="verificar__pasos" id="ver-pasos" aria-label="Pasos de verificación">
+          <li data-paso="sms"><i>1</i><span>Celular</span></li>
+          <li data-paso="correo"><i>2</i><span>Correo</span></li>
+        </ol>
+        <div id="ver-cuerpo"></div>
+        <button class="btn--texto" type="button" id="btn-ver-salir" style="margin:1.4rem auto 0">Cerrar sesión</button>
+        <div id="recaptcha-caja" aria-hidden="true"></div>
+      </div>
     </div>
   </section>
 
@@ -1597,9 +1692,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
   onAuthStateChanged, updateProfile, sendPasswordResetEmail, deleteUser,
-  GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult,
-  EmailAuthProvider, reauthenticateWithCredential, reauthenticateWithPopup
+  GoogleAuthProvider, EmailAuthProvider, reauthenticateWithCredential, reauthenticateWithPopup,
+  RecaptchaVerifier, PhoneAuthProvider, linkWithCredential, updatePhoneNumber, sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-functions.js";
 import {
   getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, collection, addDoc,
   query, where, limit, onSnapshot, serverTimestamp, increment, getDocs
@@ -1617,7 +1713,15 @@ const firebaseConfig = {
 
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+auth.languageCode = "es"; // SMS, reCAPTCHA y correo de verificación en español
 const db   = getFirestore(app);
+const fns  = getFunctions(app, "us-central1");
+/** Llama a una función del servidor (CURP, SMS, correo) y regresa sus datos. */
+const llamar = (nombre, datos = {}) => httpsCallable(fns, nombre)(datos).then(r => r.data, e => {
+  // El motivo que da el servidor queda en la consola (el aviso en pantalla se quita solo).
+  console.warn(`[${nombre}] ${e?.code || "error"}: ${e?.message || e}`);
+  throw e;
+});
 
 /* ══════════════════════════════════════════════════════════════
    2 · ESTADO Y CONSTANTES
@@ -1731,7 +1835,10 @@ const ERRORES = {
   "auth/account-exists-with-different-credential": "Ya existe una cuenta con ese correo usando otro método. Entra con correo y contraseña.",
   "permission-denied": "Firestore rechazó la operación. Revisa las reglas de seguridad."
 };
-const leer = e => ERRORES[e?.code] || e?.message || "Algo salió mal. Vuelve a intentarlo.";
+const leer = e => ERRORES[e?.code] ||
+  (String(e?.code || "").startsWith("functions/") && e.message && e.code !== "functions/internal" ? e.message : null) ||
+  (e?.code === "functions/internal" ? "No pudimos completar la operación. Intenta de nuevo." : null) ||
+  e?.message || "Algo salió mal. Vuelve a intentarlo.";
 
 const dinero = n => new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n || 0);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -1866,103 +1973,55 @@ const cambiarPestana = entrar => {
   alertar("");
 };
 $("#tab-entrar").onclick  = () => cambiarPestana(true);
-$("#tab-registro").onclick = () => cambiarPestana(false);
+$("#tab-registro").onclick = () => { cambiarPestana(false); if (!REG.via) mostrarPasoRegistro("elegir"); };
 
-// ─── Google Sign-In con respaldo por redirección ──────────
-// signInWithPopup falla si el navegador bloquea cookies de terceros
-// (Edge/Safari "Tracking Prevention"). En ese caso usamos redirect.
+// El registro con Google se quitó: el celular verificado es la forma principal de
+// identificar al pasajero y Google solo da nombre y correo. El proveedor se queda
+// únicamente para que una cuenta antigua de Google pueda confirmar su identidad.
 const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({ prompt: "select_account" });
 
-// Errores que significan "el popup no es viable aquí" → reintentar con redirect
-const POPUP_FALLA = new Set([
-  "auth/popup-blocked",
-  "auth/operation-not-supported-in-this-environment",
-  "auth/web-storage-unsupported",
-  "auth/internal-error"
-]);
+/* ─── Registro: CURP (RENAPO) o datos personales ──────────── */
+const REG = { via: null, curp: null };
+const RE_CURP = /^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HMX](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d]\d$/;
 
-// El usuario canceló a propósito: no es un error que mostrar
-const POPUP_CANCELADO = new Set([
-  "auth/popup-closed-by-user",
-  "auth/cancelled-popup-request",
-  "auth/user-cancelled"
-]);
-
-function errorDominio(e) {
-  return e?.code === "auth/unauthorized-domain";
+function mostrarPasoRegistro(paso) {
+  $("#reg-elegir").hidden = paso !== "elegir";
+  $("#reg-datos").hidden = paso !== "datos";
+  alertar("");
+  if (paso === "elegir") { REG.via = null; REG.curp = null; return; }
+  const curp = REG.via === "curp" && REG.curp;
+  $("#reg-campos-nombre").hidden = !!curp;
+  $("#reg-identidad").hidden = !curp;
+  if (curp) {
+    const d = REG.curp;
+    $("#reg-identidad").innerHTML =
+      '<span class="identidad-curp__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12.5 10 17l9-10"/></svg></span>' +
+      '<span><b>' + esc([d.nombres, d.apellidop, d.apellidom].filter(Boolean).join(" ")) + '</b>' +
+      '<small><em>Verificado con RENAPO</em> · ' + esc(d.curp) + '</small></span>';
+  }
+  setTimeout(() => $(curp ? "#re-tel" : "#re-nombre")?.focus(), 80);
 }
 
-$("#btn-google").onclick = async () => {
-  alertar("");
-  ocupar($("#btn-google"), true, "Conectando con Google");
-  try {
-    const cred = await signInWithPopup(auth, googleProvider);
-    avisar("Bienvenido, " + (cred.user.displayName?.split(" ")[0] || "viajero") + " 👋", "bien");
-  } catch (e) {
-    if (POPUP_CANCELADO.has(e.code)) {
-      ocupar($("#btn-google"), false);
-      return;
-    }
-    if (errorDominio(e)) {
-      alertar("Este dominio (" + location.hostname + ") no está autorizado en Firebase. " +
-              "Agrégalo en Authentication → Settings → Authorized domains.");
-      ocupar($("#btn-google"), false);
-      return;
-    }
-    if (POPUP_FALLA.has(e.code)) {
-      // El navegador bloqueó el popup o su almacenamiento: usamos redirección
-      try {
-        sessionStorage.setItem("t30_google_redirect", "1");
-        await signInWithRedirect(auth, googleProvider);
-        return; // la página se recarga
-      } catch (e2) {
-        alertar(leer(e2));
-      }
-    } else {
-      alertar(leer(e));
-    }
-    ocupar($("#btn-google"), false);
-  }
+$("#re-curp").oninput = ev => {
+  const v = ev.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 18);
+  if (v !== ev.target.value) ev.target.value = v;
 };
 
-// Al volver de la redirección, recogemos el resultado
-getRedirectResult(auth)
-  .then(cred => {
-    sessionStorage.removeItem("t30_google_redirect");
-    if (cred?.user) {
-      avisar("Bienvenido, " + (cred.user.displayName?.split(" ")[0] || "viajero") + " 👋", "bien");
-    }
-  })
-  .catch(e => {
-    sessionStorage.removeItem("t30_google_redirect");
-    if (errorDominio(e)) {
-      alertar("Este dominio (" + location.hostname + ") no está autorizado en Firebase. " +
-              "Agrégalo en Authentication → Settings → Authorized domains.");
-    } else if (e?.code && !POPUP_CANCELADO.has(e.code)) {
-      alertar(leer(e));
-    }
-  });
-
-// Aviso temprano: dominios donde Google Sign-In suele fallar si no se autorizó
-(function revisarDominio() {
-  const h = location.hostname;
-  const esLocal = h === "127.0.0.1" || h === "localhost" || h === "" || h.startsWith("192.168.");
-  const btn = $("#btn-google");
-  if (!btn) return;
-  if (location.protocol === "file:") {
-    btn.disabled = true;
-    btn.title = "Google Sign-In no funciona abriendo el archivo directamente. Usa un servidor local.";
-    const nota = document.createElement("p");
-    nota.className = "pista";
-    nota.style.cssText = "text-align:center;margin-top:.4rem";
-    nota.textContent = "Google requiere http:// — abre la app con un servidor local (ej. npx serve).";
-    btn.after(nota);
-  } else if (esLocal) {
-    // No bloqueamos: solo dejamos la pista lista por si falla
-    btn.dataset.local = "1";
-  }
-})();
+$("#form-curp").onsubmit = async ev => {
+  ev.preventDefault(); alertar("");
+  const curp = $("#re-curp").value.trim().toUpperCase();
+  if (curp.length !== 18) return alertar("La CURP tiene 18 caracteres.");
+  if (!RE_CURP.test(curp)) return alertar("Revisa tu CURP: no tiene un formato válido.");
+  ocupar($("#btn-curp"), true, "Consultando RENAPO");
+  try {
+    REG.curp = await llamar("consultarCurp", { curp });
+    REG.via = "curp";
+    mostrarPasoRegistro("datos");
+  } catch (e) { alertar(leer(e)); }
+  finally { ocupar($("#btn-curp"), false); }
+};
+$("#btn-via-datos").onclick = () => { REG.via = "datos"; REG.curp = null; mostrarPasoRegistro("datos"); };
+$("#btn-reg-volver").onclick = () => mostrarPasoRegistro("elegir");
 
 $$("[data-ojo]").forEach(b => b.onclick = () => {
   const i = $("#" + b.dataset.ojo);
@@ -1996,22 +2055,32 @@ $("#form-entrar").onsubmit = async ev => {
    y el registro escribía después el bueno, pero la app seguía con el viejo. */
 let altaPendiente = null;
 
-$("#form-registro").onsubmit = async ev => {
+$("#reg-datos").onsubmit = async ev => {
   ev.preventDefault(); alertar("");
-  const nombres = limpiarNombre($("#re-nombre").value);
-  const { apellidop, apellidom } = separarApellidos($("#re-apellidop").value, $("#re-apellidom").value);
+  let nombres, apellidop, apellidom;
+  if (REG.via === "curp" && REG.curp) {
+    ({ nombres, apellidop, apellidom } = REG.curp);
+  } else {
+    nombres = limpiarNombre($("#re-nombre").value);
+    ({ apellidop, apellidom } = separarApellidos($("#re-apellidop").value, $("#re-apellidom").value));
+    if (nombres.length < 2) return alertar("Escribe tu nombre.");
+    if (apellidop.length < 2) return alertar("Escribe tu apellido paterno.");
+  }
   const telefono = normalizarTelefono($("#re-tel").value);
-  if (nombres.length < 2) return alertar("Escribe tu nombre.");
-  if (apellidop.length < 2) return alertar("Escribe tu apellido paterno.");
-  if (!telefono) return alertar("Escribe tu teléfono a 10 dígitos. Es con el que te identifican en la base.");
+  if (!telefono) return alertar("Escribe tu celular a 10 dígitos. Te enviaremos un código por SMS.");
   const correo = $("#re-correo").value.trim();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) return alertar("Escribe un correo válido.");
+  if ($("#re-clave").value.length < 6) return alertar("La contraseña debe tener al menos 6 caracteres.");
   const nombre = nombreCompleto({ nombres, apellidop, apellidom });
-  altaPendiente = { nombre, nombres, apellidop, apellidom, telefono, correo, ciudad: $("#re-ciudad").value.trim() };
+  altaPendiente = {
+    nombre, nombres, apellidop, apellidom, telefono, correo, ciudad: $("#re-ciudad").value.trim(),
+    curp: REG.via === "curp" ? REG.curp?.curp || null : null,
+    registro: REG.via === "curp" ? "curp" : "datos"
+  };
   ocupar($("#btn-registro"), true, "Creando cuenta");
   try {
     const cred = await createUserWithEmailAndPassword(auth, correo, $("#re-clave").value);
     await updateProfile(cred.user, { displayName: nombre });
-    avisar("Cuenta creada. Bienvenida a bordo.", "bien");
   } catch (e) { altaPendiente = null; alertar(leer(e)); ocupar($("#btn-registro"), false); }
 };
 
@@ -2062,6 +2131,7 @@ const mostrar = id => $$(".pantalla").forEach(p => p.classList.toggle("viva", p.
 
 onAuthStateChanged(auth, async usuario => {
   limpiar();
+  S.enApp = false;
   S.usuario = usuario;
   if (!usuario) {
     Object.assign(S, { perfil: null, viajeId: null, viaje: null, fase: 0, origen: { ...ORIGEN_AIFA }, destino: null, ruta: null, eligiendo: false, historial: [] });
@@ -2103,15 +2173,38 @@ onAuthStateChanged(auth, async usuario => {
         lugares: { casa: null, trabajo: null },
         pago: "efectivo", tema: "oscuro", acento: "rosa", avisos: true,
         viajes: 0, gastado: 0, estrellas: 5,
-        puntos: 0, saldo: 0, cupones: {}
+        puntos: 0, saldo: 0, cupones: {},
+        registro: alta.registro || "datos"
       };
       await setDoc(ref, { ...S.perfil, creadoEn: serverTimestamp() });
+      // Registro con CURP: el servidor confirma los datos con RENAPO y los
+      // escribe en el perfil (el navegador no puede marcarse como verificado).
+      if (alta.curp) {
+        try { await llamar("consultarCurp", { curp: alta.curp, vincular: true }); }
+        catch (e) { avisar(leer(e), "mal"); }
+      }
       // Releer para obtener creadoEn resuelto (necesario para "usuario nuevo")
       const fresco = await getDoc(ref);
       if (fresco.exists()) S.perfil = fresco.data();
     }
     S.pago = S.perfil.pago || "efectivo";
     aplicarTema(S.perfil.tema || "oscuro", S.perfil.acento || "rosa");
+    // Antes de entrar: celular y correo verificados.
+    if (pasoPendiente()) {
+      ocupar($("#btn-entrar"), false); ocupar($("#btn-registro"), false);
+      return iniciarVerificacion();
+    }
+    entrarALaApp();
+  } catch (e) {
+    alertar(leer(e)); mostrar("pantalla-acceso");
+    ocupar($("#btn-entrar"), false); ocupar($("#btn-registro"), false);
+  }
+});
+
+function entrarALaApp() {
+    // Si ya estaba dentro (volvió de reverificar su celular), solo regresa.
+    if (S.enApp) { pintarPerfil(true); mostrar("pantalla-app"); return; }
+    S.enApp = true;
     pintarPerfil(true);
     mostrar("pantalla-app");
     cargarInicio();
@@ -2120,11 +2213,294 @@ onAuthStateChanged(auth, async usuario => {
     escucharDestinos();
     escucharViajes();
     ubicarme(false);
-  } catch (e) {
-    alertar(leer(e)); mostrar("pantalla-acceso");
-    ocupar($("#btn-entrar"), false); ocupar($("#btn-registro"), false);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   VERIFICACIÓN DE CELULAR (SMS) Y CORREO
+   El servidor marca `verificado.telefono` y `verificado.correo`.
+   Sin los dos no se entra a la app ni se manda nada a taquilla.
+   ══════════════════════════════════════════════════════════════ */
+const correoDeSesion = () => String(S.usuario?.email || S.perfil?.correo || "").toLowerCase();
+function pasoPendiente() {
+  const v = S.perfil?.verificado || {};
+  const tel = normalizarTelefono(S.perfil?.telefono);
+  if (!tel || v.telefono !== tel) return "sms";
+  if (v.correo !== correoDeSesion()) return "correo";
+  return null;
+}
+
+// Quién manda y revisa los códigos:
+//  "firebase": Firebase Auth. El SMS con Phone Auth (código + reCAPTCHA invisible)
+//              y el correo con su enlace de verificación. No necesita llaves.
+//  "servidor": las funciones con Twilio y MailerSend (llaves en functions/index.js).
+// En los dos casos quien marca `verificado` es el servidor.
+const VERIFICAR_CON = "firebase";
+const conFirebase = VERIFICAR_CON === "firebase";
+
+const VER = { paso: null, enviadoA: {}, relojReenvio: null, verificationId: null, captcha: null, sondeo: null, revisando: false };
+
+const ERRORES_VERIF = {
+  "auth/invalid-verification-code": "El código no es correcto.",
+  "auth/code-expired": "El código ya venció. Pide uno nuevo.",
+  "auth/missing-verification-code": "Escribe el código que te llegó por SMS.",
+  "auth/invalid-verification-id": "Pide un código nuevo.",
+  "auth/missing-verification-id": "Pide un código primero.",
+  "auth/invalid-phone-number": "Ese número no es válido. Revisa que sean 10 dígitos.",
+  "auth/too-many-requests": "Demasiados intentos desde este dispositivo. Espera unos minutos.",
+  "auth/quota-exceeded": "Se alcanzó el límite de SMS del proyecto. Intenta más tarde.",
+  "auth/credential-already-in-use": "Ese celular ya está registrado en otra cuenta de T30.",
+  "auth/account-exists-with-different-credential": "Ese celular ya está registrado en otra cuenta de T30.",
+  "auth/phone-number-already-exists": "Ese celular ya está registrado en otra cuenta de T30.",
+  "auth/operation-not-allowed": "Falta activar «Teléfono» en Firebase → Authentication → Sign-in method.",
+  "auth/captcha-check-failed": "No se pudo validar el reCAPTCHA. Revisa que este dominio esté en Firebase → Authentication → Settings → Authorized domains.",
+  "auth/invalid-app-credential": "No se pudo validar el reCAPTCHA. Recarga la página e intenta de nuevo.",
+  "auth/missing-app-credential": "No se pudo validar el reCAPTCHA. Recarga la página e intenta de nuevo.",
+  "auth/requires-recent-login": "Por seguridad, cierra sesión, vuelve a entrar y confirma tu celular."
+};
+const leerVerif = e => ERRORES_VERIF[e?.code] ||
+  (/region|SMS unable/i.test(e?.message || "") ? "Falta permitir México en Firebase → Authentication → Settings → SMS region policy." : leer(e));
+
+function errorVer(texto) {
+  const err = $("#ver-error");
+  if (!err) return;
+  err.textContent = texto || "";
+  err.hidden = !texto;
+}
+
+async function recargarPerfil() {
+  const snap = await getDoc(doc(db, "usuarios", S.usuario.uid));
+  if (snap.exists()) S.perfil = snap.data();
+}
+
+function iniciarVerificacion() {
+  mostrar("pantalla-verificar");
+  pintarVerificacion();
+}
+
+function pintarPasos() {
+  const actual = pasoPendiente();
+  $$("#ver-pasos li").forEach(li => {
+    const p = li.dataset.paso;
+    li.dataset.estado = p === actual ? "actual" : (actual === "correo" && p === "sms") || !actual ? "hecho" : "";
+  });
+}
+
+const conEnlace = () => conFirebase && VER.paso === "correo";
+
+async function pintarVerificacion(enviar = true) {
+  const paso = pasoPendiente();
+  pintarPasos();
+  clearInterval(VER.sondeo);
+  const c = $("#ver-cuerpo");
+  if (!paso) {
+    VER.paso = null;
+    c.innerHTML = '<div class="verificar__ok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5 10 17l9-10"/></svg>Todo listo. ¡Bienvenido a T30!</div>';
+    setTimeout(entrarALaApp, 700);
+    return;
   }
-});
+  if (VER.paso !== paso) VER.verificationId = null;
+  VER.paso = paso;
+  const sms = paso === "sms";
+  const tel = normalizarTelefono(S.perfil?.telefono);
+
+  if (conEnlace()) {
+    // Correo con Firebase: un enlace. Se revisa solo cada pocos segundos.
+    c.innerHTML =
+      '<h2>Confirma tu correo</h2>' +
+      '<p class="verificar__txt" id="ver-txt">Te enviamos un enlace a <b>' + esc(correoDeSesion()) + '</b>. ' +
+        'Ábrelo para confirmar tu correo y regresa aquí: seguimos en automático.</p>' +
+      '<button class="btn" type="button" id="btn-verificar">Ya lo confirmé</button>' +
+      '<div class="verificar__acciones">' +
+        '<button class="btn--texto" type="button" id="btn-reenviar">Enviar enlace</button>' +
+        '<span class="pista" style="align-self:center">¿No llega? Revisa spam o promociones.</span>' +
+      '</div>' +
+      '<p class="verificar__error" id="ver-error" role="alert" hidden></p>';
+    $("#btn-verificar").onclick = () => revisarCorreo(true);
+    $("#btn-reenviar").onclick = () => enviarCodigo(true);
+    VER.sondeo = setInterval(() => revisarCorreo(false), 4000);
+  } else {
+    c.innerHTML =
+      '<h2>' + (sms ? "Confirma tu celular" : "Confirma tu correo") + '</h2>' +
+      '<p class="verificar__txt" id="ver-txt">' + (sms
+        ? (tel ? 'Te enviaremos un código por SMS al <b>' + esc(telefonoBonito(tel)) + '</b>.' : 'Escribe tu celular para recibir un código por SMS.')
+        : 'Te enviaremos un código de 6 dígitos a <b>' + esc(correoDeSesion()) + '</b>.') + '</p>' +
+      '<form id="form-otp" novalidate>' +
+        '<input class="otp" id="ver-codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" aria-label="Código de verificación" />' +
+        '<button class="btn" type="submit" id="btn-verificar">Confirmar</button>' +
+      '</form>' +
+      '<div class="verificar__acciones">' +
+        '<button class="btn--texto" type="button" id="btn-reenviar">Enviar código</button>' +
+        (sms ? '<button class="btn--texto" type="button" id="btn-cambiar-tel">Cambiar número</button>'
+             : '<span class="pista" style="align-self:center">¿No llega? Revisa spam o promociones.</span>') +
+      '</div>' +
+      '<p class="verificar__error" id="ver-error" role="alert" hidden></p>';
+
+    const input = $("#ver-codigo");
+    input.oninput = () => {
+      input.value = input.value.replace(/\D/g, "").slice(0, 6);
+      if (input.value.length === 6) $("#form-otp").requestSubmit();
+    };
+    $("#form-otp").onsubmit = ev => { ev.preventDefault(); confirmarCodigo(); };
+    $("#btn-reenviar").onclick = () => enviarCodigo(true);
+    const ct = $("#btn-cambiar-tel");
+    if (ct) ct.onclick = cambiarTelefono;
+  }
+
+  // El primer código (o enlace) se manda solo, una vez por paso y destino.
+  const destino = sms ? tel : correoDeSesion();
+  if (enviar && destino && VER.enviadoA[paso] !== destino) enviarCodigo(false);
+  else marcarReenvio(VER.enviadoA[paso] === destino ? 45 : 0);
+}
+
+function marcarReenvio(seg) {
+  clearInterval(VER.relojReenvio);
+  const b = $("#btn-reenviar");
+  if (!b) return;
+  const que = conEnlace() ? "enlace" : "código";
+  const pintar = () => {
+    b.disabled = seg > 0;
+    b.textContent = seg > 0 ? "Reenviar en " + seg + " s" : (VER.enviadoA[VER.paso] ? "Reenviar " : "Enviar ") + que;
+  };
+  pintar();
+  VER.relojReenvio = setInterval(() => { seg--; pintar(); if (seg <= 0) clearInterval(VER.relojReenvio); }, 1000);
+}
+
+/* ─── Firebase Auth ─── */
+function captcha() {
+  // Uno nuevo en cada envío: un reCAPTCHA ya usado no sirve para otro SMS.
+  try { VER.captcha?.clear(); } catch {}
+  $("#recaptcha-caja").innerHTML = '<div id="recaptcha"></div>';
+  VER.captcha = new RecaptchaVerifier(auth, "recaptcha", { size: "invisible" });
+  return VER.captcha;
+}
+
+async function smsFirebase() {
+  const tel = normalizarTelefono(S.perfil?.telefono);
+  const u = auth.currentUser;
+  // Ese número ya quedó confirmado en Firebase (p. ej. cerró la app a medias): solo falta marcarlo.
+  if (u.phoneNumber === "+52" + tel) { await llamar("confirmarTelefono"); return { yaVerificado: true }; }
+  VER.verificationId = await new PhoneAuthProvider(auth).verifyPhoneNumber("+52" + tel, captcha());
+  return { enviado: true };
+}
+
+async function confirmarSMSFirebase(codigo) {
+  if (!VER.verificationId) throw Object.assign(new Error("Pide un código primero."), { code: "auth/missing-verification-id" });
+  const cred = PhoneAuthProvider.credential(VER.verificationId, codigo);
+  const u = auth.currentUser;
+  // Sin celular en la cuenta se vincula; si tenía otro (cambió de número) se reemplaza.
+  if (u.phoneNumber) await updatePhoneNumber(u, cred);
+  else await linkWithCredential(u, cred);
+  VER.verificationId = null;
+  await llamar("confirmarTelefono");
+}
+
+async function correoFirebase() {
+  const u = auth.currentUser;
+  await u.reload();
+  if (u.emailVerified) { await llamar("confirmarCorreo"); return { yaVerificado: true }; }
+  try {
+    // El enlace regresa a la app al confirmarse.
+    await sendEmailVerification(u, { url: location.origin + location.pathname });
+  } catch (e) {
+    if (!/continue-uri|unauthorized-domain/.test(e?.code || "")) throw e;
+    await sendEmailVerification(u); // dominio sin autorizar: el enlace queda en la página de Firebase
+  }
+  return { enviado: true };
+}
+
+async function revisarCorreo(manual) {
+  if (!conEnlace() || VER.revisando || !auth.currentUser) return;
+  VER.revisando = true;
+  if (manual) { errorVer(""); ocupar($("#btn-verificar"), true, "Revisando"); }
+  try {
+    await auth.currentUser.reload();
+    if (!auth.currentUser.emailVerified) {
+      if (manual) errorVer("Todavía no abres el enlace. Búscalo en tu correo (revisa spam o promociones).");
+      return;
+    }
+    clearInterval(VER.sondeo);
+    await llamar("confirmarCorreo");
+    await recargarPerfil();
+    avisar("Correo confirmado.", "bien");
+    pintarVerificacion();
+  } catch (e) {
+    if (manual) errorVer(leerVerif(e));
+  } finally {
+    VER.revisando = false;
+    if (manual) ocupar($("#btn-verificar"), false);
+  }
+}
+// Al volver a la pestaña después de abrir el enlace, revisa de inmediato.
+document.addEventListener("visibilitychange", () => { if (!document.hidden) revisarCorreo(false); });
+
+async function enviarCodigo(manual) {
+  const sms = VER.paso === "sms";
+  const b = $("#btn-reenviar");
+  if (b) { b.disabled = true; b.textContent = "Enviando…"; }
+  errorVer("");
+  try {
+    const r = !conFirebase ? await llamar(sms ? "enviarCodigoSMS" : "enviarCodigoCorreo")
+      : sms ? await smsFirebase() : await correoFirebase();
+    if (r?.yaVerificado) { await recargarPerfil(); return pintarVerificacion(); }
+    VER.enviadoA[VER.paso] = sms ? normalizarTelefono(S.perfil?.telefono) : correoDeSesion();
+    if (manual) avisar(sms ? "Te enviamos un nuevo SMS." : conFirebase ? "Te enviamos un nuevo enlace." : "Te enviamos un nuevo correo.", "bien");
+    if (r?.prueba) avisar("Modo de prueba: usa el código que configuraste en el servidor.", "bien");
+    marcarReenvio(45);
+    if (!conEnlace()) setTimeout(() => $("#ver-codigo")?.focus(), 60);
+  } catch (e) {
+    console.warn("[verificación]", e?.code || "", e?.message || e);
+    const texto = leerVerif(e);
+    avisar(texto, "mal");
+    // El motivo se queda visible debajo de los botones hasta el siguiente intento.
+    errorVer(texto);
+    const m = /Espera (\d+) s/.exec(e?.message || "");
+    marcarReenvio(m ? +m[1] : 0);
+  }
+}
+
+async function confirmarCodigo() {
+  const input = $("#ver-codigo");
+  const codigo = (input?.value || "").replace(/\D/g, "");
+  if (codigo.length < 4) return avisar("Escribe el código que te llegó.", "mal");
+  const sms = VER.paso === "sms";
+  ocupar($("#btn-verificar"), true, "Confirmando");
+  errorVer("");
+  try {
+    if (conFirebase && sms) await confirmarSMSFirebase(codigo);
+    else await llamar(sms ? "verificarCodigoSMS" : "verificarCodigoCorreo", { codigo });
+    await recargarPerfil();
+    avisar(sms ? "Celular confirmado." : "Correo confirmado.", "bien");
+    pintarVerificacion();
+  } catch (e) {
+    console.warn("[verificación]", e?.code || "", e?.message || e);
+    const texto = leerVerif(e);
+    avisar(texto, "mal");
+    errorVer(texto);
+    if (input) { input.value = ""; input.focus(); }
+    ocupar($("#btn-verificar"), false);
+  }
+}
+
+async function cambiarTelefono() {
+  let aviso = "Escribe tu celular a 10 dígitos.";
+  for (;;) {
+    const t = await pedirTexto({ titulo: "Cambiar celular", texto: aviso, valor: telefonoBonito(normalizarTelefono(S.perfil?.telefono) || ""), marcador: "771 123 4567", tipo: "tel" });
+    if (t === null) return;
+    const tel = normalizarTelefono(t);
+    if (!tel) { aviso = "Necesitamos 10 dígitos, por ejemplo 771 123 4567."; continue; }
+    try {
+      await updateDoc(doc(db, "usuarios", S.usuario.uid), { telefono: tel });
+      S.perfil.telefono = tel;
+      return pintarVerificacion();
+    } catch (e) { return avisar(leer(e), "mal"); }
+  }
+}
+
+$("#btn-ver-salir").onclick = async () => {
+  clearInterval(VER.relojReenvio); clearInterval(VER.sondeo);
+  Object.assign(VER, { paso: null, enviadoA: {}, verificationId: null });
+  limpiar(); await signOut(auth);
+};
 
 setTimeout(() => { if ($("#pantalla-carga").classList.contains("viva") && !auth.currentUser) mostrar("pantalla-acceso"); }, 1500);
 
@@ -2170,6 +2546,10 @@ function pintarPerfil(formulario = false) {
     $("#pe-apellidom").value = p.apellidom || "";
     $("#pe-tel").value = telefonoBonito(p.telefono);
     $("#pe-ciudad").value = p.ciudad || "";
+    // Con CURP verificada, el nombre es el de RENAPO y no se edita.
+    const porCurp = !!p.verificado?.curp;
+    ["#pe-nombre", "#pe-apellidop", "#pe-apellidom"].forEach(id => { $(id).readOnly = porCurp; });
+    $("#pe-nombre").title = porCurp ? "Nombre verificado con tu CURP" : "";
   }
   $("#pe-correo").value = p.correo || "";
   const lugar = l => l?.idTerminal != null ? l.texto : "Elige un destino";
@@ -2205,12 +2585,13 @@ function pintarAvisoPerfil() {
 
 $("#form-perfil").onsubmit = async ev => {
   ev.preventDefault();
-  const nombres = limpiarNombre($("#pe-nombre").value);
+  const porCurp = !!S.perfil?.verificado?.curp;
+  const nombres = porCurp ? S.perfil.nombres : limpiarNombre($("#pe-nombre").value);
   const { apellidop, apellidom } = separarApellidos($("#pe-apellidop").value, $("#pe-apellidom").value);
   const telTexto = $("#pe-tel").value.trim();
   const telefono = normalizarTelefono(telTexto);
   if (nombres.length < 2) return avisar("Escribe tu nombre.", "mal");
-  if (telTexto && !telefono) return avisar("El teléfono debe tener 10 dígitos.", "mal");
+  if (!telefono) return avisar("Tu celular debe tener 10 dígitos.", "mal");
   ocupar($("#btn-guardar"), true, "Guardando");
   const nombre = apellidop ? nombreCompleto({ nombres, apellidop, apellidom }) : nombres;
   const cambios = { nombre, nombres, apellidop, apellidom, telefono: telefono || "", ciudad: $("#pe-ciudad").value.trim() };
@@ -2219,24 +2600,31 @@ $("#form-perfil").onsubmit = async ev => {
     if (nombre !== auth.currentUser.displayName) await updateProfile(auth.currentUser, { displayName: nombre });
     Object.assign(S.perfil, cambios);
     pintarPerfil(true);
-    avisar("Perfil actualizado.", "bien");
+    if (pasoPendiente() === "sms") {
+      avisar("Confirma tu nuevo celular con el código que te enviaremos.", "bien");
+      iniciarVerificacion();
+    } else avisar("Perfil actualizado.", "bien");
   } catch (e) { avisar(leer(e), "mal"); }
   finally { ocupar($("#btn-guardar"), false); }
 };
 
 /** Pide el teléfono justo cuando hace falta (antes de pedir un viaje) y lo guarda. */
 async function asegurarTelefono() {
+  // Celular sin confirmar (por ejemplo, lo cambió hace poco): primero el SMS.
+  if (normalizarTelefono(S.perfil?.telefono) && pasoPendiente() === "sms") { iniciarVerificacion(); return false; }
   if (normalizarTelefono(S.perfil?.telefono)) return true;
   let aviso = "La base del AIFA te identifica por teléfono. Lo usamos también para que tu conductor te contacte.";
   for (;;) {
     const t = await pedirTexto({ titulo: "Tu teléfono", texto: aviso, marcador: "771 123 4567", tipo: "tel" });
-    if (t === null) return false;
+    if (t === null) { avisar("Sin celular la base no puede registrar tu viaje.", "mal"); return false; }
     const tel = normalizarTelefono(t);
     if (!tel) { aviso = "Necesitamos 10 dígitos, por ejemplo 771 123 4567."; continue; }
     try {
       await updateDoc(doc(db, "usuarios", S.usuario.uid), { telefono: tel });
       S.perfil.telefono = tel;
       pintarPerfil(true);
+      // Un celular nuevo hay que confirmarlo por SMS antes de pedir.
+      if (pasoPendiente() === "sms") { iniciarVerificacion(); return false; }
       return true;
     } catch (e) { avisar(leer(e), "mal"); return false; }
   }
@@ -3192,7 +3580,7 @@ async function pedirViaje() {
   const d = desglose();
   if (!dest || !d.base) return avisar("Elige un destino de la lista.", "mal");
   // La base del AIFA identifica al pasajero por teléfono.
-  if (!await asegurarTelefono()) return avisar("Sin teléfono la base no puede registrar tu viaje.", "mal");
+  if (!await asegurarTelefono()) return;
 
   pidiendo = true;
   ocupar($("#btn-pedir"), true, "Pidiendo");
@@ -3864,35 +4252,15 @@ function folioDe(viajeId) {
 }
 
 /* ─── Credencial de usuario ───────────────────────────────
-   El QR ya no identifica el viaje: identifica al usuario y su sesion.
-   Lleva el uid y un codigo corto que caduca, para que una captura de
-   pantalla no le sirva a nadie para suplantar la identidad.
-   El nombre NO viaja dentro del QR: la taquilla lo saca del padron.
+   El QR lleva solo el UUID que la taquilla de t30.mx le asignó al
+   pasajero (respuesta de putCustomer). Así lo identifican en la base.
+   Llega en `usuarios/{uid}.terminal.uuid` cuando la función lo da de
+   alta, poco después de que confirma su celular.
    ───────────────────────────────────────────────────────── */
-const VIGENCIA_QR = 90000;                       // 90 s de vida
-const ALFA_SESION = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-const codigoSesion = (n = 8) =>
-  [...crypto.getRandomValues(new Uint8Array(n))]
-    .map(x => ALFA_SESION[x & 31]).join("");
-
-/** Contenido que se codifica en el QR. La taquilla lo parte por "|". */
-const cargaCredencial = (uid, codigo) => ["T30U", "2", uid, codigo].join("|");
-
-/** Publica el codigo vigente en Firestore y devuelve la carga del QR. */
-async function emitirCredencial() {
-  const u = S.usuario;
-  if (!u) throw new Error("Sin sesion iniciada.");
-  const codigo = codigoSesion();
-  await setDoc(doc(db, "sesionesQR", u.uid), {
-    uid: u.uid,
-    nombre: S.perfil?.nombre || u.displayName || "",
-    codigo,
-    expira: Date.now() + VIGENCIA_QR,
-    emitidoEn: serverTimestamp()
-  });
-  return cargaCredencial(u.uid, codigo);
-}
+const uuidTaquilla = () => {
+  const u = S.perfil?.terminal?.uuid;
+  return typeof u === "string" && u.trim() ? u.trim() : null;
+};
 
 /* ─── Accesos visibles al pase ──────────────────────────── */
 const ESTADOS_VIGENTES = ["buscando", "asignado", "en_curso", "programado"];
@@ -3948,58 +4316,57 @@ document.addEventListener("click", ev => {
    ─────────────────────────────────────────────────────────── */
 function pase(v) {
   const u = S.usuario;
-  if (!u) return avisar("Inicia sesion para mostrar tu credencial.", "mal");
+  if (!u) return avisar("Inicia sesión para mostrar tu credencial.", "mal");
 
   const nombre = S.perfil?.nombre || u.displayName || "Sin nombre";
-  let relojQR = null, relojCuenta = null, vivo = true;
-  const parar = () => { vivo = false; clearInterval(relojQR); clearInterval(relojCuenta); };
+  let reloj = null, vivo = true;
+  const parar = () => { vivo = false; clearInterval(reloj); };
 
   const cerrar = abrirTelon(
     '<div class="pase">' +
       '<h3 style="margin-bottom:.2rem">Credencial de pasajero</h3>' +
-      '<p class="pase__pie">Muestrala en taquilla para identificarte.</p>' +
+      '<p class="pase__pie">Muéstrala en la taquilla del AIFA para identificarte.</p>' +
       '<div class="pase__qr" id="cred-qr"></div>' +
-      '<div class="pase__folio" id="cred-estado">Generando…</div>' +
+      '<div class="pase__folio" id="cred-estado"></div>' +
       '<div class="pase__datos">' +
         renglonRecibo("Pasajero", nombre) +
-        renglonRecibo("ID de usuario", u.uid) +
+        (S.perfil?.telefono ? renglonRecibo("Celular", telefonoBonito(S.perfil.telefono)) : "") +
         (v ? renglonRecibo("Viaje", (v.origen?.texto || "—") + " → " + (v.destino?.texto || "—")) : "") +
         (boletoDe(v) ? renglonRecibo("Boleto taquilla", boletoDe(v)) : "") +
       '</div>' +
       '<div class="pase__aviso">' +
         '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.01"/></svg>' +
-        '<span>El codigo se renueva solo. Sube el brillo antes de acercarte al lector.</span>' +
+        '<span>Sube el brillo de tu pantalla antes de acercarte al lector.</span>' +
       '</div>' +
       '<div class="dialogo__botones" style="margin-top:1rem">' +
         '<button class="btn btn--suave" data-cerrar>Cerrar</button>' +
       '</div>' +
     '</div>',
-    // Se dispare como se dispare el cierre, dejamos de escribir en Firestore.
     () => parar());
 
-  const pintar = async () => {
+  // Mientras la taquilla no asigna el UUID, se muestra el estado y se revisa
+  // cada pocos segundos (el perfil se escucha en vivo).
+  const pintar = () => {
     if (!vivo) return;
-    try {
-      const carga = await emitirCredencial();
-      const caja = $("#cred-qr");
-      if (!caja) return parar();
-      caja.innerHTML = QR.svg(carga, { nivel: "M", margen: 4 });
-      let seg = Math.round(VIGENCIA_QR / 1000);
-      clearInterval(relojCuenta);
-      relojCuenta = setInterval(() => {
-        const el = $("#cred-estado");
-        if (!el) return parar();
-        el.textContent = "Se renueva en " + (--seg) + " s";
-      }, 1000);
-    } catch (e) {
-      const el = $("#cred-estado");
-      if (el) el.textContent = "No se pudo generar: " + e.message;
-      parar();
+    const caja = $("#cred-qr"), est = $("#cred-estado");
+    if (!caja || !est) return parar();
+    const uuid = uuidTaquilla();
+    if (uuid) {
+      if (caja.dataset.uuid !== uuid) {
+        caja.dataset.uuid = uuid;
+        caja.innerHTML = QR.svg(uuid, { nivel: "M", margen: 4 });
+        caja.classList.remove("pase__qr--espera");
+      }
+      est.textContent = uuid.slice(0, 8).toUpperCase() + "…" + uuid.slice(-4).toUpperCase();
+      return parar();
     }
+    caja.classList.add("pase__qr--espera");
+    caja.innerHTML = '<div class="pase__espera"><span class="girador"></span><small>Activando tu credencial en la taquilla…</small></div>';
+    est.textContent = S.perfil?.terminal?.error ? "La taquilla aún no confirma tu registro. Intenta en unos minutos." : "";
   };
 
   pintar();
-  relojQR = setInterval(pintar, VIGENCIA_QR);
+  if (vivo) reloj = setInterval(pintar, 2500);
   $("[data-cerrar]").onclick = () => cerrar(null);
 }
 
