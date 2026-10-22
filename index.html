@@ -1170,6 +1170,25 @@ button{cursor:pointer}
 .desglose-saldo__saldo{color:var(--verde)!important}
 .desglose-saldo__total{font-weight:800;color:var(--txt)!important;padding-top:.4rem;border-top:1px solid var(--borde)}
 .extras-campo--ancho{flex:none}
+/* Llegada al AIFA (reservación) */
+.llegada{margin-top:.85rem;padding:.9rem 1rem;border-radius:16px;background:var(--campo);border:1px solid var(--borde)}
+.llegada__cab{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.7rem}
+.llegada__cab svg{flex:none;margin-top:2px;color:var(--ac)}
+.llegada__cab b{display:block;font-size:14px}
+.llegada__cab small{display:block;font-size:12px;color:var(--txt-2);margin-top:.1rem;line-height:1.35}
+.llegada .extras-campo select{font-size:15px;padding:.65rem .6rem;min-height:44px}
+@media (max-width:340px){.llegada .extras-fila{flex-direction:column}}
+/* Reservado: sin búsqueda ni temporizador */
+.reserva{display:flex;gap:.8rem;align-items:flex-start;padding:1rem;border-radius:16px;margin:.2rem 0 .8rem;
+  background:color-mix(in srgb,var(--verde) 12%,var(--sup));border:1.5px solid color-mix(in srgb,var(--verde) 35%,transparent)}
+.reserva__ico{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--verde) 20%,transparent);color:var(--verde)}
+.reserva__txt{min-width:0}
+.reserva__txt h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-.02em;line-height:1.15}
+.reserva__txt p{font-size:14px;color:var(--txt-2);margin-top:.15rem;line-height:1.4}
+.reserva__cuando{display:flex;align-items:center;gap:.7rem;padding:.8rem 1rem;border-radius:14px;background:var(--campo);margin-bottom:.8rem}
+.reserva__cuando small{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3);font-weight:700}
+.reserva__cuando b{display:block;font-size:15.5px;margin-top:.1rem}
+.btn--pase-grande{min-height:54px;font-size:16px}
 .extras-campo textarea{width:100%;resize:vertical;min-height:58px;background:var(--fondo-2);color:var(--txt);border:1px solid var(--borde);border-radius:11px;padding:.55rem .6rem;font:inherit;font-size:13.5px}
 .extras-campo textarea:focus{border-color:var(--ac);outline:none}
 .opcional{font-weight:500;color:var(--txt-3);text-transform:none;letter-spacing:0}
@@ -1420,6 +1439,23 @@ button{cursor:pointer}
     </div>
   </section>
 
+  <!-- ═══════════ ENLACES DE CORREO (confirmar correo, nueva contraseña) ═══════════ -->
+  <section class="pantalla" id="pantalla-accion">
+    <div class="verificar">
+      <div class="verificar__caja">
+        <div class="marca" style="justify-content:center;margin-bottom:1.2rem">
+          <svg class="arcos" width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="34" stroke="#1B3C7B" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-215 50 50)"/>
+            <circle cx="50" cy="50" r="34" stroke="#E4007E" stroke-width="15" stroke-dasharray="118 216" transform="rotate(-98 50 50)"/>
+            <circle cx="50" cy="50" r="34" stroke="#FFA20B" stroke-width="15" stroke-dasharray="66 216" transform="rotate(38 50 50)"/>
+          </svg>
+          <span class="marca__txt">T30</span>
+        </div>
+        <div id="accion-cuerpo" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════════ APP ═══════════ -->
   <section class="pantalla" id="pantalla-app">
     <div class="lienzo">
@@ -1464,7 +1500,7 @@ button{cursor:pointer}
         <div style="display:flex;gap:.65rem;margin:1.2rem 0">
           <button class="quick-viaje" id="btn-quick-viaje" style="flex:1;margin:0">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17v-4.2l2-4.6A2 2 0 0 1 6.8 7h10.4a2 2 0 0 1 1.8 1.2l2 4.6V17z"/><path d="M3 13h18M7 17h.01M17 17h.01"/></svg>
-            <span style="flex:1;text-align:left">Pedir taxi<small class="quick-viaje__sub">Salida desde el AIFA</small></span>
+            <span style="flex:1;text-align:left">Reservar taxi<small class="quick-viaje__sub">Salida desde el AIFA</small></span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>
           </button>
           <button id="btn-tarifas" aria-label="Ver destinos y tarifas" style="
@@ -1693,7 +1729,8 @@ import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
   onAuthStateChanged, updateProfile, sendPasswordResetEmail, deleteUser,
   GoogleAuthProvider, EmailAuthProvider, reauthenticateWithCredential, reauthenticateWithPopup,
-  RecaptchaVerifier, PhoneAuthProvider, linkWithCredential, updatePhoneNumber, sendEmailVerification
+  RecaptchaVerifier, PhoneAuthProvider, linkWithCredential, updatePhoneNumber, sendEmailVerification,
+  applyActionCode, checkActionCode, verifyPasswordResetCode, confirmPasswordReset
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-functions.js";
 import {
@@ -1754,7 +1791,7 @@ const ORIGEN_AIFA = Object.freeze({
 
 const S = {
   usuario: null, perfil: null,
-  fase: 0,            // 0 planear · 1 buscando · 2 asignado · 3 en curso · 4 calificar
+  fase: 0,            // 0 planear · 1 reservado (o buscando) · 2 asignado · 3 en curso · 4 calificar
   origen: { ...ORIGEN_AIFA }, destino: null, ruta: null, eligiendo: false,
   clase: "sedan", pago: "efectivo",
   viajeId: null, viaje: null, historial: [],
@@ -2129,7 +2166,88 @@ $("#btn-borrar").onclick = async () => {
    ══════════════════════════════════════════════════════════════ */
 const mostrar = id => $$(".pantalla").forEach(p => p.classList.toggle("viva", p.id === id));
 
+/* ══════════════════════════════════════════════════════════════
+   ENLACES DE LOS CORREOS
+   En Firebase → Authentication → Templates → «Personalizar URL de acción»
+   se pone la dirección de esta app. Así los enlaces de los correos
+   (confirmar correo, restablecer contraseña) abren T30 y no una página
+   de firebaseapp.com. Llegan con ?mode=…&oobCode=…
+   ══════════════════════════════════════════════════════════════ */
+const ACCION = (() => {
+  const p = new URLSearchParams(location.search);
+  const modo = p.get("mode"), codigo = p.get("oobCode");
+  return modo && codigo ? { modo, codigo } : null;
+})();
+
+const ERRORES_ENLACE = {
+  "auth/invalid-action-code": "Este enlace ya se usó o ya no es válido. Pide uno nuevo desde la app.",
+  "auth/expired-action-code": "Este enlace ya venció. Pide uno nuevo desde la app.",
+  "auth/user-disabled": "Esta cuenta está desactivada.",
+  "auth/user-not-found": "La cuenta de este enlace ya no existe.",
+  "auth/weak-password": "La contraseña necesita al menos 6 caracteres."
+};
+const leerEnlace = e => ERRORES_ENLACE[e?.code] || leer(e);
+const ICONO_OK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5 10 17l9-10"/></svg>';
+
+function pintarAccion(html) { $("#accion-cuerpo").innerHTML = html; }
+function finAccion(titulo, texto, ok = true) {
+  pintarAccion(
+    (ok ? '<div class="verificar__ok">' + ICONO_OK + esc(titulo) + '</div>' : '<h2>' + esc(titulo) + '</h2>') +
+    '<p class="verificar__txt">' + texto + '</p>' +
+    '<button class="btn" type="button" id="btn-accion-seguir">Ir a T30</button>');
+  // Quita el código de la dirección y arranca la app normal.
+  $("#btn-accion-seguir").onclick = () => location.replace(location.origin + location.pathname);
+}
+
+async function atenderEnlace({ modo, codigo }) {
+  mostrar("pantalla-accion");
+  pintarAccion('<p class="verificar__txt" style="text-align:center"><span class="giro"></span> Un momento…</p>');
+  try {
+    if (modo === "verifyEmail" || modo === "verifyAndChangeEmail") {
+      await applyActionCode(auth, codigo);
+      return finAccion("Correo confirmado", "Listo, tu correo quedó confirmado. Si dejaste la app abierta en otra pestaña, continúa ahí: avanza sola.");
+    }
+    if (modo === "recoverEmail") {
+      const info = await checkActionCode(auth, codigo);
+      await applyActionCode(auth, codigo);
+      return finAccion("Correo restaurado", "Tu cuenta vuelve a usar <b>" + esc(info?.data?.email || "tu correo anterior") + "</b>. Si tú no pediste el cambio, restablece tu contraseña.");
+    }
+    if (modo === "resetPassword") {
+      const correo = await verifyPasswordResetCode(auth, codigo);
+      pintarAccion(
+        '<h2>Nueva contraseña</h2>' +
+        '<p class="verificar__txt">Para la cuenta <b>' + esc(correo) + '</b>.</p>' +
+        '<form id="form-nueva-clave" novalidate>' +
+          '<input class="otp" style="letter-spacing:normal;font-size:16px;text-align:left" id="nc-1" type="password" autocomplete="new-password" placeholder="Nueva contraseña (mín. 6)" aria-label="Nueva contraseña" />' +
+          '<input class="otp" style="letter-spacing:normal;font-size:16px;text-align:left;margin-top:.6rem" id="nc-2" type="password" autocomplete="new-password" placeholder="Repítela" aria-label="Repite la contraseña" />' +
+          '<button class="btn" type="submit" id="btn-nueva-clave" style="margin-top:.8rem">Guardar contraseña</button>' +
+        '</form>' +
+        '<p class="verificar__error" id="nc-error" role="alert" hidden></p>');
+      const error = t => { const e = $("#nc-error"); e.textContent = t; e.hidden = !t; };
+      $("#form-nueva-clave").onsubmit = async ev => {
+        ev.preventDefault();
+        const a = $("#nc-1").value, b = $("#nc-2").value;
+        if (a.length < 6) return error("La contraseña necesita al menos 6 caracteres.");
+        if (a !== b) return error("Las contraseñas no coinciden.");
+        error(""); ocupar($("#btn-nueva-clave"), true, "Guardando");
+        try {
+          await confirmPasswordReset(auth, codigo, a);
+          finAccion("Contraseña actualizada", "Ya puedes entrar con tu nueva contraseña.");
+        } catch (e) { error(leerEnlace(e)); ocupar($("#btn-nueva-clave"), false); }
+      };
+      setTimeout(() => $("#nc-1")?.focus(), 60);
+      return;
+    }
+    finAccion("Enlace no reconocido", "Abre la app y vuelve a intentarlo.", false);
+  } catch (e) {
+    console.warn("[enlace]", e?.code || "", e?.message || e);
+    finAccion("No se pudo completar", esc(leerEnlace(e)), false);
+  }
+}
+if (ACCION) atenderEnlace(ACCION);
+
 onAuthStateChanged(auth, async usuario => {
+  if (ACCION) return; // la pantalla del enlace manda; al terminar se recarga la app limpia
   limpiar();
   S.enApp = false;
   S.usuario = usuario;
@@ -2257,8 +2375,9 @@ const ERRORES_VERIF = {
   "auth/missing-app-credential": "No se pudo validar el reCAPTCHA. Recarga la página e intenta de nuevo.",
   "auth/requires-recent-login": "Por seguridad, cierra sesión, vuelve a entrar y confirma tu celular."
 };
-const leerVerif = e => ERRORES_VERIF[e?.code] ||
-  (/region|SMS unable/i.test(e?.message || "") ? "Falta permitir México en Firebase → Authentication → Settings → SMS region policy." : leer(e));
+// La región bloqueada también llega como operation-not-allowed: se distingue por el mensaje.
+const leerVerif = e => (/region|SMS unable/i.test(e?.message || "") ? "Falta permitir México en Firebase → Authentication → Settings → SMS region policy." : null) ||
+  ERRORES_VERIF[e?.code] || leer(e);
 
 function errorVer(texto) {
   const err = $("#ver-error");
@@ -3239,7 +3358,7 @@ const abrirHoja = () => { $("#hoja").dataset.abierta = "1"; $("#hoja").style.max
 function pintarHoja() {
   const c = $("#hoja-cuerpo");
   if (S.fase === 0) pintarPlaneando(c);
-  else if (S.fase === 1) pintarBuscando(c);
+  else if (S.fase === 1) pintarReservado(c);
   else if (S.fase === 2) pintarAsignado(c);
   else if (S.fase === 3) pintarEnCurso(c);
   else pintarCalificar(c);
@@ -3323,12 +3442,106 @@ function pintarClases() {
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/></svg>'
         : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="7" width="18" height="10" rx="2.5"/><circle cx="12" cy="12" r="2.4"/></svg>') +
       '</span><span class="opcion__txt"><b>' + (S.pago === "tarjeta" ? "Tarjeta" : "Efectivo") + '</b><small>Cámbialo en Perfil</small></span></span></div>' +
+    bloqueLlegada() +
     bloqueDatosViaje(true) +
     bloqueExtras(true) +
-    '<button class="btn btn--ambar" id="btn-pedir">Pedir taxi · ' + dinero(t.total) + '</button>';
+    '<button class="btn btn--ambar" id="btn-pedir">Reservar taxi · ' + dinero(t.total) + '</button>';
 
+  enlazarLlegada(cont);
   enlazarDatosViaje(cont);
   $("#btn-pedir", cont).onclick = pedirViaje;
+}
+
+/* ─── Llegada al AIFA: día y hora de la reservación ─────────
+   La Ciudad de México no cambia de horario desde 2022: siempre UTC−6.
+   Se calcula en hora del AIFA aunque el teléfono esté en otra zona. */
+const CDMX_MS = 6 * 3600000;
+const DIAS_RESERVA = 14, PASO_MIN = 15;
+const dos = n => String(n).padStart(2, "0");
+/** «Reloj de pared» del AIFA: se lee con getUTC*. */
+const paredCDMX = (fecha = new Date()) => new Date(fecha.getTime() - CDMX_MS);
+const claveDia = p => p.getUTCFullYear() + "-" + dos(p.getUTCMonth() + 1) + "-" + dos(p.getUTCDate());
+const hhmm = m => dos(Math.floor(m / 60)) + ":" + dos(m % 60);
+const textoHora = m => { const h = Math.floor(m / 60); return (h % 12 || 12) + ":" + dos(m % 60) + (h < 12 ? " a. m." : " p. m."); };
+/** "2026-10-24" + "14:30" en hora del AIFA → instante real. */
+const fechaLlegada = (dia, hora) => new Date(Date.parse(dia + "T" + hora + ":00Z") + CDMX_MS);
+const textoAIFA = f => { const p = paredCDMX(f); return claveDia(p) + " " + hhmm(p.getUTCHours() * 60 + p.getUTCMinutes()); };
+
+/** Horas (en minutos del día) que aún se pueden elegir ese día. */
+function horasDe(dia) {
+  const ahora = paredCDMX();
+  let desde = 0;
+  if (dia === claveDia(ahora)) desde = Math.ceil((ahora.getUTCHours() * 60 + ahora.getUTCMinutes() + 1) / PASO_MIN) * PASO_MIN;
+  const r = [];
+  for (let m = desde; m < 24 * 60; m += PASO_MIN) r.push(m);
+  return r;
+}
+
+function diasReserva() {
+  const hoy = paredCDMX(); hoy.setUTCHours(12, 0, 0, 0);
+  const r = [];
+  for (let i = 0; i < DIAS_RESERVA; i++) {
+    const d = new Date(hoy.getTime() + i * 86400000);
+    const clave = claveDia(d);
+    if (!horasDe(clave).length) continue; // hoy ya muy noche
+    const corto = d.toLocaleDateString("es-MX", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" }).replace(/\./g, "");
+    const fecha = d.toLocaleDateString("es-MX", { timeZone: "UTC", day: "numeric", month: "short" }).replace(/\./g, "");
+    r.push({ clave, nombre: i === 0 ? "Hoy, " + fecha : i === 1 ? "Mañana, " + fecha : corto.charAt(0).toUpperCase() + corto.slice(1) });
+  }
+  return r;
+}
+
+/** Deja una llegada válida en S.extras (la primera libre si la elegida ya pasó). */
+function llegadaValida() {
+  const dias = diasReserva();
+  let { dia, hora } = S.extras.llegada || {};
+  if (!dias.some(d => d.clave === dia)) dia = dias[0].clave;
+  const horas = horasDe(dia).map(hhmm);
+  if (!horas.includes(hora)) hora = horas[0];
+  S.extras.llegada = { dia, hora };
+  return { dias, horas: horasDe(dia), dia, hora };
+}
+
+/** Fecha de llegada de un viaje guardado. */
+const llegadaDe = v => {
+  const f = v?.llegadaAIFA;
+  if (!f) return null;
+  const d = typeof f.toDate === "function" ? f.toDate() : new Date(f);
+  return isNaN(d) ? null : d;
+};
+/** «Hoy, 2:30 p. m.» / «Mañana, 9:00 a. m.» / «Vie 24 oct, 6:15 p. m.» */
+function textoLlegada(f) {
+  const p = paredCDMX(f), hoy = paredCDMX();
+  const dias = Math.round((Date.parse(claveDia(p)) - Date.parse(claveDia(hoy))) / 86400000);
+  const corto = p.toLocaleDateString("es-MX", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" }).replace(/\./g, "");
+  const dia = dias === 0 ? "Hoy" : dias === 1 ? "Mañana" : dias === -1 ? "Ayer" : corto.charAt(0).toUpperCase() + corto.slice(1);
+  return dia + ", " + textoHora(p.getUTCHours() * 60 + p.getUTCMinutes());
+}
+
+function bloqueLlegada() {
+  const { dias, horas, dia, hora } = llegadaValida();
+  return '<div class="llegada">' +
+    '<div class="llegada__cab">' + icoCalendario(19) +
+      '<span><b>¿Cuándo llegas a la taquilla?</b><small>Tu taxi queda reservado para ese día y hora en el AIFA.</small></span></div>' +
+    '<div class="extras-fila">' +
+      '<div class="extras-campo"><label for="ll-dia">Día</label><select id="ll-dia">' +
+        dias.map(d => '<option value="' + d.clave + '"' + (d.clave === dia ? " selected" : "") + '>' + esc(d.nombre) + '</option>').join("") +
+      '</select></div>' +
+      '<div class="extras-campo"><label for="ll-hora">Hora</label><select id="ll-hora">' +
+        horas.map(m => '<option value="' + hhmm(m) + '"' + (hhmm(m) === hora ? " selected" : "") + '>' + textoHora(m) + '</option>').join("") +
+      '</select></div>' +
+    '</div></div>';
+}
+
+function enlazarLlegada(cont) {
+  const sd = $("#ll-dia", cont), sh = $("#ll-hora", cont);
+  if (!sd || !sh) return;
+  sd.onchange = () => {
+    S.extras.llegada = { dia: sd.value, hora: sh.value };
+    const { horas, hora } = llegadaValida();
+    sh.innerHTML = horas.map(m => '<option value="' + hhmm(m) + '"' + (hhmm(m) === hora ? " selected" : "") + '>' + textoHora(m) + '</option>').join("");
+  };
+  sh.onchange = () => { S.extras.llegada = { dia: sd.value, hora: sh.value }; };
 }
 
 const tiempoLegible = min => min < 60 ? min + " min" : Math.floor(min / 60) + " h" + (min % 60 ? " " + (min % 60) + " min" : "");
@@ -3437,9 +3650,10 @@ function estadoTaquilla(v) {
   const t = (v?.terminal && typeof v.terminal === "object") ? v.terminal : {};
   const caja = (tono, html) => '<div class="taquilla-estado taquilla-estado--' + tono + '"><i></i><span>' + html + '</span></div>';
   if (t.estado === "enviado" || t.estado === "cancelando" || t.estado === "cancelado") {
-    return caja("ok", "Registrado en la base AIFA · boleto <b>" + esc(boletoDe(v) || "—") + "</b>" + (t.simulado ? " (prueba)" : ""));
+    return caja("ok", (v?.estado === "reservado" ? "Reservación confirmada en taquilla" : "Registrado en la base AIFA") +
+      " · boleto <b>" + esc(boletoDe(v) || "—") + "</b>" + (t.simulado ? " (prueba)" : ""));
   }
-  if (!t.estado || ["pendiente", "enviando", "error"].includes(t.estado)) return caja("espera", "Registrando tu viaje en la base AIFA…");
+  if (!t.estado || ["pendiente", "enviando", "error"].includes(t.estado)) return caja("espera", "Enviando tu reservación a la taquilla del AIFA…");
   if (t.estado === "sin_telefono") return caja("info", "Agrega tu teléfono en Perfil para que la base registre tu viaje.");
   if (t.estado === "omitido") return "";
   return caja("info", "La base revisará tu solicitud y te contactará por teléfono si hace falta.");
@@ -3471,16 +3685,27 @@ function tarjetaChofer(c) {
     '</div>';
 }
 
-function pintarBuscando(c) {
+/* Reservado: la taquilla del AIFA ya tiene la reservación (putTravel) y la
+   concreta cuando el pasajero llega y muestra su QR: ahí asigna Eco, operador
+   y cobra. Por eso aquí no hay búsqueda ni temporizador. */
+const icoCalendario = (t = 20) =>
+  '<svg width="' + t + '" height="' + t + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></svg>';
+
+function pintarReservado(c) {
+  const v = S.viaje || {};
+  const llegada = llegadaDe(v);
   c.innerHTML =
-    '<div class="estado">' +
-      '<svg class="arcos gira" width="42" height="42" viewBox="0 0 100 100" aria-hidden="true">' +
-        '<circle cx="50" cy="50" r="34" stroke="#1B3C7B" stroke-width="16" stroke-dasharray="118 216" transform="rotate(-215 50 50)"/>' +
-        '<circle cx="50" cy="50" r="34" stroke="#E4007E" stroke-width="16" stroke-dasharray="118 216" transform="rotate(-98 50 50)"/>' +
-        '<circle cx="50" cy="50" r="34" stroke="#FFA20B" stroke-width="16" stroke-dasharray="66 216" transform="rotate(38 50 50)"/></svg>' +
-      '<div class="estado__txt"><h2>Buscando conductor</h2><p>Avisando a las unidades cerca de ti.</p></div></div>' +
-    pasos(1) + resumenViaje() + botonPase(S.viaje) +
-    '<button class="btn btn--suave" id="btn-cancelar">Cancelar solicitud</button>';
+    '<div class="reserva">' +
+      '<span class="reserva__ico">' + icoCalendario(22) + '</span>' +
+      '<div class="reserva__txt"><h2>Reservado</h2>' +
+        '<p><b>Ya te esperan en taquilla</b>, solo presenta tu QR y listo.</p></div>' +
+    '</div>' +
+    (llegada ? '<div class="reserva__cuando">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg>' +
+      '<span><small>Llegas a la taquilla del AIFA</small><b>' + esc(textoLlegada(llegada)) + '</b></span></div>' : '') +
+    botonPase(v, true) +
+    resumenViaje() +
+    '<button class="btn btn--suave" id="btn-cancelar">Cancelar reservación</button>';
   $("#btn-cancelar").onclick = cancelarViaje;
 }
 
@@ -3582,8 +3807,17 @@ async function pedirViaje() {
   // La base del AIFA identifica al pasajero por teléfono.
   if (!await asegurarTelefono()) return;
 
+  // Si el pasajero dejó la pantalla abierta y la hora elegida ya pasó, se avisa.
+  const elegida = { ...(S.extras.llegada || {}) };
+  const { dia, hora } = llegadaValida();
+  if (elegida.dia !== dia || elegida.hora !== hora) {
+    pintarClases();
+    return avisar("Esa hora ya pasó. Revisa el día y la hora de tu llegada.", "mal");
+  }
+  const llegada = fechaLlegada(dia, hora);
+
   pidiendo = true;
-  ocupar($("#btn-pedir"), true, "Pidiendo");
+  ocupar($("#btn-pedir"), true, "Reservando");
   // El id se genera antes para escribir el folio en la misma operación.
   const ref = doc(collection(db, "viajes"));
   const viaje = {
@@ -3597,7 +3831,10 @@ async function pedirViaje() {
     precioBase: d.base,
     saldoUsado: d.saldo,
     precio: d.total,
-    pago: S.pago, estado: "buscando",
+    pago: S.pago, estado: "reservado",
+    // Día y hora en que llega a la taquilla del AIFA. Va a putTravel como `fecha`.
+    llegadaAIFA: llegada,
+    llegadaTexto: textoAIFA(llegada),
     pasajeros: S.extras.pasajeros || 1,
     maletas: S.extras.maletas || 0,
     vuelo: (S.extras.vuelo || "").trim() || null,
@@ -3660,7 +3897,9 @@ async function liberarUnidadDelViaje(v) {
 
 const elegirMotivo = () => new Promise(res => {
   const cerrar = abrirTelon(
-    '<h3>Cancelar viaje</h3><p>Cuéntanos por qué, para mejorar el servicio.</p>' +
+    (S.viaje?.estado === "reservado"
+      ? '<h3>Cancelar reservación</h3><p>Cuéntanos por qué, para mejorar el servicio. Si ya no vas a llegar, no hace falta pasar a taquilla.</p>'
+      : '<h3>Cancelar viaje</h3><p>Cuéntanos por qué, para mejorar el servicio.</p>') +
     '<div class="motivos">' + MOTIVOS_CANCELA.map((m, i) =>
       '<button class="motivo" data-motivo="' + i + '">' + esc(m) + '</button>').join("") + '</div>' +
     '<button class="btn btn--suave" data-no style="margin-top:.9rem">Mejor no cancelar</button>',
@@ -3684,7 +3923,7 @@ async function terminarViaje() {
 function reiniciar() {
   S.fase = 0; S.viajeId = null; S.viaje = null; S.destino = null; S.ruta = null; S.eligiendo = true;
   S.origen = { ...ORIGEN_AIFA };
-  S.extras = { vuelo: "", terminal: "", pasajeros: 1, maletas: 0, domicilio: "", abierto: false };
+  S.extras = { vuelo: "", terminal: "", pasajeros: 1, maletas: 0, domicilio: "", abierto: false, llegada: null };
   quitarMarca("destino"); detenerAuto(); dibujarLinea(null);
   ponerMarca("origen", S.origen);
   pintarHoja();
@@ -3698,7 +3937,7 @@ function escucharViajes() {
       .sort((a, b) => (b.creadoEn?.seconds || 9e9) - (a.creadoEn?.seconds || 9e9));
     pintarActividad();
 
-    const vivo = S.historial.find(v => ["buscando", "asignado", "en_curso"].includes(v.estado));
+    const vivo = S.historial.find(v => ["reservado", "buscando", "asignado", "en_curso"].includes(v.estado));
     const antes = S.viaje?.estado;
 
     if (vivo) {
@@ -3706,7 +3945,7 @@ function escucharViajes() {
       S.origen = vivo.origen; S.destino = vivo.destino;
       ponerMarca("origen", vivo.origen); ponerMarca("destino", vivo.destino);
       if (!S.ruta) calcularRuta();
-      S.fase = vivo.estado === "buscando" ? 1 : vivo.estado === "asignado" ? 2 : 3;
+      S.fase = ["reservado", "buscando"].includes(vivo.estado) ? 1 : vivo.estado === "asignado" ? 2 : 3;
 
       if (antes !== vivo.estado) {
         if (vivo.estado === "asignado") {
@@ -3733,9 +3972,16 @@ function escucharViajes() {
       const cerrado = S.historial.find(v => v.id === S.viajeId);
       detenerAuto();
       if (cerrado?.estado === "completado" && cerrado.calificacion === null) {
+        // La taquilla concretó la reservación (Eco y operador llegan de t30.mx).
+        if (cerrado.taquilla) {
+          if (S.perfil?.avisos !== false) sonar();
+          avisar("¡Listo! Tu viaje quedó registrado en taquilla" +
+            (cerrado.conductor?.numeroEconomico ? " con la Eco " + cerrado.conductor.numeroEconomico : "") + ". Buen viaje.", "bien");
+        }
         S.viaje = cerrado; S.fase = 4; abrirHoja(); pintarHoja();
       } else {
         if (cerrado?.estado === "cancelado") avisar("Viaje cancelado.");
+        if (cerrado?.estado === "vencido") avisar("Tu reservación venció porque no se usó en taquilla. Puedes hacer una nueva cuando quieras.");
         reiniciar();
       }
     }
@@ -3791,8 +4037,10 @@ function animarAuto(tipo) {
    13 · ACTIVIDAD
    ══════════════════════════════════════════════════════════════ */
 const ESTADOS = {
+  reservado: ["Reservado", "curso"],
   buscando: ["Buscando", "curso"], asignado: ["Conductor en camino", "curso"],
   en_curso: ["En curso", "curso"], completado: ["Completado", "ok"], cancelado: ["Cancelado", "no"],
+  vencido: ["Vencida", "no"],
   programado: ["Programado", "curso"]
 };
 
@@ -3852,10 +4100,12 @@ function pintarActividad() {
       lista.map(v => {
         const f = v.creadoEn?.toDate ? v.creadoEn.toDate() : new Date();
         const [txt, tono] = ESTADOS[v.estado] || ["—", "curso"];
+        const ll = llegadaDe(v);
         return '<button class="renglon" data-viaje="' + v.id + '">' +
           '<span class="ico--sm"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="1.9"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>' +
           '<span class="renglon__txt"><b>' + esc(v.destino?.texto || "Destino") + '</b>' +
-          '<small>' + f.toLocaleDateString("es-MX", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) + ' · ' + esc(v.claseNombre || "") + '</small>' +
+          '<small>' + (ll && vigente(v) ? "Llegada: " + esc(textoLlegada(ll))
+            : f.toLocaleDateString("es-MX", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) + ' · ' + esc(v.claseNombre || "")) + '</small>' +
           '<span class="sello sello--' + tono + '">' + txt + '</span></span>' +
           '<span><b class="mono">' + dinero(v.precio) + '</b></span></button>';
       }).join("") + '</div>').join("");
@@ -3896,18 +4146,21 @@ function recibo(v) {
     '<div class="ruta__resumen"><div>' + esc(v.origen?.texto || "") + '</div><div>' + esc(v.destino?.texto || "") + '</div></div></div>' +
     '<div style="margin:.9rem 0;border-top:1px solid var(--borde)">' +
       (boletoDe(v) ? renglonRecibo("Boleto taquilla", boletoDe(v)) : "") +
+      (llegadaDe(v) ? renglonRecibo("Llegada al AIFA", textoLlegada(llegadaDe(v))) : "") +
+      (v.conductor?.numeroEconomico ? renglonRecibo("Unidad", "Eco " + v.conductor.numeroEconomico) : "") +
       renglonRecibo("Servicio", v.claseNombre || "") +
       (v.tarifaFija ? renglonRecibo("Tarifa", "Fija de taquilla") : "") +
       (v.km ? renglonRecibo("Distancia", v.km.toFixed(1) + " km") : "") +
       (v.min ? renglonRecibo("Duración", v.min + " min") : "") +
       (v.saldoUsado ? renglonRecibo("Saldo T30 aplicado", "−" + dinero(v.saldoUsado)) : "") +
-      renglonRecibo("Pago", v.pago === "tarjeta" ? "Tarjeta" : "Efectivo") +
+      // Lo cobrado en taquilla manda sobre lo que se eligió en la app.
+      renglonRecibo("Pago", v.taquilla?.pagos?.length ? v.taquilla.pagos.map(x => x.medio).filter(Boolean).join(" + ") : (v.pago === "tarjeta" ? "Tarjeta" : "Efectivo")) +
       (v.conductor?.nombre ? renglonRecibo("Conductor", v.conductor.nombre) : "") +
       (v.calificacion ? renglonRecibo("Tu calificación", "★ " + v.calificacion) : "") +
     '</div>' +
     '<div class="fila" style="border-top:0;padding-top:0;margin-top:0">' +
       '<span class="opcion__txt"><b>Total</b></span>' +
-      '<span class="precio" style="font-size:1.2rem">' + dinero(v.precio) + '</span></div>' +
+      '<span class="precio" style="font-size:1.2rem">' + dinero(v.taquilla?.importe || v.precio) + '</span></div>' +
     '<div class="dialogo__botones" style="margin-top:1rem">' +
       '<button class="btn btn--suave" data-cerrar>Cerrar</button>' +
       '<button class="btn" data-pase>Ver pase QR</button>' +
@@ -4263,7 +4516,7 @@ const uuidTaquilla = () => {
 };
 
 /* ─── Accesos visibles al pase ──────────────────────────── */
-const ESTADOS_VIGENTES = ["buscando", "asignado", "en_curso", "programado"];
+const ESTADOS_VIGENTES = ["reservado", "buscando", "asignado", "en_curso", "programado"];
 const vigente = v => ESTADOS_VIGENTES.includes(v?.estado);
 
 const icoQR = (t = 18) =>
@@ -4273,10 +4526,10 @@ const icoQR = (t = 18) =>
   '<path d="M14 14h3v3h-3zM20.5 14v3M14 20.5h3M20.5 20.5v.01"/></svg>';
 
 /** Botón para la hoja del viaje. El pase existe desde que se pide el viaje. */
-function botonPase(v) {
+function botonPase(v, grande = false) {
   if (!v?.id) return "";
-  return '<button class="btn btn--pase" data-abrir-pase="' + esc(v.id) + '">' +
-    icoQR(17) + 'Mostrar mi credencial</button>';
+  return '<button class="btn btn--pase' + (grande ? " btn--pase-grande" : "") + '" data-abrir-pase="' + esc(v.id) + '">' +
+    icoQR(grande ? 20 : 17) + (grande ? "Mostrar mi QR" : "Mostrar mi credencial") + '</button>';
 }
 
 /** Tarjeta en Inicio mientras haya un viaje vigente. */
@@ -4290,7 +4543,7 @@ function pintarPaseInicio() {
       '<span class="pase-hoy__ico">' + icoQR(21) + '</span>' +
       '<span class="pase-hoy__txt">' +
         '<b>Tu credencial</b>' +
-        '<small>' + esc(v.destino?.texto || "Viaje en curso") + '</small>' +
+        '<small>' + esc(v.destino?.texto || "Viaje en curso") + (llegadaDe(v) && v.estado === "reservado" ? " · " + esc(textoLlegada(llegadaDe(v))) : "") + '</small>' +
         '<span class="pase-hoy__folio">' + esc(boletoDe(v) ? "Boleto " + boletoDe(v) : (S.perfil?.nombre || "")) + '</span>' +
       '</span>' +
       '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--txt-3)" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg>' +
@@ -4332,6 +4585,7 @@ function pase(v) {
         renglonRecibo("Pasajero", nombre) +
         (S.perfil?.telefono ? renglonRecibo("Celular", telefonoBonito(S.perfil.telefono)) : "") +
         (v ? renglonRecibo("Viaje", (v.origen?.texto || "—") + " → " + (v.destino?.texto || "—")) : "") +
+        (v && llegadaDe(v) ? renglonRecibo("Llegada al AIFA", textoLlegada(llegadaDe(v))) : "") +
         (boletoDe(v) ? renglonRecibo("Boleto taquilla", boletoDe(v)) : "") +
       '</div>' +
       '<div class="pase__aviso">' +
